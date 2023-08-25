@@ -10,8 +10,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IMeetUpJpaDao extends JpaRepository<MeetUp, Long> {
-//
-//	@Query(value = "SELECT * FROM TMEETUP m ORDER BY m.DATE DESC", nativeQuery = true)
-//	List<Fichier> findAllMeetOrderByDateDesc();
+
+	@Query(value = "SELECT * FROM TMEETUP m ORDER BY m.DATE DESC", nativeQuery = true)
+	List<Fichier> findAllMeetOrderByDateDesc();
 
 }

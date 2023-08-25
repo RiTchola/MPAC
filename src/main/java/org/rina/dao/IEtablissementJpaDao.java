@@ -12,24 +12,24 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IEtablissementJpaDao extends JpaRepository<Etablissement, Long> {
 
-//	// Utilisation d'un Query natif pour avoir les informations d'une activité
-//	@Query(value = "select r.id, r.nom, r.prenom from TETABLISSEMENT e join TRESIDENT r where e.ID=?1", nativeQuery = true)
-//	List<Resident> findAllResidByEtablissement(Long idEtab);
-//
-//	// Utilisation d'un Query natif pour avoir les informations d'une activité
-//	@Query(value = "select count(r.id) from TETABLISSEMENT e join TRESIDENT r where e.ID=?1", nativeQuery = true)
-//	int countAllResidByEtablissement(Long idEtab);
-//
-//	@Query(value = "select * from TETABLISSEMENT e where e.nom=?1 and e.adresse=?2", nativeQuery = true)
-//	Optional<Etablissement> findByNameAndAdresse(String nom, String adresse);
-//
-//	@Query(value = "select * from TETABLISSEMENT e join TUSER u where u.username=?1", nativeQuery = true)
-//	Optional<Etablissement> findByUsername(String username);
-//
-//	@Query(value = "select u.username from TUSER u where u.role=1 order by u.username", nativeQuery = true)
-//	List<String> getListEtabUsername();
-//
-//	@Query(value = "select count(*)=1 from TUSER u where u.username=?1 and u.role=1", nativeQuery = true)
-//	boolean existEtabByUserName(String username);
+	// Utilisation d'un Query natif pour avoir la liste des résidents d'un établissement
+	@Query(value = "select r.id, r.nom, r.prenom from TETABLISSEMENT e join TRESIDENT r where e.ID=?1", nativeQuery = true)
+	List<Resident> findAllResidByEtablissement(Long idEtab);
+
+	// Utilisation d'un Query natif pour compter les résidents d'un établissement
+	@Query(value = "select count(r.id) from TETABLISSEMENT e join TRESIDENT r where e.ID=?1", nativeQuery = true)
+	int countAllResidByEtablissement(Long idEtab);
+
+	// Utilisation d'un Query natif pour retrouver établissement gràce à son nom et adresse
+	@Query(value = "select * from TETABLISSEMENT e where e.nom=?1 and e.adresse=?2", nativeQuery = true)
+	Optional<Etablissement> findByNameAndAdresse(String nom, String adresse);
+
+	// Utilisation d'un Query natif pour retrouver établissement gràce à son username
+	@Query(value = "select * from TETABLISSEMENT e join TUSER u where u.username=?1", nativeQuery = true)
+	Optional<Etablissement> findByUsername(String username);
+
+	// Utilisation d'un Query natif pour verifier l'exitence d'un établissement gràce à son username
+	@Query(value = "select count(*)=1 from TUSER u where u.username=?1 and u.role=1", nativeQuery = true)
+	boolean existEtabByUserName(String username);
 
 }

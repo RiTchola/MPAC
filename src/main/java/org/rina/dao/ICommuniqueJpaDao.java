@@ -1,6 +1,7 @@
 package org.rina.dao;
 
 import java.util.Date;
+
 import java.util.List;
 
 import org.rina.model.Communique;
@@ -11,10 +12,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ICommuniqueJpaDao extends JpaRepository<Communique, Long> {
 
-//	// Utilisation d'un Query natif pour avoir les informations d'une activité
-//	@Query(value = "select * from TCOMMUNIQUE c where c.date=?1 and c.fketab=?2", nativeQuery = true)
-//	List<Communique> findCommuniqueByDate(Date date, String etab);
-//
-//	@Query(value = "SELECT * FROM TCOMMUNIQUE c ORDER BY c.DATE DESC", nativeQuery = true)
-//	List<Communique> findAllCommuniqueOrderByDateDesc();
+	// Utilisation d'un Query natif pour avoir la liste des communiqués d'une date
+	@Query(value = "select * from TCOMMUNIQUE c where c.date=?1", nativeQuery = true)
+	List<Communique> findCommuniqueByDate(Date date);
+
+	// Utilisation d'un Query natif pour avoir la liste des communiqués de facon décroissante
+	@Query(value = "SELECT * FROM TCOMMUNIQUE c ORDER BY c.DATE DESC", nativeQuery = true)
+	List<Communique> findAllCommuniqueOrderByDateDesc();
 }
