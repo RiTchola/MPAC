@@ -41,6 +41,7 @@ public class ActiviteController {
 	@GetMapping("/{id}")
 	public ResponseEntity<Activite> getActiviteById(@PathVariable Long id) {
 		Optional<Activite> activite = activiteService.findById(id);
+		
 		return activite.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
@@ -54,19 +55,21 @@ public class ActiviteController {
 
 	@PutMapping("/{id}")
 	public ResponseEntity<Activite> updateActivite(@PathVariable Long id, @RequestBody ActiviteDto actDto) {
-		Activite oldActivite = activiteService.findById(actDto.getId())
+		Activite newActivite = activiteService.findById(actDto.getId())
 				.orElseThrow(() -> new NotExistException(actDto.getId().toString()));
-		Etablissement etab = etablissementServices.findById(oldActivite.getEtablissement().getId())
-				.orElseThrow(() -> new NotExistException(oldActivite.getEtablissement().getId().toString()));
-		if (actDto.getId().equals(id))
+		Etablissement etab = etablissementServices.findById(newActivite.getEtablissement().getId())
+				.orElseThrow(() -> new NotExistException(newActivite.getEtablissement().getId().toString()));
+		
+		if (actDto.getId().equals(id)) {
+			
+//			Activite updatedActivite = newActivite.get();
+//			updatedActivite.setNom(activiteDetails.getNom());
+//			updatedActivite.setDate(activiteDetails.getDate());
+//			updatedActivite.setDescription(activiteDetails.getDescription());
+//			return ResponseEntity.ok(activiteService.insert(updatedActivite));
 			return ResponseEntity.ok(activiteService.update(actDto.toActivite(etab)));
-//		Activite updatedActivite = oldActivite.get();
-//		updatedActivite.setNom(activiteDetails.getNom());
-//		updatedActivite.setDate(activiteDetails.getDate());
-//		updatedActivite.setDescription(activiteDetails.getDescription());
-//		return ResponseEntity.ok(activiteService.insert(updatedActivite));
-
-		return ResponseEntity.ok().build();
+		}
+		return ResponseEntity.notFound().build();
 
 	}
 
