@@ -3,27 +3,24 @@ package org.rina.model;
 
 import jakarta.persistence.CascadeType;
 
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.rina.enums.Roles;
 import org.springframework.format.annotation.NumberFormat;
@@ -31,7 +28,6 @@ import org.springframework.format.annotation.NumberFormat;
 @Data
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name="TETABLISSEMENT", uniqueConstraints = @UniqueConstraint(columnNames = { "nom", "adresse" }))
 public class Etablissement {
@@ -80,18 +76,18 @@ public class Etablissement {
 	private User user;
 
 	// Le nom "seance" doit correspondre au nom de l'attribut dans "Presence"
-	@OneToMany(mappedBy = "etablissement")
-	private Set<RapportQuotidien> rapportQuotidiens = new HashSet<>(); 
-	public  Set<RapportQuotidien> getRapportQuotidien() { 
-			return rapportQuotidiens;
-	}
-	
-	@OneToMany(mappedBy = "etablissement")
-	private Set<RapportVisite> rapportVisites = new HashSet<>(); 
-	public Set<RapportVisite> getRapportVisite() { 
-			return rapportVisites;
-	}
-	
+//	@OneToMany(mappedBy = "etablissement")
+//	private Set<RapportQuotidien> rapportQuotidiens = new HashSet<>(); 
+//	public  Set<RapportQuotidien> getRapportQuotidien() { 
+//			return rapportQuotidiens;
+//	}
+//	
+//	@OneToMany(mappedBy = "etablissement")
+//	private Set<RapportVisite> rapportVisites = new HashSet<>(); 
+//	public Set<RapportVisite> getRapportVisite() { 
+//			return rapportVisites;
+//	}
+//	
 	/**
 	 * Construction 
 	 * @param nom

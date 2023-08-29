@@ -50,13 +50,6 @@ public class MedecinTraitant {
 	@Size(min = 10, max = 200, message = "{}")
 	private String adresse;
 	
-	/**
-	 * jointure à d'autres classes
-	 */
-
-	@ManyToOne
-	@JoinColumn(name = "FRESIDENT", insertable = false, updatable = false)
-	private Resident resident;
 	
 	/**
 	 * Construction 
@@ -71,7 +64,7 @@ public class MedecinTraitant {
 	 * @param adresse
 	 */
 	public MedecinTraitant( Long id, String numInami, String nom, String prenom,
-			String email, String tel1, String tel2, String adresse, Resident resident) {
+			String email, String tel1, String tel2, String adresse) {
 		
 		this.id = id;
 		this.numInami = numInami;
@@ -81,6 +74,5 @@ public class MedecinTraitant {
 		this.tel1 = tel1;
 		this.tel2 = tel2;
 		this.adresse = adresse;	
-		this.resident = resident;
 	}
 }

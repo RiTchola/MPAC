@@ -2,14 +2,13 @@ package org.rina.model;
 
 import jakarta.persistence.*;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.Date;
 
 import org.rina.enums.Humeur;
 
@@ -45,7 +44,7 @@ public class RapportQuotidien {
 	private Integer numeroR;
 
 	@Column(nullable = false)
-	private LocalDate date;
+	private Date date;
 
 	@Column(nullable = false)
 	private String freqCardiaque;
@@ -111,7 +110,7 @@ public class RapportQuotidien {
 	/**
 	 * Construction
 	 */
-	public RapportQuotidien(Integer numeroR, LocalDate date, String freqCardiaque, String freqRespiratoire,
+	public RapportQuotidien(Integer numeroR, Date date, String freqCardiaque, String freqRespiratoire,
 			String presArterielle, String temperature, String satOxygene, Boolean selle, Boolean urine, Boolean sommeil,
 			Boolean coiffure, Boolean manicure, Boolean pedicure, Boolean toilette, Boolean vetements, Humeur humeur,
 			String commentaire, Resident resident, Etablissement etablissement) {
@@ -138,7 +137,7 @@ public class RapportQuotidien {
 		// initialise les cl�s �trang�res de l'ID compos�
 		this.id = new Id(resident.getId(), etablissement.getId());
 		// effectue les liens bidirectionnels
-		etablissement.getRapportQuotidien().add(this);
+		//etablissement.getRapportQuotidien().add(this);
 		// resident.getRapportQuotidien()).add(this);
 	}
 

@@ -74,14 +74,14 @@ public class ActiviteServices {
 	/**
 	 * Ajout d'un nouveau Activite
 	 * 
-	 * @param c1
+	 * @param a1
 	 * @return
 	 */
 	public Activite insert(Activite a1) {
 		return update(a1);
 	}
 
-	private Activite update(Activite a1) {
+	public Activite update(Activite a1) {
 		assert a1 != null : "L'activite doit exister";
 		return activitedao.save(a1);
 	}	

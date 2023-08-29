@@ -1,12 +1,12 @@
 package org.rina.service;
 
 import java.util.Date;
+
 import java.util.List;
 import java.util.Optional;
 
 import org.rina.dao.IRapportQuotidienJpaDao;
 import org.rina.model.RapportQuotidien;
-import org.rina.model.RapportQuotidien.Id;
 import org.rina.model.Resident;
 
 public class RapportQuotidienServices {
@@ -46,22 +46,17 @@ private IRapportQuotidienJpaDao rapportQuotidiendao;
 		return rapportQuotidiendao.findAll();
 	}
 
-	/**
-	 * @param id
-	 * @return
-	 */
-	public Optional<RapportQuotidien> findById(Id id) {
-		return rapportQuotidiendao.findByIdCompose(id.getEtablissementId(), id.getResidentId());
-	}
+	public Optional<RapportQuotidien> getRapportQuotidienById(Long residId, Long etabId) {
+        return rapportQuotidiendao.findById(new RapportQuotidien.Id(residId, etabId));
+    }
 
-	/**
-	 * @param id
-	 * @return
-	 */
-	public boolean existsById(Id id) {
-		return rapportQuotidiendao.existsByIdCompose(id.getEtablissementId(), id.getResidentId());
-	}
-	
+    public void deleteRapportQuotidienById(Long residId, Long etabId) {
+    	rapportQuotidiendao.deleteById(new RapportQuotidien.Id(residId, etabId));
+    }
+
+    public boolean existsRapportQuotidienById(Long residId, Long etabId) {
+        return rapportQuotidiendao.existsById(new RapportQuotidien.Id(residId, etabId));
+    }
 	
 
 	/**
@@ -70,13 +65,6 @@ private IRapportQuotidienJpaDao rapportQuotidiendao;
 	 */
 	public Optional<RapportQuotidien> findRapportQuotidienByNumber(Long numero) {
 		return rapportQuotidiendao.findRapportQuotidienByNumber(numero);
-	}
-
-	/**
-	 * @param id
-	 */
-	public void deleteById(Id id) {
-		rapportQuotidiendao.deleteByIdCompose(id.getEtablissementId(), id.getResidentId());
 	}
 
 	/**

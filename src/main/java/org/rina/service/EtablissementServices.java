@@ -67,7 +67,7 @@ public class EtablissementServices {
 		 * @param id
 		 * @return
 		 */
-		public Optional<Etablissement> findOne(Long id) {
+		public Optional<Etablissement> findById(Long id) {
 			return etablissementdao.findById(id);
 		}
 
@@ -99,7 +99,6 @@ public class EtablissementServices {
 		private Etablissement update(Etablissement et1) {
 			assert et1 != null : "L'etablissement doit exister";
 			return etablissementdao.save(et1);
-		}	
-
+		}
 
 }

@@ -1,7 +1,11 @@
 package org.rina.controller;
 
-import org.rina.dao.IActiviteJpaDao;
+import org.rina.controller.exceptions.NotExistException;
+import org.rina.dto.request.ActiviteDto;
 import org.rina.model.Activite;
+import org.rina.model.Etablissement;
+import org.rina.service.ActiviteServices;
+import org.rina.service.EtablissementServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,45 +17,65 @@ import java.util.Optional;
 @RequestMapping("/activite")
 public class ActiviteController {
 
-    @Autowired
-    private IActiviteJpaDao activiteDao;
+	private ActiviteServices activiteService;
+	private EtablissementServices etablissementServices;
 
-    @GetMapping
-    public List<Activite> getAllActivites() {
-        return activiteDao.findAll();
-    }
+	// injection de l'accès au service
+	@Autowired
+	public ActiviteController(ActiviteServices activiteService, EtablissementServices etablissementServices) {
+		this.activiteService = activiteService;
+		this.etablissementServices = etablissementServices;
+	}
+	
+	
+	/**
+	 * Liste des activite
+	 * 
+	 * @param model
+	 * @return la nom logique de la vue qui affichera la liste des activite
+	 */
+	@GetMapping("/liste") public List<Activite> getAllActivites() {
+		return activiteService.findAll();
+	}
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Activite> getActiviteById(@PathVariable Long id) {
-        Optional<Activite> activite = activiteDao.findById(id);
-        return activite.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
+	@GetMapping("/{id}")
+	public ResponseEntity<Activite> getActiviteById(@PathVariable Long id) {
+		Optional<Activite> activite = activiteService.findById(id);
+		return activite.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+	}
 
-    @PostMapping
-    public Activite createActivite(@RequestBody Activite activite) {
-        return activiteDao.save(activite);
-    }
+	@PostMapping("/{idEtab}")
+	public Activite createActivite(@RequestBody ActiviteDto actDto, @RequestParam Long idEtab) {
+		Etablissement etab = etablissementServices.findById(idEtab)
+				.orElseThrow(() -> new NotExistException(idEtab.toString()));
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Activite> updateActivite(@PathVariable Long id, @RequestBody Activite activiteDetails) {
-        Optional<Activite> existingActivite = activiteDao.findById(id);
+		return activiteService.insert(actDto.toActivite(etab));
+	}
 
-        if (existingActivite.isPresent()) {
-            Activite updatedActivite = existingActivite.get();
-            updatedActivite.setNom(activiteDetails.getNom());
-            updatedActivite.setDate(activiteDetails.getDate());
-            updatedActivite.setDescription(activiteDetails.getDescription());
-            return ResponseEntity.ok(activiteDao.save(updatedActivite));
-        }
-        return ResponseEntity.notFound().build();
-    }
+	@PutMapping("/{id}")
+	public ResponseEntity<Activite> updateActivite(@PathVariable Long id, @RequestBody ActiviteDto actDto) {
+		Activite oldActivite = activiteService.findById(actDto.getId())
+				.orElseThrow(() -> new NotExistException(actDto.getId().toString()));
+		Etablissement etab = etablissementServices.findById(oldActivite.getEtablissement().getId())
+				.orElseThrow(() -> new NotExistException(oldActivite.getEtablissement().getId().toString()));
+		if (actDto.getId().equals(id))
+			return ResponseEntity.ok(activiteService.update(actDto.toActivite(etab)));
+//		Activite updatedActivite = oldActivite.get();
+//		updatedActivite.setNom(activiteDetails.getNom());
+//		updatedActivite.setDate(activiteDetails.getDate());
+//		updatedActivite.setDescription(activiteDetails.getDescription());
+//		return ResponseEntity.ok(activiteService.insert(updatedActivite));
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteActivite(@PathVariable Long id) {
-        if (activiteDao.existsById(id)) {
-            activiteDao.deleteById(id);
-            return ResponseEntity.ok().build();
-        }
-        return ResponseEntity.notFound().build();
-    }
+		return ResponseEntity.ok().build();
+
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteActivite(@PathVariable Long id) {
+		if (activiteService.existsById(id)) {
+			activiteService.deleteById(id);
+			return ResponseEntity.ok().build();
+		}
+		return ResponseEntity.notFound().build();
+	}
 }
