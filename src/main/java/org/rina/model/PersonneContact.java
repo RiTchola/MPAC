@@ -60,7 +60,7 @@ public class PersonneContact {
 	@Size(min = 10, max = 125, message = "{}")
 	private String adresse;
 	
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private StatutM statut;
 	
 	@Column(nullable = false)

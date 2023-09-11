@@ -1,61 +1,56 @@
 package org.rina.controller;
 
+import org.rina.dto.request.MedecinTraitantDto;
 
-import org.rina.dao.IMedecinTraitantJpaDao;
 import org.rina.model.MedecinTraitant;
+import org.rina.service.MedecinTraitantServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import jakarta.validation.Valid;
+
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/medecins-traitants")
+@RequestMapping("/doctor")
 public class MedecinTraitantController {
 
     @Autowired
-    private IMedecinTraitantJpaDao medecinTraitantDao;
-
-    @GetMapping
-    public List<MedecinTraitant> getAllMedecinsTraitants() {
-        return medecinTraitantDao.findAll();
-    }
+    private MedecinTraitantServices medecinService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<MedecinTraitant> getMedecinTraitantById(@PathVariable Long id) {
-        Optional<MedecinTraitant> medecinTraitant = medecinTraitantDao.findById(id);
-        return medecinTraitant.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<MedecinTraitant> getDoctorById(@PathVariable Long id) {
+        Optional<MedecinTraitant> medecinT = medecinService.findById(id);
+        if (medecinT.isPresent()) {
+        	return ResponseEntity.ok(medecinT.get());
+        }
+        
+        return ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public MedecinTraitant createMedecinTraitant(@RequestBody MedecinTraitant medecinTraitant) {
-        return medecinTraitantDao.save(medecinTraitant);
+    public MedecinTraitant createDoctor(@Valid @RequestBody MedecinTraitantDto medecinDto) {
+        return medecinService.insert(medecinDto.toMedecinTraitant());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MedecinTraitant> updateMedecinTraitant(@PathVariable Long id, @RequestBody MedecinTraitant medecinTraitantDetails) {
-        Optional<MedecinTraitant> existingMedecinTraitant = medecinTraitantDao.findById(id);
+    public ResponseEntity<MedecinTraitant> updateDoctor(@PathVariable Long id, @Valid @RequestBody MedecinTraitantDto medecinDto) {
+        Optional<MedecinTraitant> existingMedecinTraitant = medecinService.findById(id);
 
         if (existingMedecinTraitant.isPresent()) {
             MedecinTraitant updatedMedecinTraitant = existingMedecinTraitant.get();
-            updatedMedecinTraitant.setNom(medecinTraitantDetails.getNom());
-            updatedMedecinTraitant.setPrenom(medecinTraitantDetails.getPrenom());
-            updatedMedecinTraitant.setEmail(medecinTraitantDetails.getEmail());
-            updatedMedecinTraitant.setTel1(medecinTraitantDetails.getTel1());
-            updatedMedecinTraitant.setTel2(medecinTraitantDetails.getTel2());
-            updatedMedecinTraitant.setAdresse(medecinTraitantDetails.getAdresse());
-            return ResponseEntity.ok(medecinTraitantDao.save(updatedMedecinTraitant));
+           updatedMedecinTraitant.setNom(medecinDto.getNom());
+            updatedMedecinTraitant.setPrenom(medecinDto.getPrenom());
+            updatedMedecinTraitant.setEmail(medecinDto.getEmail());
+            updatedMedecinTraitant.setTel1(medecinDto.getTel1());
+           updatedMedecinTraitant.setTel2(medecinDto.getTel2());
+updatedMedecinTraitant.setAdresse(medecinDto.getAdresse());
+            return ResponseEntity.ok(medecinService.update(updatedMedecinTraitant));
         }
+        
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMedecinTraitant(@PathVariable Long id) {
-        if (medecinTraitantDao.existsById(id)) {
-            medecinTraitantDao.deleteById(id);
-            return ResponseEntity.ok().build();
-        }
-        return ResponseEntity.notFound().build();
-    }
+
 }

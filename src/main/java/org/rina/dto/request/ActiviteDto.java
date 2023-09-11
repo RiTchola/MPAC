@@ -2,10 +2,8 @@ package org.rina.dto.request;
 
 import java.util.Date;
 
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
 import org.rina.model.Activite;
 import org.rina.model.Etablissement;
@@ -27,10 +25,6 @@ public class ActiviteDto {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date date;
 
-	@NotBlank
-	@Size(min=1, max=800, message="{description}")
-	private String description;
-	
 	@NotNull
 	private Long idEtablissement;
 
@@ -38,15 +32,13 @@ public class ActiviteDto {
 	 * @param id
 	 * @param nom
 	 * @param date
-	 * @param description
 	 * @param idEtablissement
 	 */
-	public ActiviteDto(Long id, String nom, Date date, String description, Long idEtablissement) {
+	public ActiviteDto(Long id, String nom, Date date, Long idEtablissement) {
 		
 		this.id = id;
 		this.nom = nom;
 		this.date = date;
-		this.description = description;
 		this.idEtablissement = idEtablissement;
 	}
 	
@@ -56,7 +48,7 @@ public class ActiviteDto {
 	 * @return
 	 */
 	public Activite toActivite(Etablissement etab) {
-		return new Activite(id, nom, date, description, etab);	
+		return new Activite(id, nom, date, etab);	
 	}
 	
 	/**
@@ -70,7 +62,6 @@ public class ActiviteDto {
 				act.getId(),
 				act.getNom(), 
 				act.getDate(), 
-				act.getDescription(),
 				eDto.getId() );	
 	}	
 	

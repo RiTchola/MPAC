@@ -2,6 +2,7 @@ package org.rina.util.initDB;
 
 import org.rina.dao.*;
 
+
 import org.rina.enums.TypePersonne;
 import org.rina.model.*;
 import org.springframework.boot.CommandLineRunner;
@@ -26,7 +27,6 @@ public class DatabaseSeeder {
             IMeetUpJpaDao iMeetUpJpaDao,
             IMenuJpaDao iMenuJpaDao,
             IPersonneContactJpaDao iPersonneContactJpaDao,
-            IPersonneExterneJpaDao iPersonneExterneJpaDao,
             IRapportQuotidienJpaDao iRapportQuotidienJpaDao,
             IRapportVisiteJpaDao iRapportVisiteJpaDao,
             IResidentJpaDao iResidentJpaDao

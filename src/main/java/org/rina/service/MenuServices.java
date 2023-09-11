@@ -1,11 +1,17 @@
 package org.rina.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import org.rina.dao.IMenuJpaDao;
 import org.rina.model.Menu;
+import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
+
+@Transactional
+@Service
 public class MenuServices {
 	
 	private IMenuJpaDao menudao;
@@ -39,69 +45,70 @@ public class MenuServices {
 	public boolean existsById(Long id) {
 		return menudao.existsById(id);
 	}
+
+	/**
+	 * @param dateDebutSemaine
+	 * @return
+	 */
+	public List<Menu> findByDateDebutSemaine(Date dateDebutSemaine) {
+		return menudao.findByDateDebutSemaine(dateDebutSemaine);
+	}
+
 	
 	/**
-	 * @param semaine
+	 * @param dateDebutSemaine
 	 * @return
 	 */
-	public Optional<Menu> findMenuForWeek(int semaine) {
-		return menudao.findMenuForWeek(semaine);
+	public List<String> findMenuForMonday(Date dateDebutSemaine) {
+		return menudao.findMenuForMonday(dateDebutSemaine);
 	}
 
 	/**
-	 * @param semaine
+	 * @param dateDebutSemaine
 	 * @return
 	 */
-	public List<String> findMenuForMonday(int semaine) {
-		return menudao.findMenuForMonday(semaine);
+	public List<String> findMenuForTuesday(Date dateDebutSemaine) {
+		return menudao.findMenuForTuesday(dateDebutSemaine);
 	}
 
 	/**
-	 * @param semaine
+	 * @param dateDebutSemaine
 	 * @return
 	 */
-	public List<String> findMenuForTuesday(int semaine) {
-		return menudao.findMenuForTuesday(semaine);
+	public List<String> findMenuForWednesday(Date dateDebutSemaine) {
+		return menudao.findMenuForWednesday(dateDebutSemaine);
 	}
 
 	/**
-	 * @param semaine
+	 * @param dateDebutSemaine
 	 * @return
 	 */
-	public List<String> findMenuForWednesday(int semaine) {
-		return menudao.findMenuForWednesday(semaine);
+	public List<String> findMenuForThursday(Date dateDebutSemaine) {
+		return menudao.findMenuForThursday(dateDebutSemaine);
 	}
 
 	/**
-	 * @param semaine
+	 * @param dateDebutSemaine
 	 * @return
 	 */
-	public List<String> findMenuForThursday(int semaine) {
-		return menudao.findMenuForThursday(semaine);
+	public List<String> findMenuForFriday(Date dateDebutSemaine) {
+		return menudao.findMenuForFriday(dateDebutSemaine);
 	}
 
 	/**
-	 * @param semaine
+	 * @param dateDebutSemaine
 	 * @return
 	 */
-	public List<String> findMenuForFriday(int semaine) {
-		return menudao.findMenuForFriday(semaine);
+	public List<String> findMenuForSaturday(Date dateDebutSemaine) {
+		return menudao.findMenuForSaturday(dateDebutSemaine);
 	}
 
 	/**
-	 * @param semaine
+	 * @param dateDebutSemaine
 	 * @return
 	 */
-	public List<String> findMenuForSaturday(int semaine) {
-		return menudao.findMenuForSaturday(semaine);
-	}
-
-	/**
-	 * @param semaine
-	 * @return
-	 */
-	public List<String> findMenuForSunday(int semaine) {
-		return menudao.findMenuForSunday(semaine);
+	public List<String> findMenuForSunday(Date dateDebutSemaine) {
+		return menudao.findMenuForSunday(dateDebutSemaine);
 	}
 
 	/**
@@ -121,7 +128,7 @@ public class MenuServices {
 		return update(ms1);
 	}
 
-	private Menu update(Menu ms1) {
+	public Menu update(Menu ms1) {
 		assert ms1 != null : "Le menu doit exister";
 		return menudao.save(ms1);
 	}	

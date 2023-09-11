@@ -1,6 +1,7 @@
 package org.rina.dao;
 
 import java.util.Date;
+
 import java.util.List;
 
 import org.rina.model.Evenement;
@@ -11,12 +12,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IEvenementJpaDao extends JpaRepository<Evenement, Long> {
 
+	// Utilisation d'un Query natif pour avoir les informations d'un évènement grace à son nom 
+	@Query(value = "select * from TEVENEMENT e  where e.nom=?1 and e.date_Event=?2", nativeQuery = true)
+	List<Evenement> findEventByName(String nom, Date date);
+	
 	// Utilisation d'un Query natif pour avoir la liste des Evenements d'une date
-	@Query(value = "select * from TEVENEMENT e where e.dateEvent=?1", nativeQuery = true)
+	@Query(value = "select * from TEVENEMENT e where e.date_Event=?1", nativeQuery = true)
 	List<Evenement> findEventByDate(Date dateEvent);
-
-//	// Utilisation d'un Query natif pour avoir la liste des Evenements d'un établissemnt 
-//	@Query(value = "select * from TEVENEMENT e where e.fketab=?1", nativeQuery = true)
-//	List<Evenement> findAllByEtablissement(Long idEtab);
 
 }

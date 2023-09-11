@@ -20,6 +20,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class UserDto {
 	
+	private Long id ;
+	
 	@NotBlank(groups = CredentialValidation.class)
 	private String username;
 
@@ -45,14 +47,14 @@ public class UserDto {
 	 * @return User
 	 */
 	public User toUser() {
-		return new User( username, password, role);
+		return new User( id, username, password, role);
 	}
 
 	public User toUser(PasswordEncoder encodeur) {
-		return new User( username, encodeur.encode(password), role);
+		return new User( id, username, encodeur.encode(password), role);
 	}
 
 	public static UserDto toUserDto(User user) {
-		return new UserDto( user.getUsername(), user.getPassword(), user.getPassword(), user.getRole());
+		return new UserDto( user.getId(), user.getUsername(), user.getPassword(), user.getPassword(), user.getRole());
 	}
 }

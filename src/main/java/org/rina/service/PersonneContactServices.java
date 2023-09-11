@@ -6,7 +6,12 @@ import java.util.Optional;
 import org.rina.dao.IPersonneContactJpaDao;
 import org.rina.model.PersonneContact;
 import org.rina.model.Resident;
+import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
+
+@Transactional
+@Service
 public class PersonneContactServices {
 	
 private IPersonneContactJpaDao personneContactdao;
@@ -112,7 +117,7 @@ private IPersonneContactJpaDao personneContactdao;
 		return update(pc1);
 	}
 
-	private PersonneContact update(PersonneContact pc1) {
+	public PersonneContact update(PersonneContact pc1) {
 		assert pc1 != null : "La personneContact doit exister";
 		return personneContactdao.save(pc1);
 	}	

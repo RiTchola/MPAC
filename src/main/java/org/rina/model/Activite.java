@@ -24,12 +24,9 @@ public class Activite {
 	@Column(nullable = false)
 	private Date date;
 
-	@Column(length = 800, nullable = false)
-	private String description;
-
-	
-
-
+	/**
+	 * jointure à d'autres classes
+	 */
 	@ManyToOne
 	@JoinColumn(name = "FKETABLISSEMENT", nullable = false)
 	private Etablissement etablissement;
@@ -40,16 +37,13 @@ public class Activite {
 	 * @param id
 	 * @param nom
 	 * @param date
-	 * @param heure
-	 * @param description
 	 * @param etablissement
 	 */
-	public Activite(Long id, String nom, Date date, String description, Etablissement etablissement) {
+	public Activite(Long id, String nom, Date date, Etablissement etablissement) {
 
 		this.id = id;
 		this.nom = nom;
 		this.date = date;
-		this.description = description;
 		this.etablissement = etablissement;
 	}
 

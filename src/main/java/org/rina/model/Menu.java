@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -20,7 +21,7 @@ public class Menu {
     private Long id;
 	
 	@Column( nullable = false)
-	private int semaine;
+	private Date dateDebutSemaine ;
 	
 	@ElementCollection
 	@Column( nullable = false)
@@ -58,7 +59,7 @@ public class Menu {
 	private Etablissement etablissement;
 
 	/**
-	 * @param semaine
+	 * @param dateDebutSemaine
 	 * @param lundi
 	 * @param mardi
 	 * @param mercredi
@@ -68,12 +69,12 @@ public class Menu {
 	 * @param dimanche
 	 * @param etablissement
 	 */
-	public Menu(Long id, int semaine, List<String> lundi, List<String> mardi,
+	public Menu(Long id, Date dateDebutSemaine, List<String> lundi, List<String> mardi,
 			List<String> mercredi, List<String> jeudi, List<String> vendredi,
 			List<String> samedi, List<String> dimanche, Etablissement etablissement) {
 		
 		this.id = id;
-		this.semaine = semaine;
+		this.dateDebutSemaine = dateDebutSemaine;
 		this.lundi = lundi;
 		this.mardi = mardi;
 		this.mercredi = mercredi;

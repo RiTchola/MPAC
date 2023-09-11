@@ -27,9 +27,9 @@ public class MPAC2223Application {
 
 		return args -> {
 			//Auth Data
-			Optional<User> user = userRepository.findByUsername("user");
+			Optional<User> user = userRepository.findByUsername("user@gmail.com");
 			if(user.isEmpty()){
-				var admin = RegisterRequest.builder().username("user").password("user").role(ADMIN).build();
+				var admin = RegisterRequest.builder().username("user@gmail.com").password("user").role(ADMIN).build();
 				authService.register(admin).getAccessToken();
 			}
 		};

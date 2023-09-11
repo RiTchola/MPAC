@@ -1,12 +1,17 @@
 package org.rina.service;
 
 import java.util.List;
+
 import java.util.Optional;
 
 import org.rina.dao.IMeetUpJpaDao;
-import org.rina.model.Fichier;
 import org.rina.model.MeetUp;
+import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
+
+@Transactional
+@Service
 public class MeetUpServices {
 	
 	private IMeetUpJpaDao meetdao;
@@ -21,7 +26,7 @@ public class MeetUpServices {
 	/**
 	 * @return
 	 */
-	public List<Fichier> findAllMeetOrderByDateDesc() {
+	public List<MeetUp> findAllMeetOrderByDateDesc() {
 		return meetdao.findAllMeetOrderByDateDesc();
 	}
 
@@ -65,7 +70,7 @@ public class MeetUpServices {
 		return update(meet1);
 	}
 
-	private MeetUp update(MeetUp meet1) {
+	public MeetUp update(MeetUp meet1) {
 		assert meet1 != null : "Le meetUp doit exister";
 		return meetdao.save(meet1);
 	}	

@@ -1,5 +1,6 @@
 package org.rina.dto.request;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -19,7 +20,7 @@ public class MenuDto {
 	private Long id;
 
 	@NotNull
-	private int semaine;
+	private Date dateDebutSemaine ;
 
 	@ElementCollection
 	@NotNull
@@ -54,7 +55,7 @@ public class MenuDto {
 
 	/**
 	 * @param id
-	 * @param semaine
+	 * @param dateDebutSemaine
 	 * @param menuLundi
 	 * @param menuMardi
 	 * @param menuMercredi
@@ -64,12 +65,12 @@ public class MenuDto {
 	 * @param menuDimanche
 	 * @param idEtablissement
 	 */
-	public MenuDto(Long id,  int semaine,  List<String> menuLundi,  List<String> menuMardi,
+	public MenuDto(Long id,  Date dateDebutSemaine,  List<String> menuLundi,  List<String> menuMardi,
 			 List<String> menuMercredi,  List<String> menuJeudi,  List<String> menuVendredi,
 			 List<String> menuSamedi,  List<String> menuDimanche,  Long idEtablissement) {
 		
 		this.id = id;
-		this.semaine = semaine;
+		this.dateDebutSemaine = dateDebutSemaine;
 		this.menuLundi = menuLundi;
 		this.menuMardi = menuMardi;
 		this.menuMercredi = menuMercredi;
@@ -86,7 +87,7 @@ public class MenuDto {
 	 * @return
 	 */
 	public Menu toMenu(Etablissement etab) {
-		return new Menu(id, semaine, menuLundi, menuMardi, menuMercredi, menuJeudi, 
+		return new Menu(id, dateDebutSemaine, menuLundi, menuMardi, menuMercredi, menuJeudi, 
 				menuVendredi, menuSamedi, menuDimanche, etab);	
 	}
 	
@@ -99,7 +100,7 @@ public class MenuDto {
 		EtablissementDto eDto = EtablissementDto.toDto(menuSem.getEtablissement());
 		return new MenuDto(
 				menuSem.getId(), 
-				menuSem.getSemaine(), 
+				menuSem.getDateDebutSemaine(), 
 				menuSem.getLundi(), 
 				menuSem.getMardi(), 
 				menuSem.getMercredi(), 

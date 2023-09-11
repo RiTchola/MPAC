@@ -16,7 +16,7 @@ import java.util.Date;
 @Entity
 @Table(name = "TMEETUP")
 public class MeetUp {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -30,6 +30,15 @@ public class MeetUp {
 	@Column(nullable = false)
 	private Date date;
 
+	@Column(nullable = true)
+	private String nomResid;
+
+	@Column(nullable = true)
+	private String prenomResid;
+
+	@Column(nullable = false)
+	private Date dateBirthresid;
+
 	@Column(nullable = false)
 	private int nbParticipants;
 
@@ -39,14 +48,6 @@ public class MeetUp {
 	@Column(length = 200, nullable = true)
 	private String motifRefus;
 
-	@Column(nullable = true)
-	private String nomResid;
-	
-	@Column(nullable = true)
-	private String prenomResid;
-	
-	@Column(nullable = false)
-	private Date dateBirthresid;
 	/**
 	 * jointure à d'autres classes
 	 */
@@ -71,20 +72,20 @@ public class MeetUp {
 	 * @param personneContact
 	 * @param etablissement
 	 */
-	public MeetUp(Long id, TypeMeetUp typeM, String motifDemande, Date date, int nbParticipants, Etat etat,
-			String motifRefus, String nomResid, String prenomResid, Date dateBirthresid,
-			PersonneContact personneContact, Etablissement etablissement) {
+	public MeetUp(Long id, TypeMeetUp typeM, String motifDemande, Date date, String nomResid, String prenomResid,
+			Date dateBirthresid, int nbParticipants, Etat etat, String motifRefus, PersonneContact personneContact,
+			Etablissement etablissement) {
 
 		this.id = id;
 		this.typeM = typeM;
 		this.motifDemande = motifDemande;
 		this.date = date;
-		this.nbParticipants = nbParticipants;
-		this.etat = etat;
-		this.motifRefus = motifRefus;
 		this.nomResid = nomResid;
 		this.prenomResid = prenomResid;
 		this.dateBirthresid = dateBirthresid;
+		this.nbParticipants = nbParticipants;
+		this.etat = etat;
+		this.motifRefus = motifRefus;
 		this.personneContact = personneContact;
 		this.etablissement = etablissement;
 	}

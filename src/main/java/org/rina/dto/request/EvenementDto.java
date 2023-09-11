@@ -25,29 +25,19 @@ public class EvenementDto {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateEvent;
 	
-	@NotBlank
-    private String description;
-	
-	@NotNull
-	private Boolean visible;
-	
 	@NotNull
 	private Long idEtablissement;
 
 	/**
 	 * @param nom
 	 * @param dateEvent
-	 * @param description
 	 * @param idEtablissement
 	 */
-	public EvenementDto(Long id, String nom, Date dateEvent, String description,
-			Boolean visible, Long idEtablissement) {
+	public EvenementDto(Long id, String nom, Date dateEvent,Long idEtablissement) {
 	
 		this.id = id;
 		this.nom = nom;
 		this.dateEvent = dateEvent;
-		this.description = description;
-		this.visible = visible;
 		this.idEtablissement = idEtablissement;
 	}
 	
@@ -57,7 +47,7 @@ public class EvenementDto {
 	 * @return
 	 */
 	public Evenement toEvenement(Etablissement etab) {
-		return new Evenement(id, nom, dateEvent, description, visible, etab);
+		return new Evenement(id, nom, dateEvent, etab);
 	}
     
     
@@ -72,8 +62,6 @@ public class EvenementDto {
     			event.getId(),
     			event.getNom(),
     			event.getDateEvent(),
-    			event.getDescription(),
-    			event.getVisible(),
     			eDto.getId() );
     }
 

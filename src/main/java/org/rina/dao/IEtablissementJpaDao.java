@@ -13,12 +13,12 @@ import org.springframework.stereotype.Repository;
 public interface IEtablissementJpaDao extends JpaRepository<Etablissement, Long> {
 
 	// Utilisation d'un Query natif pour avoir la liste des résidents d'un établissement
-	@Query(value = "select r.id, r.nom, r.prenom from TETABLISSEMENT e join TRESIDENT r where e.ID=?1", nativeQuery = true)
-	List<Resident> findAllResidByEtablissement(Long idEtab);
+	@Query(value = "select r.id, r.nom, r.prenom from TETABLISSEMENT e join TRESIDENT r ", nativeQuery = true)
+	List<Resident> findAllResid();
 
 	// Utilisation d'un Query natif pour compter les résidents d'un établissement
-	@Query(value = "select count(r.id) from TETABLISSEMENT e join TRESIDENT r where e.ID=?1", nativeQuery = true)
-	int countAllResidByEtablissement(Long idEtab);
+	@Query(value = "select count(r.id) from TETABLISSEMENT e join TRESIDENT r", nativeQuery = true)
+	int countAllResid();
 
 	// Utilisation d'un Query natif pour retrouver établissement gràce à son nom et adresse
 	@Query(value = "select * from TETABLISSEMENT e where e.nom=?1 and e.adresse=?2", nativeQuery = true)

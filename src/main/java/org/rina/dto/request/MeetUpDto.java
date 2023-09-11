@@ -2,7 +2,6 @@ package org.rina.dto.request;
 
 import java.util.Date;
 
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -18,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class MeetUpDto {
-	
+
 	private Long id;
 
 	@NotNull
@@ -30,6 +29,15 @@ public class MeetUpDto {
 	@NotNull
 	private Date date;
 
+	@NotBlank
+	private String nomResid;
+
+	@NotBlank
+	private String prenomResid;
+
+	@NotNull
+	private Date dateBirthresid;
+
 	@NotNull
 	private int nbParticipants;
 
@@ -38,15 +46,6 @@ public class MeetUpDto {
 
 	@NotBlank
 	private String motifRefus;
-	
-	@NotBlank
-	private String nomResid;
-	
-	@NotBlank
-	private String prenomResid;
-	
-	@NotNull
-	private Date dateBirthresid;
 
 	@NotNull
 	private Long personneContactId;
@@ -66,37 +65,39 @@ public class MeetUpDto {
 	 * @param personneContactId
 	 * @param etablissementId
 	 */
-	public MeetUpDto(Long id, TypeMeetUp typeM, String motifDemande, Date date,
-			int nbParticipants, Etat etat, String motifRefus, String nomResid, String prenomResid,
-			Date dateBirthresid, Long personneContactId, Long etablissementId) {
-		
+	public MeetUpDto(Long id, TypeMeetUp typeM, String motifDemande, Date date, String nomResid, String prenomResid,
+			Date dateBirthresid, int nbParticipants, Etat etat, String motifRefus, Long personneContactId,
+			Long etablissementId) {
+
 		this.id = id;
 		this.typeM = typeM;
 		this.motifDemande = motifDemande;
 		this.date = date;
-		this.nbParticipants = nbParticipants;
-		this.etat = etat;
-		this.motifRefus = motifRefus;
 		this.nomResid = nomResid;
 		this.prenomResid = prenomResid;
 		this.dateBirthresid = dateBirthresid;
+		this.nbParticipants = nbParticipants;
+		this.etat = etat;
+		this.motifRefus = motifRefus;
 		this.personneContactId = personneContactId;
 		this.etablissementId = etablissementId;
 	}
-	
+
 	/**
 	 * Conversion Dto ==> MeetUp
+	 * 
 	 * @param etab
 	 * @param persC
 	 * @return
 	 */
 	public MeetUp toMeetUp(Etablissement etab, PersonneContact persC) {
-		return new MeetUp(id, typeM, motifDemande, date, nbParticipants, etat, 
-				motifRefus, nomResid, prenomResid, dateBirthresid, persC, etab);
+		return new MeetUp(etablissementId, typeM, motifDemande, date, nomResid, prenomResid, dateBirthresid,
+				nbParticipants, etat, motifRefus, persC, etab);
 	}
-	
+
 	/**
 	 * Conversion MeetUp ==> Dto
+	 * 
 	 * @param meet
 	 * @return
 	 */
@@ -108,15 +109,15 @@ public class MeetUpDto {
 				meet.getTypeM(), 
 				meet.getMotifDemande(), 
 				meet.getDate(), 
+				meet.getNomResid(),
+				meet.getPrenomResid(), 
+				meet.getDateBirthresid(), 
 				meet.getNbParticipants(), 
 				meet.getEtat(),
 				meet.getMotifRefus(), 
-				meet.getNomResid(), 
-				meet.getPrenomResid(),
-				meet.getDateBirthresid(),
 				pDto.getId(), 
-				eDto.getId() );
-		
+				eDto.getId());
+
 	}
 
 }

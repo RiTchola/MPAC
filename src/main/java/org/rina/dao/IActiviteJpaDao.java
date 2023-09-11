@@ -13,15 +13,11 @@ import org.springframework.stereotype.Repository;
 public interface IActiviteJpaDao extends JpaRepository<Activite, Long> {
 
 	// Utilisation d'un Query natif pour avoir les informations d'une activité grace à son nom 
-	@Query(value = "select * from TACTIVITE a where a.nom=?1 ", nativeQuery = true)
+	@Query(value = "select * from TACTIVITE a where a.nom=?1 and a.date=?2", nativeQuery = true)
 	List<Activite> findActivityByName(String nom, Date date);
 
 	// Utilisation d'un Query natif pour avoir les informations d'une activité
 	@Query(value = "select * from TACTIVITE a where a.date=?1", nativeQuery = true)
 	List<Activite> findActivityByDate(Date date);
-
-//	// Utilisation d'un Query natif pour avoir la liste des activité d'un etablissement
-//	@Query(value = "select * from TACTIVITE a where a.fketab=?1", nativeQuery = true)
-//	List<Activite> findAllByEtablissement(Long etab);
 
 }

@@ -2,42 +2,25 @@ package org.rina.model;
 
 import jakarta.persistence.*;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
+
 import java.util.Date;
 
 import org.rina.enums.Humeur;
 
 @Data
 @Builder
-@AllArgsConstructor
-@org.hibernate.annotations.Immutable // uniquement lorsque la classe est immutable
+@NoArgsConstructor
 @Entity
 @Table(name = "TRAPPORTQUOTIDIEN")
 public class RapportQuotidien {
 
-    @Data
-    @NoArgsConstructor
-    @Embeddable
-    public static class Id implements Serializable {
-        private static final long serialVersionUID = 1L;
-        @Column(name = "FKRESIDENT")
-        protected Long residentId;
-        @Column(name = "FKETABLISSEMENT")
-        protected Long etablissementId;
-
-        public Id(Long residentId, Long etablissementId) {
-            this.residentId = residentId;
-            this.etablissementId = etablissementId;
-        }
-    }
-
-    @EmbeddedId
-    private Id id = new Id();
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(nullable = false)
@@ -99,22 +82,16 @@ public class RapportQuotidien {
 	@JoinColumn(name = "FRESIDENT", insertable = false, updatable = false)
 	private Resident resident;
 
-	@ManyToOne
-	@JoinColumn(name = "FKETABLISSEMENT", insertable = false, updatable = false)
-	private Etablissement etablissement;
-
-	// Constructeur vide pour JPA
-	public RapportQuotidien() {
-	}
 
 	/**
 	 * Construction
 	 */
-	public RapportQuotidien(Integer numeroR, Date date, String freqCardiaque, String freqRespiratoire,
+	public RapportQuotidien(Long id, Integer numeroR, Date date, String freqCardiaque, String freqRespiratoire,
 			String presArterielle, String temperature, String satOxygene, Boolean selle, Boolean urine, Boolean sommeil,
 			Boolean coiffure, Boolean manicure, Boolean pedicure, Boolean toilette, Boolean vetements, Humeur humeur,
-			String commentaire, Resident resident, Etablissement etablissement) {
+			String commentaire, Resident resident) {
 
+		this.id = id;
 		this.numeroR = numeroR;
 		this.date = date;
 		this.freqCardiaque = freqCardiaque;
@@ -133,12 +110,7 @@ public class RapportQuotidien {
 		this.humeur = humeur;
 		this.commentaire = commentaire;
 		this.resident = resident;
-		this.etablissement = etablissement;
-		// initialise les cl�s �trang�res de l'ID compos�
-		this.id = new Id(resident.getId(), etablissement.getId());
-		// effectue les liens bidirectionnels
-		//etablissement.getRapportQuotidien().add(this);
-		// resident.getRapportQuotidien()).add(this);
+		
 	}
 
 

@@ -8,7 +8,12 @@ import java.util.Optional;
 import org.rina.dao.IRapportQuotidienJpaDao;
 import org.rina.model.RapportQuotidien;
 import org.rina.model.Resident;
+import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
+
+@Transactional
+@Service
 public class RapportQuotidienServices {
 private IRapportQuotidienJpaDao rapportQuotidiendao;
 	
@@ -46,18 +51,28 @@ private IRapportQuotidienJpaDao rapportQuotidiendao;
 		return rapportQuotidiendao.findAll();
 	}
 
-	public Optional<RapportQuotidien> getRapportQuotidienById(Long residId, Long etabId) {
-        return rapportQuotidiendao.findById(new RapportQuotidien.Id(residId, etabId));
-    }
+	/**
+	 * @param id
+	 * @return
+	 */
+	public Optional<RapportQuotidien> findById(Long id) {
+		return rapportQuotidiendao.findById(id);
+	}
 
-    public void deleteRapportQuotidienById(Long residId, Long etabId) {
-    	rapportQuotidiendao.deleteById(new RapportQuotidien.Id(residId, etabId));
-    }
+	/**
+	 * @param id
+	 * @return
+	 */
+	public boolean existsById(Long id) {
+		return rapportQuotidiendao.existsById(id);
+	}
 
-    public boolean existsRapportQuotidienById(Long residId, Long etabId) {
-        return rapportQuotidiendao.existsById(new RapportQuotidien.Id(residId, etabId));
-    }
-	
+	/**
+	 * @param id
+	 */
+	public void deleteById(Long id) {
+		rapportQuotidiendao.deleteById(id);
+	}
 
 	/**
 	 * @param numero
@@ -77,7 +92,7 @@ private IRapportQuotidienJpaDao rapportQuotidiendao;
 		return update(rapQuot);
 	}
 
-	private RapportQuotidien update(RapportQuotidien rapQuot) {
+	public RapportQuotidien update(RapportQuotidien rapQuot) {
 		assert rapQuot != null : "La rapportVisite doit exister";
 		return rapportQuotidiendao.save(rapQuot);
 	}	

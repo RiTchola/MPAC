@@ -6,7 +6,12 @@ import java.util.Optional;
 
 import org.rina.dao.IEvenementJpaDao;
 import org.rina.model.Evenement;
+import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
+
+@Transactional
+@Service
 public class EvenementServices {
 	
 	private IEvenementJpaDao evenementdao;
@@ -21,6 +26,15 @@ public class EvenementServices {
 		 */
 		public List<Evenement> findEventByDate(Date dateEvent) {
 			return evenementdao.findEventByDate(dateEvent);
+		}
+
+		/**
+		 * @param nom
+		 * @param date
+		 * @return
+		 */
+		public List<Evenement> findEventByName(String nom, Date date) {
+			return evenementdao.findEventByName(nom, date);
 		}
 
 		/**
@@ -63,7 +77,7 @@ public class EvenementServices {
 			return update(e1);
 		}
 
-		private Evenement update(Evenement e1) {
+		public Evenement update(Evenement e1) {
 			assert e1 != null : "Le evenement doit exister";
 			return evenementdao.save(e1);
 		}

@@ -64,12 +64,22 @@ public class ResidentController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteResident(@PathVariable Long id) {
-        if (residentDao.existsById(id)) {
-            residentDao.deleteById(id);
-            return ResponseEntity.ok().build();
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<Void> deleteResident(@PathVariable Long id) {
+//        if (residentDao.existsById(id)) {
+//            residentDao.deleteById(id);
+//            return ResponseEntity.ok().build();
+//        }
+//        return ResponseEntity.notFound().build();
+//    }
+    @PutMapping("/disable/{id}")
+    ResponseEntity<Resident> disableResidentById(@PathVariable Long id) {
+        Optional<Resident> resident = residentDao.findById(id);
+        
+        if (resident.isPresent()) {
+        	
+        	
         }
-        return ResponseEntity.notFound().build();
+        return resident.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

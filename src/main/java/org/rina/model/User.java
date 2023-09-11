@@ -3,6 +3,7 @@ package org.rina.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 
 import java.util.Collection;
 
@@ -27,10 +28,13 @@ public class User implements UserDetails {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-//	@GeneratedValue(strategy = GenerationType.IDENTITY)
-//	private Long id;
-	private String username; // identifiant
-
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	@Email(message = "{email.nonValide}")
+	@Column(length = 60, nullable = false)
+	private String username; 
+	
 	@JsonIgnore
 	private String password;
 

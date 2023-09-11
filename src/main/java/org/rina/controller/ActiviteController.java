@@ -10,58 +10,59 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
+
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/activite")
+@RequestMapping("/activity")
 public class ActiviteController {
 
-	private ActiviteServices activiteService;
-	private EtablissementServices etablissementServices;
-
-	// injection de l'accès au service
 	@Autowired
-	public ActiviteController(ActiviteServices activiteService, EtablissementServices etablissementServices) {
-		this.activiteService = activiteService;
-		this.etablissementServices = etablissementServices;
-	}
-	
-	
-	/**
-	 * Liste des activite
-	 * 
-	 * @param model
-	 * @return la nom logique de la vue qui affichera la liste des activite
+	private ActiviteServices activiteService;
+	@Autowired
+	private EtablissementServices etablissementService;
+
+	/** 
+	 * @return Liste des activités
 	 */
-	@GetMapping("/liste") public List<Activite> getAllActivites() {
+	@GetMapping("/")
+	public List<Activite> getAllActivity() {
 		return activiteService.findAll();
 	}
 
+	/** 
+	 * @param id
+	 * @return Affiche le détail d'une activité
+	 */
 	@GetMapping("/{id}")
-	public ResponseEntity<Activite> getActiviteById(@PathVariable Long id) {
+	public ResponseEntity<Activite> getActivityById(@PathVariable Long id) {
 		Optional<Activite> activite = activiteService.findById(id);
-		
-		return activite.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+		if (activite.isPresent()) {
+			return ResponseEntity.ok(activite.get());
+		}
+
+		return ResponseEntity.notFound().build();
 	}
 
 	@PostMapping("/{idEtab}")
-	public Activite createActivite(@RequestBody ActiviteDto actDto, @RequestParam Long idEtab) {
-		Etablissement etab = etablissementServices.findById(idEtab)
+	public Activite createActivity(@Valid @RequestBody ActiviteDto actDto, @RequestParam Long idEtab) {
+		Etablissement etab = etablissementService.findById(idEtab)
 				.orElseThrow(() -> new NotExistException(idEtab.toString()));
 
 		return activiteService.insert(actDto.toActivite(etab));
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Activite> updateActivite(@PathVariable Long id, @RequestBody ActiviteDto actDto) {
+	public ResponseEntity<Activite> updateActivity(@PathVariable Long id, @Valid @RequestBody ActiviteDto actDto) {
 		Activite newActivite = activiteService.findById(actDto.getId())
 				.orElseThrow(() -> new NotExistException(actDto.getId().toString()));
-		Etablissement etab = etablissementServices.findById(newActivite.getEtablissement().getId())
+		Etablissement etab = etablissementService.findById(newActivite.getEtablissement().getId())
 				.orElseThrow(() -> new NotExistException(newActivite.getEtablissement().getId().toString()));
-		
+
 		if (actDto.getId().equals(id)) {
-			
+
 //			Activite updatedActivite = newActivite.get();
 //			updatedActivite.setNom(activiteDetails.getNom());
 //			updatedActivite.setDate(activiteDetails.getDate());
@@ -69,16 +70,17 @@ public class ActiviteController {
 //			return ResponseEntity.ok(activiteService.insert(updatedActivite));
 			return ResponseEntity.ok(activiteService.update(actDto.toActivite(etab)));
 		}
+		
 		return ResponseEntity.notFound().build();
-
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteActivite(@PathVariable Long id) {
+	public ResponseEntity<Void> deleteActivity(@PathVariable Long id) {
 		if (activiteService.existsById(id)) {
 			activiteService.deleteById(id);
 			return ResponseEntity.ok().build();
 		}
+		
 		return ResponseEntity.notFound().build();
 	}
 }

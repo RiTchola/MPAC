@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import org.rina.enums.Humeur;
-import org.rina.model.Etablissement;
 import org.rina.model.RapportQuotidien;
 import org.rina.model.Resident;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -17,6 +16,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class RapportQuotidienDto {
+	
+	private Long id;
 
 	@NotNull
 	private Integer numeroR;
@@ -73,10 +74,8 @@ public class RapportQuotidienDto {
 	@NotNull
 	private Long residentId;
 	
-	@NotBlank
-	private Long idEtablissement;
-
 	/**
+	 * @param id
 	 * @param numeroR
 	 * @param date
 	 * @param freqCardiaque
@@ -95,15 +94,15 @@ public class RapportQuotidienDto {
 	 * @param humeur
 	 * @param commentaire
 	 * @param residentId
-	 * @param idEtablissement
 	 */
-	public RapportQuotidienDto(Integer numeroR, Date date,
+	public RapportQuotidienDto( Long id, Integer numeroR, Date date,
 			String freqCardiaque, String freqRespiratoire, String presArterielle,
 			String temperature, String satOxygene, Boolean sommeil, Boolean selle,
 			Boolean urine, Boolean coiffure, Boolean manicure, Boolean pedicure,
 			Boolean toilette, Boolean vetements, Humeur humeur, String commentaire,
-			Long residentId, Long idEtablissement) {
+			Long residentId) {
 		
+		this.id = id;
 		this.numeroR = numeroR;
 		this.date = date;
 		this.freqCardiaque = freqCardiaque;
@@ -122,17 +121,15 @@ public class RapportQuotidienDto {
 		this.humeur = humeur;
 		this.commentaire = commentaire;
 		this.residentId = residentId;
-		this.idEtablissement = idEtablissement;
 	}
 	/**
 	 * conersion Dto ==> RapportQuotidien
-	 * @param etab
 	 * @param resid
 	 * @return
 	 */
-	public RapportQuotidien toRapportQuotidien(Etablissement etab, Resident resid) {
-		return new RapportQuotidien(numeroR, date, freqCardiaque, freqRespiratoire, presArterielle, temperature, satOxygene, selle, urine, 
-				sommeil, coiffure, manicure, pedicure, toilette, vetements, humeur, commentaire, resid, etab);
+	public RapportQuotidien toRapportQuotidien( Resident resid) {
+		return new RapportQuotidien(id, numeroR, date, freqCardiaque, freqRespiratoire, presArterielle, temperature, satOxygene, selle, urine, 
+				sommeil, coiffure, manicure, pedicure, toilette, vetements, humeur, commentaire, resid);
 	}
     /**
      * conersion RapportQuotidien ==> Dto 
@@ -141,6 +138,7 @@ public class RapportQuotidienDto {
      */
     public static RapportQuotidienDto toDto(RapportQuotidien rapQuot) {
     	return new RapportQuotidienDto(
+    		rapQuot.getId(),
             rapQuot.getNumeroR(),
             rapQuot.getDate(),
             rapQuot.getFreqCardiaque(),
@@ -158,8 +156,7 @@ public class RapportQuotidienDto {
             rapQuot.getVetements(),
             rapQuot.getHumeur(),
             rapQuot.getCommentaire(),
-            rapQuot.getResident().getId(),
-            rapQuot.getEtablissement().getId() );
+            rapQuot.getResident().getId() );
     }
 
 	

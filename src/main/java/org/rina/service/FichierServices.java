@@ -1,13 +1,16 @@
 package org.rina.service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import org.rina.dao.IFichierJpaDao;
 import org.rina.model.Fichier;
-import org.rina.model.PersonneContact;
+import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
+
+@Transactional
+@Service
 public class FichierServices {
 
 	private IFichierJpaDao fichierdao;
@@ -17,29 +20,13 @@ public class FichierServices {
 	}
 
 	/**
-	 * @param id
-	 * @return
-	 */
-	public Optional<PersonneContact> findPCByFichier(Long id) {
-		return fichierdao.findPCByFichier(id);
-	}
-
-	/**
 	 * @param personneContact
 	 * @return
 	 */
-	public List<Fichier> findByPersonneContactOrderByDate(PersonneContact personneContact) {
-		return fichierdao.findByPersonneContactOrderByDate(personneContact);
+	public List<Fichier> findAllByPersonneContactOrderByDateDesc(Long persC) {
+		return fichierdao.findAllByPersonneContactOrderByDateDesc(persC);
 	}
-
-	/**
-	 * @param date
-	 * @return
-	 */
-	public List<Fichier> findAllFichiersOrderByDate(Date date) {
-		return fichierdao.findAllFichiersByDate(date);
-	}
-
+	
 	/**
 	 * @return
 	 */
@@ -76,14 +63,6 @@ public class FichierServices {
 	public List<Fichier> findAllFichierOrderByDateDesc() {
 		return fichierdao.findAllFichierOrderByDateDesc();
 	}
-	
-	/**
-	 * @param nomFichier
-	 * @return
-	 */
-	public Optional<Fichier> findByNomFichier(String nomFichier) {
-		return fichierdao.findByNomFichier(nomFichier);
-	}
 
 	/**
 	 * Ajout d'un nouveau Fichier
@@ -95,7 +74,7 @@ public class FichierServices {
 		return update(f1);
 	}
 
-	private Fichier update(Fichier f1) {
+	public Fichier update(Fichier f1) {
 		assert f1 != null : "Le fichier doit exister";
 		return fichierdao.save(f1);
 	}

@@ -77,7 +77,7 @@ public class Resident {
 	private String antMedical;
 
 	@Size(min = 5, max = 800, message = "{}")
-	@Column(nullable = false)
+	@Column(nullable = true)
 	private String antChirugical;
 
 	@Column(nullable = false)
@@ -118,18 +118,6 @@ public class Resident {
 		return personneContacts;
 	}
 	
-	@OneToMany(mappedBy = "resident") // Nom de l'attribut dans RapportQuotidien
-	private Set<RapportQuotidien> rapportQuotidiens = new HashSet<>();
-
-	public Set<RapportQuotidien> getRapportQuotidiens() {
-		return rapportQuotidiens;
-	}
-	
-	@OneToMany(mappedBy = "resident")
-	private Set<RapportVisite> rapportVisites = new HashSet<>(); 
-	public Set<RapportVisite> getRapportVisite() { 
-			return rapportVisites;
-	}
 	
 	/**
 	 * @param id

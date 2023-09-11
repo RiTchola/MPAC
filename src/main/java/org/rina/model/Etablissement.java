@@ -75,19 +75,7 @@ public class Etablissement {
 	@JoinColumn(name = "FKUSER", unique = true, nullable = false, updatable = false)
 	private User user;
 
-	// Le nom "seance" doit correspondre au nom de l'attribut dans "Presence"
-//	@OneToMany(mappedBy = "etablissement")
-//	private Set<RapportQuotidien> rapportQuotidiens = new HashSet<>(); 
-//	public  Set<RapportQuotidien> getRapportQuotidien() { 
-//			return rapportQuotidiens;
-//	}
-//	
-//	@OneToMany(mappedBy = "etablissement")
-//	private Set<RapportVisite> rapportVisites = new HashSet<>(); 
-//	public Set<RapportVisite> getRapportVisite() { 
-//			return rapportVisites;
-//	}
-//	
+	
 	/**
 	 * Construction 
 	 * @param nom

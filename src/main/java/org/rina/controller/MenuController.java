@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/menus")
+@RequestMapping("/menu")
 public class MenuController {
 
     @Autowired
@@ -39,7 +39,7 @@ public class MenuController {
 
         if (existingMenu.isPresent()) {
             Menu updatedMenu = existingMenu.get();
-            updatedMenu.setSemaine(menuDetails.getSemaine());
+            updatedMenu.setDateDebutSemaine(menuDetails.getDateDebutSemaine());
             updatedMenu.setLundi(menuDetails.getLundi());
             updatedMenu.setMardi(menuDetails.getMardi());
             updatedMenu.setMercredi(menuDetails.getMercredi());

@@ -6,7 +6,12 @@ import java.util.Optional;
 import org.rina.dao.IEtablissementJpaDao;
 import org.rina.model.Etablissement;
 import org.rina.model.Resident;
+import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
+
+@Transactional
+@Service
 public class EtablissementServices {
 	
 	private IEtablissementJpaDao etablissementdao;
@@ -19,16 +24,16 @@ public class EtablissementServices {
 		 * @param etablissement
 		 * @return
 		 */
-		public List<Resident> findAllResidByEtablissement(Long idEtab) {
-			return etablissementdao.findAllResidByEtablissement(idEtab);
+		public List<Resident> findAllResid() {
+			return etablissementdao.findAllResid();
 		}
 
 		/**
 		 * @param etablissement
 		 * @return
 		 */
-		public int countAllResidByEtablissement(Long idEtab) {
-			return etablissementdao.countAllResidByEtablissement(idEtab);
+		public int countAllResid() {
+			return etablissementdao.countAllResid();
 		}
 
 		/**
@@ -75,14 +80,14 @@ public class EtablissementServices {
 		 * @param id
 		 * @return
 		 */
-		public boolean exists(Long id) {
+		public boolean existsById(Long id) {
 			return etablissementdao.existsById(id);
 		}
 
 		/**
 		 * @param id
 		 */
-		public void delete(Long id) {
+		public void deleteById(Long id) {
 			etablissementdao.deleteById(id);
 		}
 		
@@ -96,7 +101,7 @@ public class EtablissementServices {
 			return update(et1);
 		}
 
-		private Etablissement update(Etablissement et1) {
+		public Etablissement update(Etablissement et1) {
 			assert et1 != null : "L'etablissement doit exister";
 			return etablissementdao.save(et1);
 		}

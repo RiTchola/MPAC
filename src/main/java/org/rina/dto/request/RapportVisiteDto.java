@@ -5,10 +5,9 @@ import java.util.Date;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import org.rina.enums.TypePersonne;
 import org.rina.model.Etablissement;
-import org.rina.model.PersonneExterne;
 import org.rina.model.RapportVisite;
-import org.rina.model.Resident;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
@@ -25,39 +24,51 @@ public class RapportVisiteDto {
     private Date dateVisite;
     
     @NotBlank
-    private String commentaire;
+    private String nomResid;
+
+    @NotBlank
+    private String prenomResid;
+
+    @NotBlank
+    private Date dateBirthresid;
+
+    @NotBlank
+    private String nomVisiteur;
     
     @NotNull
-    private Boolean visible;
+    private TypePersonne typeVisiteur;
+    
+    @NotBlank
+    private String commentaire;
     
     @NotBlank
     private Long  idEtablissement;
-    
-    @NotNull
-    private Long  personneExterneId;
-    
-    @NotNull
-    private Long  residentId;
-
+   
     /**
-     * @param id
-     * @param dateVisite
-     * @param commentaire
-     * @param idEtablissement
-     * @param personneExterneId
-     * @param residentId
-     */
-    public RapportVisiteDto(Long id, Date dateVisite, String commentaire, Boolean visible,
-    		Long  idEtablissement, Long  personneExterneId, Long residentId) {
-
-        this.id = id;
-        this.dateVisite = dateVisite;
-        this.commentaire = commentaire;
-        this.visible = visible;
-        this.idEtablissement = idEtablissement;
-        this.personneExterneId = personneExterneId;
-        this.residentId = residentId;
-    }
+	 * @param id
+	 * @param dateVisite
+	 * @param nomResid
+	 * @param prenomResid
+	 * @param dateBirthresid
+	 * @param nomVisiteur
+	 * @param typeVisiteur
+	 * @param commentaire
+	 * @param idEtablissement
+	 */
+	public RapportVisiteDto(Long id, Date dateVisite, String nomResid, String prenomResid,
+			Date dateBirthresid, String nomVisiteur, TypePersonne typeVisiteur,
+			String commentaire, Long idEtablissement) {
+		
+		this.id = id;
+		this.dateVisite = dateVisite;
+		this.nomResid = nomResid;
+		this.prenomResid = prenomResid;
+		this.dateBirthresid = dateBirthresid;
+		this.nomVisiteur = nomVisiteur;
+		this.typeVisiteur = typeVisiteur;
+		this.commentaire = commentaire;
+		this.idEtablissement = idEtablissement;
+	}
     
     /**
      * conversion Dto ==> RapportVisite
@@ -66,8 +77,8 @@ public class RapportVisiteDto {
      * @param resid
      * @return
      */
-    public RapportVisite toRapportVisite(Etablissement etab, PersonneExterne persE, Resident resid) {
-		return new RapportVisite(id, dateVisite, commentaire, visible, etab, persE, resid);
+    public RapportVisite toRapportVisite(Etablissement etab) {
+		return new RapportVisite(id, dateVisite, nomResid, prenomResid, dateBirthresid, nomVisiteur, typeVisiteur, commentaire, etab);
     }
     
     /**
@@ -79,11 +90,13 @@ public class RapportVisiteDto {
     	 return new RapportVisiteDto(
             rapVi.getId(),
             rapVi.getDateVisite(),
+            rapVi.getNomResid(),
+            rapVi.getPrenomResid(),
+            rapVi.getDateBirthresid(),
+            rapVi.getNomVisiteur(),
+            rapVi.getTypeVisiteur(),
             rapVi.getCommentaire(),
-            rapVi.getVisible(),
-            rapVi.getEtablissement().getId(),
-            rapVi.getPersonneExterne().getId(),
-            rapVi.getResident().getId() );
+            rapVi.getEtablissement().getId() );
     }
 
 }

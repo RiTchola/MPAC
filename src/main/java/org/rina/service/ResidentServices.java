@@ -6,9 +6,15 @@ import java.util.Optional;
 
 import org.rina.dao.IResidentJpaDao;
 import org.rina.model.Resident;
+import org.springframework.stereotype.Service;
+
+import jakarta.transaction.Transactional;
+
 import org.rina.model.MedecinTraitant;
 import org.rina.model.PersonneContact;
 
+@Transactional
+@Service
 public class ResidentServices {
 
 	private IResidentJpaDao residentdao;
@@ -135,7 +141,7 @@ public class ResidentServices {
 		return update(re1);
 	}
 
-	private Resident update(Resident re1) {
+	public Resident update(Resident re1) {
 		assert re1 != null : "La resident doit exister";
 		return residentdao.save(re1);
 	}	

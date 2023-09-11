@@ -6,7 +6,12 @@ import java.util.Optional;
 
 import org.rina.dao.ICommuniqueJpaDao;
 import org.rina.model.Communique;
+import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
+
+@Transactional
+@Service
 public class CommuniqueServices {
 	
 	private ICommuniqueJpaDao communiquedao;

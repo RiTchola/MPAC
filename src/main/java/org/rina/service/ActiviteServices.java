@@ -2,12 +2,18 @@ package org.rina.service;
 
 import java.util.Date;
 
+
 import java.util.List;
 import java.util.Optional;
 
+import jakarta.transaction.Transactional;
+
 import org.rina.dao.IActiviteJpaDao;
 import org.rina.model.Activite;
+import org.springframework.stereotype.Service;
 
+@Transactional
+@Service
 public class ActiviteServices {
 	
 	private IActiviteJpaDao activitedao;

@@ -1,14 +1,19 @@
 package org.rina.service;
 
 import java.util.List;
+
 import java.util.Optional;
 
 import org.rina.dao.IRapportVisiteJpaDao;
 import org.rina.model.Etablissement;
 import org.rina.model.RapportVisite;
-import org.rina.model.PersonneExterne;
 import org.rina.model.Resident;
+import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
+
+@Transactional
+@Service
 public class RapportVisiteServices {
 	
 private IRapportVisiteJpaDao rapportVisitedao;
@@ -17,13 +22,6 @@ private IRapportVisiteJpaDao rapportVisitedao;
 		this.rapportVisitedao = rapportVisitedao;
 	}
 
-	/**
-	 * @param personneExterne
-	 * @return
-	 */
-	public List<RapportVisite> findByPersonneExterne(PersonneExterne personneExterne) {
-		return rapportVisitedao.findByPersonneExterne(personneExterne);
-	}
 
 	/**
 	 * @param etablissement
@@ -34,28 +32,13 @@ private IRapportVisiteJpaDao rapportVisitedao;
 	}
 
 	/**
-	 * @param resident
 	 * @return
 	 */
-	public List<RapportVisite> findByResident(Resident resident) {
-		return rapportVisitedao.findByResident(resident);
+	public List<RapportVisite> findRapportVisiteOrderByDateDesc() {
+		return rapportVisitedao.findRapportVisiteOrderByDateDesc();
 	}
 
-	/**
-	 * @return
-	 */
-	public List<RapportVisite> findRapportVisiteOrderByDate() {
-		return rapportVisitedao.findRapportVisiteOrderByDate();
-	}
-
-	/**
-	 * @param idVisit
-	 * @return
-	 */
-	public Optional<PersonneExterne> findPersonExterneByVisite(Long idVisit) {
-		return rapportVisitedao.findPersonExterneByVisite(idVisit);
-	}
-
+	
 	/**
 	 * @param idVisit
 	 * @return
@@ -112,7 +95,7 @@ private IRapportVisiteJpaDao rapportVisitedao;
 		return update(rapvi);
 	}
 
-	private RapportVisite update(RapportVisite rapvi) {
+	public RapportVisite update(RapportVisite rapvi) {
 		assert rapvi != null : "La rapportVisite doit exister";
 		return rapportVisitedao.save(rapvi);
 	}	

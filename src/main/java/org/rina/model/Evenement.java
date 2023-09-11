@@ -25,12 +25,6 @@ public class Evenement {
 	@Column(nullable = false)
 	private Date dateEvent;
 	
-	@Column(length = 800, nullable = true)
-	private String description;
-	
-	@Column(nullable = false)
-	private Boolean Visible;
-	
 	/**
 	 * jointure à d'autres classes 
 	 */
@@ -43,18 +37,13 @@ public class Evenement {
 	 * 
 	 * @param id
 	 * @param nom
-	 * @param dateEvent
-	 * @param description
-	 * @param visible
 	 * @param etablissement
 	 */
-	public Evenement(Long id, String nom, Date dateEvent, String description, Boolean visible, Etablissement etablissement) {
+	public Evenement(Long id, String nom, Date dateEvent, Etablissement etablissement) {
 		
 		this.id = id;
 		this.nom = nom;
 		this.dateEvent = dateEvent;
-		this.description = description;
-		this.Visible = true;
 		this.etablissement = etablissement;
 	}
 	

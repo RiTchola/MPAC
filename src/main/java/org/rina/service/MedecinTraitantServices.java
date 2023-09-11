@@ -7,7 +7,12 @@ import java.util.Optional;
 
 import org.rina.dao.IMedecinTraitantJpaDao;
 import org.rina.model.MedecinTraitant;
+import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
+
+@Transactional
+@Service
 public class MedecinTraitantServices {
 	
 	private IMedecinTraitantJpaDao medecinTraitantdao;
@@ -24,13 +29,6 @@ public class MedecinTraitantServices {
 			return medecinTraitantdao.findMedecinByResid(idResid);
 		}
 
-		/**
-		 * @param nom
-		 * @return
-		 */
-		public List<MedecinTraitant> findByNom(String nom) {
-			return medecinTraitantdao.findByNom(nom);
-		}
 
 		/**
 		 * @return
@@ -55,20 +53,7 @@ public class MedecinTraitantServices {
 			return medecinTraitantdao.existsById(id);
 		}
 
-		/**
-		 * @param id
-		 */
-		public void deleteById(Long id) {
-			medecinTraitantdao.deleteById(id);
-		}
-
-		/**
-		 * @param entity
-		 */
-		public void delete(MedecinTraitant entity) {
-			medecinTraitantdao.delete(entity);
-		}
-		
+	
 		/**
 		 * Ajout d'un nouveau MedecinTraitant
 		 * 
@@ -79,7 +64,7 @@ public class MedecinTraitantServices {
 			return update(m1);
 		}
 
-		private MedecinTraitant update(MedecinTraitant m1) {
+		public MedecinTraitant update(MedecinTraitant m1) {
 			assert m1 != null : "Le medecinTraitant doit exister";
 			return medecinTraitantdao.save(m1);
 		}	
