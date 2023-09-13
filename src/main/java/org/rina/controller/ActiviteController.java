@@ -43,7 +43,7 @@ public class ActiviteController {
 			return ResponseEntity.ok(activite.get());
 		}
 
-		return ResponseEntity.notFound().build();
+		else return ResponseEntity.notFound().build();
 	}
 
 	@PostMapping("/{idEtab}")
@@ -56,22 +56,19 @@ public class ActiviteController {
 
 	@PutMapping("/{id}")
 	public ResponseEntity<Activite> updateActivity(@PathVariable Long id, @Valid @RequestBody ActiviteDto actDto) {
-		Activite newActivite = activiteService.findById(actDto.getId())
-				.orElseThrow(() -> new NotExistException(actDto.getId().toString()));
-		Etablissement etab = etablissementService.findById(newActivite.getEtablissement().getId())
-				.orElseThrow(() -> new NotExistException(newActivite.getEtablissement().getId().toString()));
+		// Vérifie d'abord si l'activité existe en fonction de l'ID
+	    Optional<Activite> optionalActivite = activiteService.findById(id);
+	    if (optionalActivite.isPresent()) {
+	        Activite existingActivite = optionalActivite.get(); 
+	        Etablissement etab = etablissementService.findById(existingActivite.getEtablissement().getId())
+	                .orElseThrow(() -> new NotExistException(existingActivite.getEtablissement().getId().toString()));
 
-		if (actDto.getId().equals(id)) {
-
-//			Activite updatedActivite = newActivite.get();
-//			updatedActivite.setNom(activiteDetails.getNom());
-//			updatedActivite.setDate(activiteDetails.getDate());
-//			updatedActivite.setDescription(activiteDetails.getDescription());
-//			return ResponseEntity.ok(activiteService.insert(updatedActivite));
-			return ResponseEntity.ok(activiteService.update(actDto.toActivite(etab)));
-		}
-		
-		return ResponseEntity.notFound().build();
+			// Mise à jour l'activité existante avec les nouvelles valeurs
+	        actDto.setId(id);
+	        return ResponseEntity.ok(activiteService.updateActivite(id, actDto.toActivite(etab)));
+	    }
+	    
+	    else return ResponseEntity.notFound().build();	
 	}
 
 	@DeleteMapping("/{id}")
@@ -81,6 +78,6 @@ public class ActiviteController {
 			return ResponseEntity.ok().build();
 		}
 		
-		return ResponseEntity.notFound().build();
+		 else return ResponseEntity.notFound().build();
 	}
 }

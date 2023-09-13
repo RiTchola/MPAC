@@ -80,16 +80,21 @@ public class ActiviteServices {
 	/**
 	 * Ajout d'un nouveau Activite
 	 * 
-	 * @param a1
+	 * @param activite a1
 	 * @return
 	 */
 	public Activite insert(Activite a1) {
-		return update(a1);
+		return activitedao.save(a1);
 	}
 
-	public Activite update(Activite a1) {
-		assert a1 != null : "L'activite doit exister";
+	/**
+	 * @param id
+	 * @param activite a1
+	 * @see 
+	 */
+	public Activite updateActivite(Long id, Activite a1) {
 		return activitedao.save(a1);
-	}	
+	}
+	
 
 }
