@@ -50,9 +50,6 @@ public class MenuDto {
 	@NotNull
 	private List<String> menuDimanche;
 
-	@NotNull
-	private Long idEtablissement;
-
 	/**
 	 * @param id
 	 * @param dateDebutSemaine
@@ -63,11 +60,10 @@ public class MenuDto {
 	 * @param menuVendredi
 	 * @param menuSamedi
 	 * @param menuDimanche
-	 * @param idEtablissement
 	 */
 	public MenuDto(Long id,  Date dateDebutSemaine,  List<String> menuLundi,  List<String> menuMardi,
 			 List<String> menuMercredi,  List<String> menuJeudi,  List<String> menuVendredi,
-			 List<String> menuSamedi,  List<String> menuDimanche,  Long idEtablissement) {
+			 List<String> menuSamedi,  List<String> menuDimanche) {
 		
 		this.id = id;
 		this.dateDebutSemaine = dateDebutSemaine;
@@ -78,7 +74,6 @@ public class MenuDto {
 		this.menuVendredi = menuVendredi;
 		this.menuSamedi = menuSamedi;
 		this.menuDimanche = menuDimanche;
-		this.idEtablissement = idEtablissement;
 	}
 
 	/**
@@ -97,7 +92,6 @@ public class MenuDto {
 	 * @return
 	 */
 	public static MenuDto toDto(Menu menuSem) {
-		EtablissementDto eDto = EtablissementDto.toDto(menuSem.getEtablissement());
 		return new MenuDto(
 				menuSem.getId(), 
 				menuSem.getDateDebutSemaine(), 
@@ -107,8 +101,7 @@ public class MenuDto {
 				menuSem.getJeudi(), 
 				menuSem.getVendredi(), 
 				menuSem.getSamedi(), 
-				menuSem.getDimanche(), 
-				eDto.getId() );
+				menuSem.getDimanche() );
 		
 	}
 }

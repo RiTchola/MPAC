@@ -24,21 +24,16 @@ public class EvenementDto {
 	@NotNull
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateEvent;
-	
-	@NotNull
-	private Long idEtablissement;
 
 	/**
 	 * @param nom
 	 * @param dateEvent
-	 * @param idEtablissement
 	 */
-	public EvenementDto(Long id, String nom, Date dateEvent,Long idEtablissement) {
+	public EvenementDto(Long id, String nom, Date dateEvent) {
 	
 		this.id = id;
 		this.nom = nom;
 		this.dateEvent = dateEvent;
-		this.idEtablissement = idEtablissement;
 	}
 	
 	/**
@@ -57,12 +52,10 @@ public class EvenementDto {
      * @return
      */
     public static EvenementDto toDto(Evenement event) {
-    	EtablissementDto eDto = EtablissementDto.toDto(event.getEtablissement());
     	return new EvenementDto(
     			event.getId(),
     			event.getNom(),
-    			event.getDateEvent(),
-    			eDto.getId() );
+    			event.getDateEvent() );
     }
 
 }

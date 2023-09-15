@@ -78,7 +78,7 @@ public class ActiviteServices {
 
 	
 	/**
-	 * Ajout d'un nouveau Activite
+	 * Ajout d'une nouvelle Activite
 	 * 
 	 * @param activite a1
 	 * @return

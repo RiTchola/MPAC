@@ -8,8 +8,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 public enum Roles {
-
-	USER, 
+ 
 	ADMIN, 
 	RESIDENT, 
 	PERSONNECONTACT,

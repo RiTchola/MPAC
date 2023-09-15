@@ -18,23 +18,62 @@ public class UserService {
 
     private final UserRepository userRepository;
     
-    public User save(User user) {
-        return userRepository.save(user);
+    /**
+	 * Ajout d'un nouveau User
+	 * 
+	 * @param user u1
+	 * @return
+	 */
+    public User insert(User u1) {
+        return userRepository.save(u1);
     }
+    
+    /**
+	 * @param username
+	 * @param usee u1
+	 * @see 
+	 */
+	public User updateUser(String username, User u1) {
+		return userRepository.save(u1);
+	}
 
+    /**
+     * @param username
+     * @return
+     */
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
+    
+    /**
+     * @param id
+     * @return
+     */
     public Optional<User> findById(Long id) {
         return userRepository.findById(id);
     }
 
+    /**
+     * @return
+     */
     public List<User> findAll() {
         return userRepository.findAll();
     }
+    
+    /**
+     * @param id
+     */
     public void deleteById(Long id) {
         userRepository.deleteById(id);
     }
+
+	/**
+	 * @param id
+	 * @return
+	 */
+	public boolean existsById(Long id) {
+		return userRepository.existsById(id);
+	}
 
 
 }

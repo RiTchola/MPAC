@@ -9,10 +9,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import org.rina.model.Etablissement;
-import org.rina.enums.Roles;
+import org.rina.model.User;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import lombok.Data;
 
@@ -48,15 +47,20 @@ public class EtablissementDto {
 	private Date dateCreation;
 	
 	@Valid // N�cessaire pour la validation en cascade Etablissement ==>User
-	private UserDto user;
+	private Long idEtab;
 	
-	public EtablissementDto() {
-		nom = null;
-		user = new UserDto();
-		user.setRole(Roles.ETABLISSEMENT);
-	}
+//	public EtablissementDto() {
+//		nom = null;
+//		User user = new idUser.ge;
+//		user.setRole(Roles.ETABLISSEMENT);
+//	}
+	
+	 public EtablissementDto() {
+		    
+	    }
 
     /**
+     * @param id
      * @param nom
      * @param email1
      * @param email2
@@ -64,10 +68,10 @@ public class EtablissementDto {
      * @param tel2
      * @param adresse
      * @param dateCreation
-     * @param user
+     * @param etabUser
      */
     public EtablissementDto(Long id, String nom, String email1, String email2, String tel1,
-            String tel2, String adresse, Date dateCreation, UserDto user) {
+            String tel2, String adresse, Date dateCreation, Long idEtab) {
 
     	this.id = id;
         this.nom = nom;
@@ -77,26 +81,18 @@ public class EtablissementDto {
         this.tel2 = tel2;
         this.adresse = adresse;
         this.dateCreation = dateCreation;
-        user.setRole(Roles.ETABLISSEMENT);
-		this.user = user;
+		this.idEtab = idEtab;
     }
     
-    /**
-	 * Conversion Dto ==> Etablissement
-	 * 
-	 * @return Etablissement sans cryptage du PW
-	 */
-	public Etablissement toEtablissement() {
-		return new Etablissement(id, nom, email1, email2, tel1, tel2, adresse, dateCreation, user.toUser());
-	}
+   
 	
 	/**
-	 * Conversion Dto ==> Etablissement cryte le pw
+	 * Conversion Dto ==> Etablissement 
 	 * 
-	 * @return Etablissement avec le pw crypté
+	 * @return Etablissement 
 	 */
-	public Etablissement toEtablissement(PasswordEncoder encodeur) {
-		return new Etablissement(id, nom, email1, email2, tel1, tel2, adresse, dateCreation, user.toUser(encodeur));
+	public Etablissement toEtablissement(User user) {
+		return new Etablissement(id, nom, email1, email2, tel1, tel2, adresse, dateCreation, user);
 	}
 
 	/**
@@ -106,7 +102,7 @@ public class EtablissementDto {
 	 */
 	public static EtablissementDto toDto(Etablissement etab) {
 		UserDto uDto = UserDto.toUserDto(etab.getUser());
-	    EtablissementDto etabDto = new EtablissementDto(
+	   return new EtablissementDto(
             etab.getId(),
 	    	etab.getNom(),
             etab.getEmail1(),
@@ -115,9 +111,7 @@ public class EtablissementDto {
             etab.getTel2(),
             etab.getAdresse(),
             etab.getDateCreation(),
-            uDto
-	        );
-	     return etabDto;
+            uDto.getId() ); 
 	}
 
 }

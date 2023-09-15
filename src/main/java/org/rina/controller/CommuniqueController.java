@@ -39,8 +39,9 @@ public class CommuniqueController {
 		return ResponseEntity.notFound().build();
 	}
 
-	@PostMapping("/{idEtab}")
-	public Communique createCommunique(@Valid @RequestBody CommuniqueDto comDto, @RequestParam Long idEtab) {
+	@PostMapping("/")
+	public Communique createCommunique(@Valid @RequestBody CommuniqueDto comDto) {
+		Long idEtab = Long.valueOf(1);
 		Etablissement etab = etablissementService.findById(idEtab)
 				.orElseThrow(() -> new NotExistException(idEtab.toString()));
 

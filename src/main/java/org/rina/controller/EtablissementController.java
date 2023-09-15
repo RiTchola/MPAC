@@ -1,72 +1,74 @@
 package org.rina.controller;
 
+import org.rina.controller.exceptions.NotExistException;
 import org.rina.dto.request.EtablissementDto;
 
 import org.rina.model.Etablissement;
+import org.rina.model.User;
 import org.rina.service.EtablissementServices;
+import org.rina.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/establishment")
+@SuppressWarnings("unused")
 public class EtablissementController {
 
     @Autowired
     private EtablissementServices etablissementService;
+    
+    @Autowired
+    private UserService userService;
 
     
-//    @GetMapping("/")
-//    public List<Etablissement> getAllEstablishment() {
-//        return etablissementService.findAll();
-//    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Etablissement> getEstablishmentById(@PathVariable Long id) {
-        Optional<Etablissement> etablissement = etablissementService.findById(id);
+    @GetMapping
+    public ResponseEntity<Etablissement> getEstablishment() {
+    	Long idEtab = Long.valueOf(1);
+        Optional<Etablissement> etablissement = etablissementService.findById(idEtab);
         if (etablissement.isPresent()) {
             return ResponseEntity.ok(etablissement.get());
         }
         
-        return ResponseEntity.notFound().build();
+        else return ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public Etablissement createEstablishment(@Valid @RequestBody EtablissementDto etabDto) {
-        return etablissementService.insert(etabDto.toEtablissement());
+    public ResponseEntity<String> createEstablishment(@Valid @RequestBody EtablissementDto etabDto) {
+        // Vérifie qu'il n'existe pas d'établissement
+        if (etablissementService.count() == 0) {
+        	
+            User user = userService.findById(etabDto.getIdEtab())
+            		.orElseThrow(() -> new NotExistException(etabDto.getIdEtab().toString()));
+			Etablissement newEtablissement = etablissementService.insert(etabDto.toEtablissement(user));
+            return ResponseEntity.ok().build();
+        } 
+        
+        else return ResponseEntity.status(HttpStatus.FORBIDDEN).body("L'établissement existe déjà.");
     }
+    
 
     @PutMapping("/{id}")
     public ResponseEntity<Etablissement> updateEstablishment(@PathVariable Long id, @Valid @RequestBody EtablissementDto etabDto) {
-        //Optional<Etablissement> existingEtablissement = etablissementService.findById(id);
+    	// Vérifie d'abord si l'établissement existe en fonction de l'ID
+    	Optional<Etablissement> existingEtablissement = etablissementService.findById(id);
 
-        if (etabDto.getId().equals(id)) {
-//            Etablissement updatedEtablissement = existingEtablissement.get();
-//            updatedEtablissement.setNom(etablissementDetails.getNom());
-//            updatedEtablissement.setEmail1(etablissementDetails.getEmail1());
-//            updatedEtablissement.setEmail2(etablissementDetails.getEmail2());
-//            updatedEtablissement.setTel1(etablissementDetails.getTel1());
-//            updatedEtablissement.setTel2(etablissementDetails.getTel2());
-//            updatedEtablissement.setAdresse(etablissementDetails.getAdresse());
-//            updatedEtablissement.setDateCreation(etablissementDetails.getDateCreation());
-            return ResponseEntity.ok(etablissementService.update(etabDto.toEtablissement()));
+        if (existingEtablissement.isPresent()) {
+        	
+        	// Mise à jour l'établissement existant avec les nouvelles valeurs
+        	User user = userService.findById(etabDto.getIdEtab())
+            		.orElseThrow(() -> new NotExistException(etabDto.getIdEtab().toString()));
+        	etabDto.setId(id);
+            return ResponseEntity.ok(etablissementService.updateEtablissement(id, etabDto.toEtablissement(user)));
         }
         
-        return ResponseEntity.notFound().build();
+        else return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEstablishment(@PathVariable Long id) {
-        if (etablissementService.existsById(id)) {
-            etablissementService.deleteById(id);
-            return ResponseEntity.ok().build();
-        }
-        
-        return ResponseEntity.notFound().build();
-    }
 }

@@ -27,7 +27,7 @@ public class ActiviteController {
 	/** 
 	 * @return Liste des activités
 	 */
-	@GetMapping("/")
+	@GetMapping
 	public List<Activite> getAllActivity() {
 		return activiteService.findAll();
 	}
@@ -46,8 +46,9 @@ public class ActiviteController {
 		else return ResponseEntity.notFound().build();
 	}
 
-	@PostMapping("/{idEtab}")
-	public Activite createActivity(@Valid @RequestBody ActiviteDto actDto, @RequestParam Long idEtab) {
+	@PostMapping
+	public Activite createActivity(@Valid @RequestBody ActiviteDto actDto) {
+		Long idEtab = Long.valueOf(1);
 		Etablissement etab = etablissementService.findById(idEtab)
 				.orElseThrow(() -> new NotExistException(idEtab.toString()));
 
@@ -57,11 +58,12 @@ public class ActiviteController {
 	@PutMapping("/{id}")
 	public ResponseEntity<Activite> updateActivity(@PathVariable Long id, @Valid @RequestBody ActiviteDto actDto) {
 		// Vérifie d'abord si l'activité existe en fonction de l'ID
-	    Optional<Activite> optionalActivite = activiteService.findById(id);
-	    if (optionalActivite.isPresent()) {
-	        Activite existingActivite = optionalActivite.get(); 
-	        Etablissement etab = etablissementService.findById(existingActivite.getEtablissement().getId())
-	                .orElseThrow(() -> new NotExistException(existingActivite.getEtablissement().getId().toString()));
+	    Optional<Activite> existingActivite = activiteService.findById(id);
+	    
+	    if (existingActivite.isPresent()) {
+	    	Long idEtab = Long.valueOf(1);
+			Etablissement etab = etablissementService.findById(idEtab)
+					.orElseThrow(() -> new NotExistException(idEtab.toString()));
 
 			// Mise à jour l'activité existante avec les nouvelles valeurs
 	        actDto.setId(id);

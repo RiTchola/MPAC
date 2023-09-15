@@ -39,7 +39,8 @@ public class EvenementController {
 	}
 
 	@PostMapping("/{idEtab}")
-	public Evenement createEvent(@Valid @RequestBody EvenementDto evenementDto, @RequestParam Long idEtab) {
+	public Evenement createEvent(@Valid @RequestBody EvenementDto evenementDto) {
+		Long idEtab = Long.valueOf(1);
 		Etablissement etab = etablissementService.findById(idEtab)
 				.orElseThrow(() -> new NotExistException(idEtab.toString()));
 
