@@ -1,6 +1,7 @@
 package org.rina.controller;
 
 import org.rina.controller.exceptions.NotExistException;
+
 import org.rina.dto.request.EvenementDto;
 import org.rina.model.Etablissement;
 import org.rina.model.Evenement;
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/event")
+@RequestMapping("/evenement")
 public class EvenementController {
 
 	@Autowired
@@ -24,11 +25,17 @@ public class EvenementController {
 	@Autowired
 	private EtablissementServices etablissementService;
 
-	@GetMapping("/")
+	/**
+     * Récupérer tous les évenements.
+     */
+	@GetMapping
 	public List<Evenement> getAllEvents() {
 		return evenementService.findAll();
 	}
 
+	/**
+     * Récupérer un évenement par son ID.
+     */
 	@GetMapping("/{id}")
 	public ResponseEntity<Evenement> getEventById(@PathVariable Long id) {
 		Optional<Evenement> evenement = evenementService.findById(id);
@@ -38,31 +45,43 @@ public class EvenementController {
 		return ResponseEntity.notFound().build();
 	}
 
-	@PostMapping("/{idEtab}")
-	public Evenement createEvent(@Valid @RequestBody EvenementDto evenementDto) {
+	/**
+     * Créer un nouveau évenement.
+     */
+	@PostMapping
+	public ResponseEntity<Evenement> createEvent(@Valid @RequestBody EvenementDto evenementDto) {
 		Long idEtab = Long.valueOf(1);
 		Etablissement etab = etablissementService.findById(idEtab)
 				.orElseThrow(() -> new NotExistException(idEtab.toString()));
 
-		return evenementService.insert(evenementDto.toEvenement(etab));
+		evenementService.insert(evenementDto.toEvenement(etab));
+		return ResponseEntity.ok().build();
 	}
 
+	/**
+     * Mettre à jour un évenement existant.
+     */
 	@PutMapping("/{id}")
 	public ResponseEntity<Evenement> updateEvent(@PathVariable Long id, @Valid @RequestBody EvenementDto evenementDto) {
-		Evenement newEvenement = evenementService.findById(evenementDto.getId())
-				.orElseThrow(() -> new NotExistException(evenementDto.getId().toString()));
-		Etablissement etab = etablissementService.findById(newEvenement.getEtablissement().getId())
-				.orElseThrow(() -> new NotExistException(newEvenement.getEtablissement().getId().toString()));
+		// Vérifie d'abord si l'événement existe en fonction de l'ID
+		Optional<Evenement> existingEvenement = evenementService.findById(id);
 
-		if (evenementDto.getId().equals(id)) {
-//            Evenement updatedEvenement = existingEvenement.get();
-//            updatedEvenement.setDateEvent(evenementDetails.getDateEvent());
-			return ResponseEntity.ok(evenementService.update(evenementDto.toEvenement(etab)));
-		}
-		
-		return ResponseEntity.notFound().build();
+		if (existingEvenement.isPresent()) {
+	    	Long idEtab = Long.valueOf(1);
+			Etablissement etab = etablissementService.findById(idEtab)
+					.orElseThrow(() -> new NotExistException(idEtab.toString()));
+
+			// Mise à jour l'événement existant avec les nouvelles valeurs
+	        evenementDto.setId(id);
+	        return ResponseEntity.ok(evenementService.updateEvenement(id, evenementDto.toEvenement(etab)));
+	    }
+	    
+	    else return ResponseEntity.notFound().build();	
 	}
 
+	/**
+     * Supprimer un évenement par son ID.
+     */
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteEvent(@PathVariable Long id) {
 		if (evenementService.existsById(id)) {

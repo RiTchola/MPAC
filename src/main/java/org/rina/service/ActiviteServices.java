@@ -1,8 +1,6 @@
 package org.rina.service;
 
 import java.util.Date;
-
-
 import java.util.List;
 import java.util.Optional;
 
@@ -96,5 +94,4 @@ public class ActiviteServices {
 		return activitedao.save(a1);
 	}
 	
-
 }

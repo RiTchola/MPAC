@@ -18,7 +18,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/establishment")
-@SuppressWarnings("unused")
 public class EtablissementController {
 
     @Autowired
@@ -27,7 +26,9 @@ public class EtablissementController {
     @Autowired
     private UserService userService;
 
-    
+    /**
+     * Récupérer un etablissement.
+     */
     @GetMapping
     public ResponseEntity<Etablissement> getEstablishment() {
     	Long idEtab = Long.valueOf(1);
@@ -39,6 +40,9 @@ public class EtablissementController {
         else return ResponseEntity.notFound().build();
     }
 
+    /**
+     * Créer un nouvel etablissement.
+     */
     @PostMapping
     public ResponseEntity<String> createEstablishment(@Valid @RequestBody EtablissementDto etabDto) {
         // Vérifie qu'il n'existe pas d'établissement
@@ -46,14 +50,20 @@ public class EtablissementController {
         	
             User user = userService.findById(etabDto.getIdEtab())
             		.orElseThrow(() -> new NotExistException(etabDto.getIdEtab().toString()));
-			Etablissement newEtablissement = etablissementService.insert(etabDto.toEtablissement(user));
-            return ResponseEntity.ok().build();
+            
+          //Crée et insère l'établissement
+			Etablissement newEtab = etabDto.toEtablissement(user);
+			etablissementService.insert(newEtab);
+			
+			return ResponseEntity.ok().build();
         } 
         
         else return ResponseEntity.status(HttpStatus.FORBIDDEN).body("L'établissement existe déjà.");
     }
     
-
+    /**
+     * Mettre à jour un etablissement existant.
+     */
     @PutMapping("/{id}")
     public ResponseEntity<Etablissement> updateEstablishment(@PathVariable Long id, @Valid @RequestBody EtablissementDto etabDto) {
     	// Vérifie d'abord si l'établissement existe en fonction de l'ID
@@ -65,7 +75,10 @@ public class EtablissementController {
         	User user = userService.findById(etabDto.getIdEtab())
             		.orElseThrow(() -> new NotExistException(etabDto.getIdEtab().toString()));
         	etabDto.setId(id);
-            return ResponseEntity.ok(etablissementService.updateEtablissement(id, etabDto.toEtablissement(user)));
+        	Etablissement updateEtab = etablissementService.updateEtablissement(id, etabDto.toEtablissement(user));
+            
+        	//Renvoie la réponse avec l'établissement mis à jour
+        	return ResponseEntity.ok(updateEtab);
         }
         
         else return ResponseEntity.notFound().build();

@@ -20,7 +20,7 @@ public class RapportVisiteDto {
     private Long id;
     
     @NotNull
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-ddThh:mm:ss.mmmZ")
     private Date dateVisite;
     
     @NotBlank
@@ -29,7 +29,8 @@ public class RapportVisiteDto {
     @NotBlank
     private String prenomResid;
 
-    @NotBlank
+    @NotNull
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateBirthresid;
 
     @NotBlank

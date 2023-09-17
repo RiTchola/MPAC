@@ -19,6 +19,9 @@ public class MedecinTraitantController {
 	@Autowired
 	private MedecinTraitantServices medecinService;
 
+	/**
+     * Récupérer un medecinTraitant par son ID.
+     */
 	@GetMapping("/{id}")
 	public ResponseEntity<MedecinTraitant> getmedecinTById(@PathVariable Long id) {
 		Optional<MedecinTraitant> medecinT = medecinService.findById(id);
@@ -29,24 +32,39 @@ public class MedecinTraitantController {
 		else return ResponseEntity.notFound().build();
 	}
 
+	/**
+     * Créer un nouveau medecinTraitant.
+     */
 	@PostMapping
-	public MedecinTraitant createmedecinT(@Valid @RequestBody MedecinTraitantDto medecinDto) {
-		return medecinService.insert(medecinDto.toMedecinTraitant());
+	public ResponseEntity<MedecinTraitant> createmedecinT(@Valid @RequestBody MedecinTraitantDto medecinDto) {
+		//Crée et insère le medecin
+		MedecinTraitant newMedecinT = medecinDto.toMedecinTraitant();
+		medecinService.insert(newMedecinT);
+		
+		//Renvoie la réponse avec le medecin créé et l'ID généré
+        return ResponseEntity.ok(newMedecinT);
 	}
 
+	 /**
+     * Mettre à jour un medecinTraitant existant.
+     */
 	@PutMapping("/{id}")
-	public ResponseEntity<MedecinTraitant> updatemedecinT(@PathVariable Long id,
-			@Valid @RequestBody MedecinTraitantDto medecinDto) {
-		Optional<MedecinTraitant> existingMedecinTraitant = medecinService.findById(id);
-		
+	public ResponseEntity<MedecinTraitant> updatemedecinT(@PathVariable Long id, @Valid @RequestBody MedecinTraitantDto medecinDto) {
 		// Vérifie d'abord si le médecin traitant existe en fonction de l'ID
-		if (existingMedecinTraitant.isPresent()) {
+		Optional<MedecinTraitant> existingMedecinT = medecinService.findById(id);
+		
+		if (existingMedecinT.isPresent()) {
+			
 			// Mise à jour du médecin traitant existant avec les nouvelles valeurs
 			medecinDto.setId(id);
-			return ResponseEntity.ok(medecinService.updateMedecinTraitant(id, medecinDto.toMedecinTraitant()));
+			MedecinTraitant updateMedecinT = medecinService.updateMedecinTraitant(id, medecinDto.toMedecinTraitant());
+			
+			//Renvoie la réponse avec le medecin mis à jour
+			return ResponseEntity.ok(updateMedecinT);
 		}
 		
 		else return ResponseEntity.notFound().build();	
 	}
+	
 	
 }

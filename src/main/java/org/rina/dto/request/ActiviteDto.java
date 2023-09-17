@@ -22,7 +22,7 @@ public class ActiviteDto {
 	private String nom;
 	
 	@NotNull
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-ddThh:mm:ss.mmmZ")
 	private Date date;
 
 	/**

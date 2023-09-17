@@ -95,13 +95,13 @@ public class MenuDto {
 		return new MenuDto(
 				menuSem.getId(), 
 				menuSem.getDateDebutSemaine(), 
-				menuSem.getLundi(), 
-				menuSem.getMardi(), 
-				menuSem.getMercredi(), 
-				menuSem.getJeudi(), 
-				menuSem.getVendredi(), 
-				menuSem.getSamedi(), 
-				menuSem.getDimanche() );
-		
+				menuSem.getMenuLundi(), 
+				menuSem.getMenuMardi(), 
+				menuSem.getMenuMercredi(), 
+				menuSem.getMenuJeudi(), 
+				menuSem.getMenuVendredi(), 
+				menuSem.getMenuSamedi(), 
+				menuSem.getMenuDimanche() );	
 	}
+	
 }

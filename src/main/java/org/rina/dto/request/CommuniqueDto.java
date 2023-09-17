@@ -41,8 +41,7 @@ public class CommuniqueDto {
 	 * @param contenu
 	 * @param fileURL
 	 */
-	public CommuniqueDto(Long id, Date date, String titre, String contenu,
-			List<String> fileURL) {
+	public CommuniqueDto(Long id, Date date, String titre, String contenu, List<String> fileURL) {
 		
 		this.id = id;
 		this.date = date;
