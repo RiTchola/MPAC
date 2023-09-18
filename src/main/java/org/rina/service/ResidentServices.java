@@ -1,6 +1,6 @@
 package org.rina.service;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 
 import org.rina.model.MedecinTraitant;
-import org.rina.model.PersonneContact;
 
 @Transactional
 @Service
@@ -44,52 +43,24 @@ public class ResidentServices {
 	 * @param prenom
 	 * @return
 	 */
-	public Optional<Resident> findByNames(String nom, String prenom) {
-		return residentdao.findByNames(nom, prenom);
+	public Optional<Resident> findByNames(String nom) {
+		return residentdao.findByNames(nom);
+	}
+	
+
+	/**
+	 * @return
+	 */
+	public List<Resident> findAllResidentOrderByDateDesc() {
+		return residentdao.findAllResidentOrderByDateDesc();
 	}
 	
 	/**
-	 * @param nom
-	 * @param prenom
-	 * @param dateNaissance
+	 * @param idpc
 	 * @return
 	 */
-	public Optional<Resident> findByNamesAndBirth(String nom, String prenom, Date dateNaissance) {
-		return residentdao.findByNamesAndBirth(nom, prenom, dateNaissance);
-	}
-
-	/**
-	 * @param nom
-	 * @param prenom
-	 * @return
-	 */
-	public boolean existByNames(String nom, String prenom) {
-		return residentdao.existByNames(nom, prenom);
-	}
-
-	/**
-	 * @param nom
-	 * @param prenom
-	 * @param dateNaissance
-	 * @return
-	 */
-	public boolean existByNamesAndBirth(String nom, String prenom, Date dateNaissance) {
-		return residentdao.existByNamesAndBirth(nom, prenom, dateNaissance);
-	}
-
-	/**
-	 * @param idResid
-	 * @return
-	 */
-	public List<PersonneContact> findAllPersonContactToResid(Long idResid) {
-		return residentdao.findAllPersonContactToResid(idResid);
-	}
-
-	/**
-	 * @return
-	 */
-	public List<Resident> findAll() {
-		return residentdao.findAll();
+	public List<Resident> findAllResidToPersonContact(String nom, String prenom, LocalDate date) {
+		return residentdao.findAllResidToPersonContact(nom, prenom, date);
 	}
 
 	/**
@@ -125,26 +96,39 @@ public class ResidentServices {
 	}
 
 	/**
-	 * @param id
-	 */
-	public void deleteById(Long id) {
-		residentdao.deleteById(id);
-	}
-
-	/**
 	 * Ajout d'un nouveau Resident
 	 * 
-	 * @param c1
+	 * @param resident re1
 	 * @return
 	 */
 	public Resident insert(Resident re1) {
-		return update(re1);
+		return residentdao.save(re1);
 	}
 
-	public Resident update(Resident re1) {
-		assert re1 != null : "La resident doit exister";
+	/**
+	 * @param resident re1
+	 * @param id
+	 * @return
+	 */
+	public Resident updateResident(Long id, Resident re1) {
 		return residentdao.save(re1);
 	}	
 
+	/**
+	 * Ajoute un lien entre un résident existant et une personne de contact existante.
+	 *
+	 * @param residentId re1Id
+	 * @param personneContactId pc1Id
+	 */
+	public void addPersonneContactToResident(Long re1Id, Long pc1Id) {
+		residentdao.addPersonneContactToResident(re1Id, pc1Id);
+	}
 
+	/**
+	 * @param personneContactId pc1Id
+	 */
+	public void removePersonneContactFromResident(Long pc1Id) {
+		residentdao.removePersonneContactFromResident( pc1Id);
+	}	
+	
 }

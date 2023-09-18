@@ -89,12 +89,16 @@ private IRapportQuotidienJpaDao rapportQuotidiendao;
 	 * @return
 	 */
 	public RapportQuotidien insert(RapportQuotidien rapQuot) {
-		return update(rapQuot);
-	}
-
-	public RapportQuotidien update(RapportQuotidien rapQuot) {
-		assert rapQuot != null : "La rapportVisite doit exister";
 		return rapportQuotidiendao.save(rapQuot);
 	}	
+
+	/**
+	 * @param id
+	 * @param rapQuot
+	 * @return
+	 */
+	public RapportQuotidien updateRapportQuotidien(Long id, RapportQuotidien rapQuot) {
+		return rapportQuotidiendao.save(rapQuot);
+	}
 
 }

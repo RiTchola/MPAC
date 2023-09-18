@@ -2,7 +2,8 @@ package org.rina.dto.request;
 
 import java.util.Date;
 
-import jakarta.validation.Valid;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,17 +12,17 @@ import jakarta.validation.constraints.Size;
 import org.rina.model.Etablissement;
 import org.rina.model.MedecinTraitant;
 import org.rina.model.Resident;
-import org.rina.enums.Roles;
+import org.rina.model.User;
 import org.rina.enums.StatutM;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import lombok.Data;
 
 @Data
 public class ResidentDto {
 	
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     @NotBlank
@@ -75,22 +76,17 @@ public class ResidentDto {
     @NotBlank
     private String etatSante;
     
-    @NotNull
-	private Boolean actif;
+    //Initialise actif à True par défaut
+	private Boolean actif = true;
     
-    @NotBlank
+    @NotNull
     private Long medecinId;
     
-    @NotBlank
-    private Long idEtablissement;
-    
-    @Valid // N�cessaire pour la validation en cascade Resident ==>User
-	private UserDto user;
+    @NotNull
+	private Long userId;
     
     public ResidentDto() {
-    	id = null;
-		user = new UserDto();
-		user.setRole(Roles.RESIDENT);
+    	
     }
     
     /**
@@ -114,17 +110,16 @@ public class ResidentDto {
      * @param chambre
      * @param actif
      * @param medecinId
-     * @param nomEtablissement
+     * @param idEtablissement
      */
     public ResidentDto(Long id, String nom, String prenom, Date dateNaissance, String email,
             String tel, String adresse, StatutM statut, Date dateEntree, String motifEntree,
             Date dateSortie, String motifSortie, String antMedical,
             String antChirugical, Integer nbEnfant, String chambre,  String etatSante, Boolean actif,
-            UserDto user, Long medecinId, Long idEtablissement ) {
+            Long userId, Long medecinId) {
     	
         this.id = id;
-      	
-        this.nom = nom;
+      	this.nom = nom;
         this.prenom = prenom;
         this.dateNaissance = dateNaissance;
         this.email = email;
@@ -141,40 +136,26 @@ public class ResidentDto {
         this.chambre = chambre;
         this.etatSante = etatSante;
         this.actif = actif;
-        user.setRole(Roles.RESIDENT);
-        this.user = user;
+        this.userId = userId;
         this.medecinId = medecinId;
-        this.idEtablissement = idEtablissement;
        
     }
     
     /**
    	 * Conversion Dto ==> Resident
    	 * 
-   	 * @return Resident sans cryptage du PW
+   	 * @return
    	 */
-   	public Resident toResident(MedecinTraitant medecin, Etablissement etab) {
+   	public Resident toResident(User user, MedecinTraitant medecin, Etablissement etab) {
 		return new Resident(id, nom, prenom, dateNaissance, email, tel, adresse, statut, 
 				dateEntree, motifEntree, dateSortie, motifSortie, antMedical, antChirugical, nbEnfant,
-				chambre, etatSante, actif, user.toUser(), medecin, etab);	
-   	}
-    
-	/**
-	 * Conversion Dto ==> Resident cryte le pw
-	 * 
-	 * @return Resident avec le pw crypté
-	 */
-   	public Resident toResident(PasswordEncoder encodeur, MedecinTraitant medecin, Etablissement etab) {
-		return new Resident(id, nom, prenom, dateNaissance, email, tel, adresse, statut, dateEntree, 
-				motifEntree, dateSortie, motifSortie, antMedical, antChirugical, nbEnfant, 
-				chambre, etatSante, actif,user.toUser(encodeur), medecin, etab);	
+				chambre, etatSante, actif, user, medecin, etab);	
    	}
     
     public static ResidentDto toDto(Resident resid) {
     	UserDto uDto = UserDto.toUserDto(resid.getUser());
     	MedecinTraitantDto mDto = MedecinTraitantDto.toDto(resid.getMedecinTraitant());
-    	EtablissementDto eDto = EtablissementDto.toDto(resid.getEtablissement());
-        ResidentDto residDto = new ResidentDto(
+    	return new ResidentDto(
         		resid.getId(),
         		resid.getNom(),
         		resid.getPrenom(),
@@ -193,10 +174,8 @@ public class ResidentDto {
                 resid.getChambre(),
                 resid.getEtatSante(),
                 resid.getActif(),
-                uDto,
-                mDto.getId(),
-        		eDto.getId() );
-        return residDto;
+                uDto.getId(),
+                mDto.getId() );
     }
 
 }

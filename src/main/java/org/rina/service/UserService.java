@@ -75,5 +75,13 @@ public class UserService {
 		return userRepository.existsById(id);
 	}
 
+	/**
+	 * @param username
+	 * @return
+	 */
+	public boolean existsByUsername(String username) {
+		return userRepository.existsByUsername(username);
+	}
+
 
 }

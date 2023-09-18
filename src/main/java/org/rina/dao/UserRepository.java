@@ -19,4 +19,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	@Query(value = "UPDATE TUSER u SET u =?2 WHERE u.username =?1", nativeQuery = true)
 	void updateUser(String username, User user);
 
+	//query pour savoir si un utilisateur existe par le username 
+	boolean existsByUsername(String username);
 }

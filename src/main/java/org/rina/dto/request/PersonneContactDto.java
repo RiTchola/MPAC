@@ -2,25 +2,24 @@ package org.rina.dto.request;
 
 import java.time.LocalDate;
 
-
-
-import jakarta.validation.Valid;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import org.rina.model.PersonneContact;
-import org.rina.enums.Roles;
+import org.rina.model.User;
 import org.rina.enums.StatutM;
 import org.rina.enums.TypePersonne;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import lombok.Data;
 
 @Data
 public class PersonneContactDto {
 
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@NotBlank
@@ -51,21 +50,14 @@ public class PersonneContactDto {
 	@NotNull
 	private TypePersonne choix;
 	
-	
-	@Valid // N�cessaire pour la validation en cascade PersonneContact ==>User
-	private UserDto user;
+	private Long userId;
 
-	/**
-	 * 
-	 */
 	public PersonneContactDto() {
-		id = null;
-		user = new UserDto();
-		user.setRole(Roles.PERSONNECONTACT);
+		
 	}
 
 	public PersonneContactDto(Long id, String nom, String prenom, LocalDate dateNaissance, String email, 
-			String tel1, String tel2, String adresse, StatutM statut, TypePersonne choix, UserDto user) {
+			String tel1, String tel2, String adresse, StatutM statut, TypePersonne choix, Long userId) {
 
 		this.id = id;
 		this.nom = nom;
@@ -77,28 +69,27 @@ public class PersonneContactDto {
 		this.adresse = adresse;
 		this.statut = statut;
 		this.choix = choix;
-		user.setRole(Roles.PERSONNECONTACT);
-		this.user = user;
+		this.userId = userId;
 	}
 
 	/**
-	 * Conversion Dto ==> PersonneContact
+	 * Conversion Dto ==> PersonneContact avec utilisateur 
 	 * 
-	 * @return PersonneContact sans cryptage du PW
+	 * @return PersonneContact 
 	 */
-	public PersonneContact toPersonneContact() {
+	public PersonneContact toPersonneContact(User user) {
 		return new PersonneContact(id, nom, prenom, dateNaissance, email, tel1,
-				tel2, adresse, statut, choix, user.toUser());
+				tel2, adresse, statut, choix, user);
 	}
 	
 	/**
-	 * Conversion Dto ==> PersonneContact cryte le pw
+	 * Conversion Dto ==> PersonneContact sans utilisateur 
 	 * 
-	 * @return PersonneContact avec le pw crypté
+	 * @return PersonneContact 
 	 */
-	public PersonneContact toPersonneContact(PasswordEncoder encodeur) {
+	public PersonneContact toPersonneContact() {
 		return new PersonneContact(id, nom, prenom, dateNaissance, email, tel1,
-				tel2, adresse, statut, choix, user.toUser(encodeur));
+				tel2, adresse, statut, choix, null);
 	}
 	
 	/**
@@ -108,7 +99,7 @@ public class PersonneContactDto {
 	 */
 	public static PersonneContactDto toDto(PersonneContact persC) {
 		UserDto uDto = UserDto.toUserDto(persC.getUser());
-	    PersonneContactDto persCDto = new PersonneContactDto(
+		return new PersonneContactDto(
 	            persC.getId(),
 	            persC.getNom(),
 	            persC.getPrenom(),
@@ -119,8 +110,6 @@ public class PersonneContactDto {
 	            persC.getAdresse(),
 	            persC.getStatut(),
 	            persC.getChoix(), 
-	            uDto
-	        );
-	     return persCDto;
+	            uDto.getId() );
 	 }
 }

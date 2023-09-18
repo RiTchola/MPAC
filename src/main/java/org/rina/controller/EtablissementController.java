@@ -48,8 +48,8 @@ public class EtablissementController {
         // Vérifie qu'il n'existe pas d'établissement
         if (etablissementService.count() == 0) {
         	
-            User user = userService.findById(etabDto.getIdEtab())
-            		.orElseThrow(() -> new NotExistException(etabDto.getIdEtab().toString()));
+            User user = userService.findByUsername(etabDto.getEtabUsername())
+            		.orElseThrow(() -> new NotExistException(etabDto.getEtabUsername().toString()));
             
           //Crée et insère l'établissement
 			Etablissement newEtab = etabDto.toEtablissement(user);
@@ -72,8 +72,8 @@ public class EtablissementController {
         if (existingEtablissement.isPresent()) {
         	
         	// Mise à jour l'établissement existant avec les nouvelles valeurs
-        	User user = userService.findById(etabDto.getIdEtab())
-            		.orElseThrow(() -> new NotExistException(etabDto.getIdEtab().toString()));
+        	User user = userService.findByUsername(etabDto.getEtabUsername())
+            		.orElseThrow(() -> new NotExistException(etabDto.getEtabUsername().toString()));
         	etabDto.setId(id);
         	Etablissement updateEtab = etablissementService.updateEtablissement(id, etabDto.toEtablissement(user));
             

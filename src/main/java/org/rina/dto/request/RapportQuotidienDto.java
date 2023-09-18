@@ -2,6 +2,8 @@ package org.rina.dto.request;
 
 import java.util.Date;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -17,8 +19,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RapportQuotidienDto {
 	
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@NotNull
 	private Integer numeroR;
 	

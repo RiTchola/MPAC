@@ -35,7 +35,6 @@ public class EtablissementDto {
 	private String tel1;
     
 	@NumberFormat
-	@NotNull
 	@Size(min = 4, max = 30, message = "{tel.nonValide}")
 	private String tel2;
     
@@ -47,15 +46,9 @@ public class EtablissementDto {
 	private Date dateCreation;
 	
 	@Valid // N�cessaire pour la validation en cascade Etablissement ==>User
-	private Long idEtab;
+	private String etabUsername;
 	
-//	public EtablissementDto() {
-//		nom = null;
-//		User user = new idUser.ge;
-//		user.setRole(Roles.ETABLISSEMENT);
-//	}
-	
-	 public EtablissementDto() {
+	public EtablissementDto() {
 		    
 	    }
 
@@ -71,7 +64,7 @@ public class EtablissementDto {
      * @param etabUser
      */
     public EtablissementDto(Long id, String nom, String email1, String email2, String tel1,
-            String tel2, String adresse, Date dateCreation, Long idEtab) {
+            String tel2, String adresse, Date dateCreation, String etabUsername) {
 
     	this.id = id;
         this.nom = nom;
@@ -81,7 +74,7 @@ public class EtablissementDto {
         this.tel2 = tel2;
         this.adresse = adresse;
         this.dateCreation = dateCreation;
-		this.idEtab = idEtab;
+		this.etabUsername = etabUsername;
     }
     
    
@@ -111,7 +104,7 @@ public class EtablissementDto {
             etab.getTel2(),
             etab.getAdresse(),
             etab.getDateCreation(),
-            uDto.getId() ); 
+            uDto.getUsername() ); 
 	}
 
 }

@@ -18,8 +18,7 @@ public interface ICommuniqueJpaDao extends JpaRepository<Communique, Long> {
 	@Query(value = "select * from TCOMMUNIQUE c where c.date=?1", nativeQuery = true)
 	List<Communique> findCommuniqueByDate(Date date);
 
-	// Utilisation d'un Query natif pour avoir la liste des communiqués de facon
-	// décroissante
+	// Utilisation d'un Query natif pour avoir la liste des communiqués de facon décroissante
 	@Query(value = "SELECT * FROM TCOMMUNIQUE c ORDER BY c.DATE DESC", nativeQuery = true)
 	List<Communique> findAllCommuniqueOrderByDateDesc();
 
