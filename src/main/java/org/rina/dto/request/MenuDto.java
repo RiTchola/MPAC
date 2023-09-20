@@ -1,15 +1,13 @@
 package org.rina.dto.request;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
-
-
-import jakarta.persistence.ElementCollection;
-import jakarta.validation.constraints.NotNull;
 
 import org.rina.model.Etablissement;
 import org.rina.model.Menu;
 
+import jakarta.persistence.ElementCollection;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -20,7 +18,7 @@ public class MenuDto {
 	private Long id;
 
 	@NotNull
-	private Date dateDebutSemaine ;
+	private LocalDate dateDebutSemaine ;
 
 	@ElementCollection
 	@NotNull
@@ -61,7 +59,7 @@ public class MenuDto {
 	 * @param menuSamedi
 	 * @param menuDimanche
 	 */
-	public MenuDto(Long id,  Date dateDebutSemaine,  List<String> menuLundi,  List<String> menuMardi,
+	public MenuDto(Long id,  LocalDate dateDebutSemaine,  List<String> menuLundi,  List<String> menuMardi,
 			 List<String> menuMercredi,  List<String> menuJeudi,  List<String> menuVendredi,
 			 List<String> menuSamedi,  List<String> menuDimanche) {
 		

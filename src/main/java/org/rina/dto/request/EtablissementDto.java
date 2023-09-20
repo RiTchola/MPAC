@@ -1,18 +1,17 @@
 package org.rina.dto.request;
 
-import java.util.Date;
-
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import java.time.LocalDate;
 
 import org.rina.model.Etablissement;
 import org.rina.model.User;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
@@ -43,9 +42,9 @@ public class EtablissementDto {
     
 	@NotNull
 	@DateTimeFormat( pattern = "yyyy-MM-dd")
-	private Date dateCreation;
+	private LocalDate dateCreation;
 	
-	@Valid // N�cessaire pour la validation en cascade Etablissement ==>User
+	@Valid 
 	private String etabUsername;
 	
 	public EtablissementDto() {
@@ -64,7 +63,7 @@ public class EtablissementDto {
      * @param etabUser
      */
     public EtablissementDto(Long id, String nom, String email1, String email2, String tel1,
-            String tel2, String adresse, Date dateCreation, String etabUsername) {
+            String tel2, String adresse, LocalDate dateCreation, String etabUsername) {
 
     	this.id = id;
         this.nom = nom;

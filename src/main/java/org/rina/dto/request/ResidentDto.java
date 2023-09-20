@@ -1,6 +1,14 @@
 package org.rina.dto.request;
 
-import java.util.Date;
+import java.time.LocalDate;
+
+import org.rina.enums.StatutM;
+import org.rina.model.Etablissement;
+import org.rina.model.MedecinTraitant;
+import org.rina.model.Resident;
+import org.rina.model.User;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.NumberFormat;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,15 +16,6 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
-import org.rina.model.Etablissement;
-import org.rina.model.MedecinTraitant;
-import org.rina.model.Resident;
-import org.rina.model.User;
-import org.rina.enums.StatutM;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.NumberFormat;
-
 import lombok.Data;
 
 @Data
@@ -33,7 +32,7 @@ public class ResidentDto {
     
     @NotNull
 	@DateTimeFormat( pattern = "yyyy-MM-dd")
-    private Date dateNaissance;
+    private LocalDate dateNaissance;
    
     @Email(message = "{email.nonValide}")
     private String email;
@@ -51,13 +50,13 @@ public class ResidentDto {
    
     @NotNull
 	@DateTimeFormat( pattern = "yyyy-MM-dd")
-    private Date dateEntree;
+    private LocalDate dateEntree;
     
     @NotBlank
     private String motifEntree;
     
 	@DateTimeFormat( pattern = "yyyy-MM-dd")
-    private Date dateSortie;
+    private LocalDate dateSortie;
     
     private String motifSortie;
 
@@ -112,9 +111,9 @@ public class ResidentDto {
      * @param medecinId
      * @param idEtablissement
      */
-    public ResidentDto(Long id, String nom, String prenom, Date dateNaissance, String email,
-            String tel, String adresse, StatutM statut, Date dateEntree, String motifEntree,
-            Date dateSortie, String motifSortie, String antMedical,
+    public ResidentDto(Long id, String nom, String prenom, LocalDate dateNaissance, String email,
+            String tel, String adresse, StatutM statut, LocalDate dateEntree, String motifEntree,
+            LocalDate dateSortie, String motifSortie, String antMedical,
             String antChirugical, Integer nbEnfant, String chambre,  String etatSante, Boolean actif,
             Long userId, Long medecinId) {
     	

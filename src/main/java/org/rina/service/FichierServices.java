@@ -28,13 +28,6 @@ public class FichierServices {
 	}
 	
 	/**
-	 * @return
-	 */
-	public List<Fichier> findAll() {
-		return fichierdao.findAll();
-	}
-
-	/**
 	 * @param id
 	 * @return
 	 */
@@ -51,17 +44,10 @@ public class FichierServices {
 	}
 
 	/**
-	 * @param id
-	 */
-	public void deleteById(Long id) {
-		fichierdao.deleteById(id);
-	}
-
-	/**
 	 * @return
 	 */
-	public List<Fichier> findAllFichierOrderByDateDesc() {
-		return fichierdao.findAllFichierOrderByDateDesc();
+	public List<Fichier> findAllOrderByDateDesc() {
+		return fichierdao.findAllOrderByDateDesc();
 	}
 
 	/**
@@ -71,12 +57,8 @@ public class FichierServices {
 	 * @return
 	 */
 	public Fichier insert(Fichier f1) {
-		return update(f1);
-	}
-
-	public Fichier update(Fichier f1) {
-		assert f1 != null : "Le fichier doit exister";
 		return fichierdao.save(f1);
 	}
+
 
 }

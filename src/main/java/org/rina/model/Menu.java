@@ -1,13 +1,20 @@
 package org.rina.model;
 
-import jakarta.persistence.*;
+import java.time.LocalDate;
+import java.util.List;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Date;
-import java.util.List;
 
 @Data
 @Builder
@@ -21,7 +28,7 @@ public class Menu {
     private Long id;
 	
 	@Column( nullable = false)
-	private Date dateDebutSemaine ;
+	private LocalDate dateDebutSemaine ;
 	
 	@ElementCollection
 	@Column( nullable = false)
@@ -69,7 +76,7 @@ public class Menu {
 	 * @param dimanche
 	 * @param etablissement
 	 */
-	public Menu(Long id, Date dateDebutSemaine, List<String> menuLundi, List<String> menuMardi,
+	public Menu(Long id, LocalDate dateDebutSemaine, List<String> menuLundi, List<String> menuMardi,
 			List<String> menuMercredi, List<String> menuJeudi, List<String> menuVendredi,
 			List<String> menuSamedi, List<String> menuDimanche, Etablissement etablissement) {
 		

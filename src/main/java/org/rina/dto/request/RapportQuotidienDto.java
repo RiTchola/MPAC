@@ -69,14 +69,12 @@ public class RapportQuotidienDto {
 	@NotNull
 	private Boolean vetements;
 
-	@NotBlank
+	@NotNull
 	private Humeur humeur;
 
 	@NotBlank
 	private String commentaire;
-	
-	@NotNull
-	private Long residentId;
+
 	
 	/**
 	 * @param id
@@ -103,8 +101,7 @@ public class RapportQuotidienDto {
 			String freqCardiaque, String freqRespiratoire, String presArterielle,
 			String temperature, String satOxygene, Boolean sommeil, Boolean selle,
 			Boolean urine, Boolean coiffure, Boolean manicure, Boolean pedicure,
-			Boolean toilette, Boolean vetements, Humeur humeur, String commentaire,
-			Long residentId) {
+			Boolean toilette, Boolean vetements, Humeur humeur, String commentaire ) {
 		
 		this.id = id;
 		this.numeroR = numeroR;
@@ -124,7 +121,6 @@ public class RapportQuotidienDto {
 		this.vetements = vetements;
 		this.humeur = humeur;
 		this.commentaire = commentaire;
-		this.residentId = residentId;
 	}
 	/**
 	 * conersion Dto ==> RapportQuotidien
@@ -159,8 +155,7 @@ public class RapportQuotidienDto {
             rapQuot.getToilette(),
             rapQuot.getVetements(),
             rapQuot.getHumeur(),
-            rapQuot.getCommentaire(),
-            rapQuot.getResident().getId() );
+            rapQuot.getCommentaire() );
     }
 
 	

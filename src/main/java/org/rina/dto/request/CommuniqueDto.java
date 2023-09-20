@@ -1,6 +1,6 @@
 package org.rina.dto.request;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.ElementCollection;
@@ -22,7 +22,7 @@ public class CommuniqueDto {
 	
 	@NotNull
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date date;
+    private LocalDate date;
 	
 	@NotBlank
     private String titre;
@@ -41,7 +41,7 @@ public class CommuniqueDto {
 	 * @param contenu
 	 * @param fileURL
 	 */
-	public CommuniqueDto(Long id, Date date, String titre, String contenu, List<String> fileURL) {
+	public CommuniqueDto(Long id, LocalDate date, String titre, String contenu, List<String> fileURL) {
 		
 		this.id = id;
 		this.date = date;

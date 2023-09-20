@@ -49,10 +49,10 @@ public class RapportQuotidienController {
     /**
      * Créer un nouveau rapport quotidien.
      */
-    @PostMapping
-    public ResponseEntity<RapportQuotidien> createRapportQuotidien(@Valid @RequestBody RapportQuotidienDto rapportQuotDto) {
+    @PostMapping("/{id}")
+    public ResponseEntity<RapportQuotidien> createRapportQuotidien(@PathVariable Long id, @Valid @RequestBody RapportQuotidienDto rapportQuotDto) {
         //Récupere le résident lié
-    	Optional<Resident> existingResid = residentService.findById(rapportQuotDto.getResidentId());
+    	Optional<Resident> existingResid = residentService.findById(id);
     	
     	if (existingResid.isPresent()) {
     		Resident resid = existingResid.get();
@@ -74,10 +74,10 @@ public class RapportQuotidienController {
     public ResponseEntity<RapportQuotidien> updateRapportQuotidien(@PathVariable Long id, @Valid @RequestBody RapportQuotidienDto rapportQuotDto) {
     	// Vérifie d'abord si le rapport existe en fonction de l'ID
     	Optional<RapportQuotidien> existingRapport = rapportQuotService.findById(id);
-    	Optional<Resident> existingResid = residentService.findById(rapportQuotDto.getResidentId());
 
         if (existingRapport.isPresent()) {
-        	Resident resid = existingResid.get();
+        	RapportQuotidien rapQuot = existingRapport.get();
+        	Resident resid = rapQuot.getResident();
         	
         	// Mise à jour du rapport existant avec les nouvelles valeurs
 	        rapportQuotDto.setId(id);

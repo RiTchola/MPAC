@@ -1,14 +1,15 @@
 package org.rina.dto.request;
 
-import java.util.Date;
-
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import java.io.IOException;
+import java.time.LocalDate;
 
 import org.rina.model.Fichier;
 import org.rina.model.PersonneContact;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -26,37 +27,39 @@ public class FichierDto {
 	
 	@NotNull
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date date;
+    private LocalDate date;
 	
 	@NotNull
-	private String fileURL;
+	private String fileUrl;
 	
 	@NotNull
-    private Long personContactId;
+	//représente le fichier téléchargé
+    private MultipartFile fichierIn;
 
 	/**
 	 * @param id
 	 * @param typeF
 	 * @param date
 	 * @param document
-	 * @param personContactId
 	 */
-	public FichierDto(Long id, String nomFichier, String typeF, Date date, String fileURL, Long personContactId) {
+	public FichierDto(Long id, String nomFichier, String typeF, LocalDate date, String fileUrl, MultipartFile fichierIn) {
 		
 		this.id = id;
 		this.nomFichier = nomFichier;
 		this.typeF = typeF;
 		this.date = date;
-		this.fileURL = fileURL;
-		this.personContactId = personContactId;
+		this.fileUrl = fileUrl;
+		this.fichierIn = fichierIn;
 	}
+	
 	/**
 	 * Conversion Dto ==> Fichier
 	 * @param personc
 	 * @return
+	 * @throws IOException 
 	 */
-	public Fichier toFichier(PersonneContact persC) {
-		return new Fichier(id, nomFichier, typeF, date, fileURL, persC);
+	public Fichier toFichier(PersonneContact persC) throws IOException {
+		return new Fichier(id, nomFichier, typeF, date, fileUrl, fichierIn.getBytes(), persC);
 		
 	}
 
@@ -71,8 +74,8 @@ public class FichierDto {
             fichier.getNomFichier(),
             fichier.getTypeF(),
             fichier.getDate(),
-            fichier.getFileURL(), 
-            fichier.getPersonneContact().getId() );
+            fichier.getFileURL(),
+            null);
     }
 	
 }

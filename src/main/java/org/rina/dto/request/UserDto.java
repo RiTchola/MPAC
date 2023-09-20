@@ -54,6 +54,11 @@ public class UserDto {
 		return new User( id, username, encodeur.encode(password), role, true);
 	}
 
+	/**
+	 * Conversion User ==> Dto
+	 * @param user
+	 * @return
+	 */
 	public static UserDto toUserDto(User user) {
 		return new UserDto( user.getId(), user.getUsername(), user.getPassword(), user.getPassword(), user.getRole());
 	}
