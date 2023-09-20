@@ -2,6 +2,8 @@ package org.rina.model;
 
 import java.time.LocalDate;
 
+import org.rina.enums.TypeFichier;
+
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,11 +30,8 @@ public class Fichier {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(length = 100, nullable = false)
-	private String nomFichier;
-
 	@Column(length = 50, nullable = false)
-	private String typeF;
+	private TypeFichier typeF;
 
 	@Column(nullable = false)
 	private LocalDate date;
@@ -56,17 +55,15 @@ public class Fichier {
 	 * Construction
 	 *
 	 * @param id
-	 * @param nomFichier
 	 * @param typeF
 	 * @param date
 	 * @param fileURL
 	 * @param personneContact
 	 */
-	public Fichier(Long id, String nomFichier, String typeF, LocalDate date, String fileURL,  byte[] contenu,
+	public Fichier(Long id, TypeFichier typeF, LocalDate date, String fileURL,  byte[] contenu,
 			PersonneContact personneContact) {
 
 		this.id = id;
-		this.nomFichier = nomFichier;
 		this.typeF = typeF;
 		this.date = date;
 		this.fileURL = fileURL;

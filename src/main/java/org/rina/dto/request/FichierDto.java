@@ -3,6 +3,7 @@ package org.rina.dto.request;
 import java.io.IOException;
 import java.time.LocalDate;
 
+import org.rina.enums.TypeFichier;
 import org.rina.model.Fichier;
 import org.rina.model.PersonneContact;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -20,10 +21,7 @@ public class FichierDto {
 	private Long id;
 	
 	@NotBlank
-	private String nomFichier;
-	
-	@NotBlank
-    private String typeF;
+    private TypeFichier typeF;
 	
 	@NotNull
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -42,10 +40,9 @@ public class FichierDto {
 	 * @param date
 	 * @param document
 	 */
-	public FichierDto(Long id, String nomFichier, String typeF, LocalDate date, String fileUrl, MultipartFile fichierIn) {
+	public FichierDto(Long id, TypeFichier typeF, LocalDate date, String fileUrl, MultipartFile fichierIn) {
 		
 		this.id = id;
-		this.nomFichier = nomFichier;
 		this.typeF = typeF;
 		this.date = date;
 		this.fileUrl = fileUrl;
@@ -59,7 +56,7 @@ public class FichierDto {
 	 * @throws IOException 
 	 */
 	public Fichier toFichier(PersonneContact persC) throws IOException {
-		return new Fichier(id, nomFichier, typeF, date, fileUrl, fichierIn.getBytes(), persC);
+		return new Fichier(id, typeF, date, fileUrl, fichierIn.getBytes(), persC);
 		
 	}
 
@@ -71,7 +68,6 @@ public class FichierDto {
     public static FichierDto toDto(Fichier fichier) {
     	return new FichierDto(
             fichier.getId(),
-            fichier.getNomFichier(),
             fichier.getTypeF(),
             fichier.getDate(),
             fichier.getFileURL(),
