@@ -35,7 +35,7 @@ public class User implements UserDetails {
 	@Column(length = 60, nullable = false)
 	private String username; 
 	
-	@JsonIgnore
+
 	private String password;
 
 	private Roles role;

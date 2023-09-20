@@ -139,21 +139,21 @@ public class FichierController {
 	public ResponseEntity<Resource> downloadFile(@PathVariable String fileName) {
 		if (fileName.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-		} else {
-			try {
-				// Créez un chemin complet vers le fichier à partir du nom de fichier
-				String filePath = uploadDirectory + File.separator + fileName;
+		}
+		try {
+			// Créez un chemin complet vers le fichier à partir du nom de fichier
+			String filePath = uploadDirectory + File.separator + fileName;
 
-				// Chargez le fichier en tant que ressource
-				Resource resource = new UrlResource(Paths.get(filePath).toUri());
+			// Chargez le fichier en tant que ressource
+			Resource resource = new UrlResource(Paths.get(filePath).toUri());
 
-				if (resource.exists() && resource.isReadable()) {
-					return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-							"attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
-				} else return ResponseEntity.notFound().build();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			if (resource.exists() && resource.isReadable()) {
+				return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+						"attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
+			} else return ResponseEntity.notFound().build();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return ResponseEntity.internalServerError().build();
 		}
 	}
 
@@ -177,6 +177,5 @@ public class FichierController {
         catch (Exception e) {
         	e.printStackTrace();
         }
-	}  
-	  
+	}
 }

@@ -56,7 +56,8 @@ public class SecurityConfiguration {
             .permitAll()
             // Toutes les autres demandes nécessitent une authentification.
             .anyRequest()
-            .authenticated()
+            //.authenticated()
+            .permitAll()
             .and()
             // Gestion de la session - la politique est définie pour qu'aucune session ne soit créée.
             .sessionManagement()
