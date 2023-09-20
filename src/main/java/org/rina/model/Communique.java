@@ -1,14 +1,20 @@
 package org.rina.model;
 
-import jakarta.persistence.*;
+import java.time.LocalDate;
+import java.util.List;
 
-
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Date;
-import java.util.List;
 
 @Data
 @Builder
@@ -21,7 +27,7 @@ public class Communique {
     private Long id;
     
     @Column(nullable = false)
-	private Date date;
+	private LocalDate date;
 
 	@Column(nullable = false)
 	private String titre;
@@ -50,7 +56,7 @@ public class Communique {
 	 * @param fileURL
 	 * @param etablissement
 	 */
-	public Communique(Long id, Date date, String titre, String contenu, List<String> fileURL,
+	public Communique(Long id, LocalDate date, String titre, String contenu, List<String> fileURL,
 			Etablissement etablissement) {
 
 		this.id = id;

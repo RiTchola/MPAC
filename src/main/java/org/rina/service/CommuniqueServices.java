@@ -1,6 +1,7 @@
 package org.rina.service;
 
 import java.util.Date;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -60,7 +61,6 @@ public class CommuniqueServices {
 	
 	/**
 	 * @return
-	 * @see org.rina.dao.ICommuniqueJpaDao#findAllCommuniqueOrderByDateDesc()
 	 */
 	public List<Communique> findAllCommuniqueOrderByDateDesc() {
 		return communiquedao.findAllCommuniqueOrderByDateDesc();
@@ -73,12 +73,15 @@ public class CommuniqueServices {
 	 * @return
 	 */
 	public Communique insert(Communique c1) {
-		return update(c1);
-	}
-
-	public Communique update(Communique c1) {
-		assert c1 != null : "Le communique doit exister";
 		return communiquedao.save(c1);
 	}
-	
+
+	/**
+	 * @param id
+	 * @param communique c1
+	 * @see 
+	 */
+	public Communique updateCommunique(Long id, Communique c1) {
+		return communiquedao.save(c1);
+	}	
 }

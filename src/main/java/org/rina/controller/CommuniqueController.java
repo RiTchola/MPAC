@@ -1,6 +1,7 @@
 package org.rina.controller;
 
 import org.rina.controller.exceptions.NotExistException;
+
 import org.rina.dto.request.CommuniqueDto;
 import org.rina.model.Communique;
 import org.rina.model.Etablissement;
@@ -24,11 +25,19 @@ public class CommuniqueController {
 	@Autowired
 	private EtablissementServices etablissementService;
 
-	@GetMapping("/")
-	public List<Communique> getAllCommunique() {
-		return communiqueService.findAllCommuniqueOrderByDateDesc();
+	
+	/**
+     * Récupérer tous les communiques.
+     */
+	@GetMapping
+	public ResponseEntity<List<Communique>> getAllCommunique() {
+		List<Communique> communiques = communiqueService.findAllCommuniqueOrderByDateDesc();
+		return ResponseEntity.ok(communiques);
 	}
 
+	/**
+     * Récupérer un communique par son ID.
+     */
 	@GetMapping("/{id}")
 	public ResponseEntity<Communique> getCommuniqueById(@PathVariable Long id) {
 		Optional<Communique> communique = communiqueService.findById(id);
@@ -36,34 +45,53 @@ public class CommuniqueController {
 			return ResponseEntity.ok(communique.get());
 		}
 
-		return ResponseEntity.notFound().build();
+		else return ResponseEntity.notFound().build();
 	}
 
-	@PostMapping("/{idEtab}")
-	public Communique createCommunique(@Valid @RequestBody CommuniqueDto comDto, @RequestParam Long idEtab) {
+	/**
+     * Créer un nouveau communique.
+     */
+	@PostMapping
+	public ResponseEntity<Communique> createCommunique(@Valid @RequestBody CommuniqueDto comDto) {
+		Long idEtab = Long.valueOf(1);
 		Etablissement etab = etablissementService.findById(idEtab)
 				.orElseThrow(() -> new NotExistException(idEtab.toString()));
 
-		return communiqueService.insert(comDto.toCommunique(etab));
+		//Crée et insère le communique 
+		Communique newCom = comDto.toCommunique(etab);
+		communiqueService.insert(newCom);
+		
+		//Renvoie la réponse avec le communique créé et l'ID généré
+		return ResponseEntity.ok(newCom);
 	}
 
+	/**
+     * Mettre à jour un communique existant.
+     */
 	@PutMapping("/{id}")
 	public ResponseEntity<Communique> updateCommunique(@PathVariable Long id, @Valid @RequestBody CommuniqueDto comDto) {
-		Communique newCommunique = communiqueService.findById(comDto.getId())
-				.orElseThrow(() -> new NotExistException(comDto.getId().toString()));
-		Etablissement etab = etablissementService.findById(newCommunique.getEtablissement().getId())
-				.orElseThrow(() -> new NotExistException(newCommunique.getEtablissement().getId().toString()));
+		//Vérifie d'abord si le communique existe en fonction de l'ID
+		Optional<Communique> existingCommunique = communiqueService.findById(comDto.getId());
 
-		if (comDto.getId().equals(id)) {
-//            Communique updatedCommunique = existingCommunique.get();
-//            updatedCommunique.setContenu(communiqueDetails.getContenu());
-//            updatedCommunique.setDate(communiqueDetails.getDate());
-			return ResponseEntity.ok(communiqueService.update(comDto.toCommunique(etab)));
-		}
+		if (existingCommunique.isPresent()) {
+	    	Long idEtab = Long.valueOf(1);
+			Etablissement etab = etablissementService.findById(idEtab)
+					.orElseThrow(() -> new NotExistException(idEtab.toString()));
 
-		return ResponseEntity.notFound().build();
+			//Mise à jour du communique existant avec les nouvelles valeurs
+	        comDto.setId(id);
+	        Communique updateCom = communiqueService.updateCommunique(id, comDto.toCommunique(etab));
+	        
+	        //Renvoie la réponse avec le communique mis à jour 
+	        return ResponseEntity.ok(updateCom);
+	    }
+	    
+	    else return ResponseEntity.notFound().build();
 	}
 
+	/**
+     * Supprimer un communique par son ID.
+     */
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteCommunique(@PathVariable Long id) {
 		if (communiqueService.existsById(id)) {
@@ -71,6 +99,7 @@ public class CommuniqueController {
 			return ResponseEntity.ok().build();
 		}
 
-		return ResponseEntity.notFound().build();
+		else return ResponseEntity.notFound().build();
 	}
+	
 }

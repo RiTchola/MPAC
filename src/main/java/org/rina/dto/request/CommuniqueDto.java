@@ -1,6 +1,6 @@
 package org.rina.dto.request;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.ElementCollection;
@@ -22,7 +22,7 @@ public class CommuniqueDto {
 	
 	@NotNull
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date date;
+    private LocalDate date;
 	
 	@NotBlank
     private String titre;
@@ -33,9 +33,6 @@ public class CommuniqueDto {
 	@ElementCollection
 	@NotNull
 	private List<String> fileURL;
-	
-	@NotBlank
-    private Long idEtablissement;
 
 	/**
 	 * @param id
@@ -43,17 +40,14 @@ public class CommuniqueDto {
 	 * @param titre
 	 * @param contenu
 	 * @param fileURL
-	 * @param idEtablissement
 	 */
-	public CommuniqueDto(Long id, Date date, String titre, String contenu,
-			List<String> fileURL, Long idEtablissement) {
+	public CommuniqueDto(Long id, LocalDate date, String titre, String contenu, List<String> fileURL) {
 		
 		this.id = id;
 		this.date = date;
 		this.titre = titre;
 		this.contenu = contenu;
 		this.fileURL = fileURL;
-		this.idEtablissement = idEtablissement;
 	}
 	
 	/**
@@ -71,14 +65,12 @@ public class CommuniqueDto {
 	  * @return
 	  */
 	public static CommuniqueDto toDto(Communique com) {
-		EtablissementDto eDto = EtablissementDto.toDto(com.getEtablissement());
 		 return new CommuniqueDto(
 				 com.getId(),
 				 com.getDate(),
 				 com.getTitre(),
 				 com.getContenu(),
-				 com.getFileURL(),
-	             eDto.getId() );
+				 com.getFileURL() );
 	 }
 
 	

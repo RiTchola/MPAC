@@ -1,7 +1,6 @@
 package org.rina.service;
 
 import java.util.List;
-
 import java.util.Optional;
 
 import org.rina.dao.IMeetUpJpaDao;
@@ -13,7 +12,7 @@ import jakarta.transaction.Transactional;
 @Transactional
 @Service
 public class MeetUpServices {
-	
+
 	private IMeetUpJpaDao meetdao;
 
 	/**
@@ -31,10 +30,11 @@ public class MeetUpServices {
 	}
 
 	/**
+	 * @param idpc
 	 * @return
 	 */
-	public List<MeetUp> findAll() {
-		return meetdao.findAll();
+	public List<MeetUp> findAllMeetByIdOrderByDateDesc(Long idpc) {
+		return meetdao.findAllMeetByIdOrderByDateDesc(idpc);
 	}
 
 	/**
@@ -54,26 +54,22 @@ public class MeetUpServices {
 	}
 
 	/**
-	 * @param id
-	 */
-	public void deleteById(Long id) {
-		meetdao.deleteById(id);
-	}
-	
-	/**
 	 * Ajout d'un nouveau MeetUp
 	 * 
 	 * @param meet1
 	 * @return
 	 */
 	public MeetUp insert(MeetUp meet1) {
-		return update(meet1);
+		return meetdao.save(meet1);
 	}
 
-	public MeetUp update(MeetUp meet1) {
-		assert meet1 != null : "Le meetUp doit exister";
+	/**
+	 * @param id
+	 * @param meetUp meet1
+	 * @see
+	 */
+	public MeetUp updateMeetUp(Long id, MeetUp meet1) {
 		return meetdao.save(meet1);
-	}	
-
+	}
 
 }

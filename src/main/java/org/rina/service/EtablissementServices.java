@@ -1,6 +1,7 @@
 package org.rina.service;
 
 import java.util.List;
+
 import java.util.Optional;
 
 import org.rina.dao.IEtablissementJpaDao;
@@ -83,27 +84,33 @@ public class EtablissementServices {
 		public boolean existsById(Long id) {
 			return etablissementdao.existsById(id);
 		}
-
-		/**
-		 * @param id
-		 */
-		public void deleteById(Long id) {
-			etablissementdao.deleteById(id);
-		}
 		
 		/**
-		 * Ajout d'un nouveau Etablissement
+		 * @return
+		 * @see 
+		 */
+		public long count() {
+			return etablissementdao.count();
+		}
+
+		/**
+		 * Ajout d'un nouvel Etablissement
 		 * 
-		 * @param c1
+		 * @param etablissement et1
 		 * @return
 		 */
 		public Etablissement insert(Etablissement et1) {
-			return update(et1);
-		}
-
-		public Etablissement update(Etablissement et1) {
-			assert et1 != null : "L'etablissement doit exister";
 			return etablissementdao.save(et1);
 		}
+
+		/**
+		 * @param id
+		 * @param etablissement et1
+		 * @see 
+		 */
+		public Etablissement updateEtablissement(Long id, Etablissement et1) {
+			return etablissementdao.save(et1);
+		}
+		
 
 }

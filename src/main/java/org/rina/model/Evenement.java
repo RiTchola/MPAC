@@ -1,12 +1,18 @@
 package org.rina.model;
 
-import jakarta.persistence.*;
+import java.time.LocalDate;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Date;
 
 @Data
 @Builder
@@ -23,7 +29,7 @@ public class Evenement {
 	private String nom;
 	
 	@Column(nullable = false)
-	private Date dateEvent;
+	private LocalDate dateEvent;
 	
 	/**
 	 * jointure à d'autres classes 
@@ -39,7 +45,7 @@ public class Evenement {
 	 * @param nom
 	 * @param etablissement
 	 */
-	public Evenement(Long id, String nom, Date dateEvent, Etablissement etablissement) {
+	public Evenement(Long id, String nom, LocalDate dateEvent, Etablissement etablissement) {
 		
 		this.id = id;
 		this.nom = nom;

@@ -1,15 +1,13 @@
 package org.rina.dto.request;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
-
-
-import jakarta.persistence.ElementCollection;
-import jakarta.validation.constraints.NotNull;
 
 import org.rina.model.Etablissement;
 import org.rina.model.Menu;
 
+import jakarta.persistence.ElementCollection;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -20,7 +18,7 @@ public class MenuDto {
 	private Long id;
 
 	@NotNull
-	private Date dateDebutSemaine ;
+	private LocalDate dateDebutSemaine ;
 
 	@ElementCollection
 	@NotNull
@@ -50,9 +48,6 @@ public class MenuDto {
 	@NotNull
 	private List<String> menuDimanche;
 
-	@NotNull
-	private Long idEtablissement;
-
 	/**
 	 * @param id
 	 * @param dateDebutSemaine
@@ -63,11 +58,10 @@ public class MenuDto {
 	 * @param menuVendredi
 	 * @param menuSamedi
 	 * @param menuDimanche
-	 * @param idEtablissement
 	 */
-	public MenuDto(Long id,  Date dateDebutSemaine,  List<String> menuLundi,  List<String> menuMardi,
+	public MenuDto(Long id,  LocalDate dateDebutSemaine,  List<String> menuLundi,  List<String> menuMardi,
 			 List<String> menuMercredi,  List<String> menuJeudi,  List<String> menuVendredi,
-			 List<String> menuSamedi,  List<String> menuDimanche,  Long idEtablissement) {
+			 List<String> menuSamedi,  List<String> menuDimanche) {
 		
 		this.id = id;
 		this.dateDebutSemaine = dateDebutSemaine;
@@ -78,7 +72,6 @@ public class MenuDto {
 		this.menuVendredi = menuVendredi;
 		this.menuSamedi = menuSamedi;
 		this.menuDimanche = menuDimanche;
-		this.idEtablissement = idEtablissement;
 	}
 
 	/**
@@ -97,18 +90,16 @@ public class MenuDto {
 	 * @return
 	 */
 	public static MenuDto toDto(Menu menuSem) {
-		EtablissementDto eDto = EtablissementDto.toDto(menuSem.getEtablissement());
 		return new MenuDto(
 				menuSem.getId(), 
 				menuSem.getDateDebutSemaine(), 
-				menuSem.getLundi(), 
-				menuSem.getMardi(), 
-				menuSem.getMercredi(), 
-				menuSem.getJeudi(), 
-				menuSem.getVendredi(), 
-				menuSem.getSamedi(), 
-				menuSem.getDimanche(), 
-				eDto.getId() );
-		
+				menuSem.getMenuLundi(), 
+				menuSem.getMenuMardi(), 
+				menuSem.getMenuMercredi(), 
+				menuSem.getMenuJeudi(), 
+				menuSem.getMenuVendredi(), 
+				menuSem.getMenuSamedi(), 
+				menuSem.getMenuDimanche() );	
 	}
+	
 }

@@ -1,6 +1,7 @@
 package org.rina.model;
 
 import jakarta.persistence.*;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -9,7 +10,6 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import org.rina.enums.Roles;
 import org.rina.enums.StatutM;
 import org.rina.enums.TypePersonne;
 import org.springframework.format.annotation.NumberFormat;
@@ -22,7 +22,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "TPERSONNECONTACT", uniqueConstraints = @UniqueConstraint(columnNames = { "nom", "prenom", "dateNaissance" }))
+@Table(name = "TPERSONNECONTACT")
 @Entity
 public class PersonneContact {
 	
@@ -71,8 +71,8 @@ public class PersonneContact {
 	 */
 	
 	@Getter
-	@OneToOne(optional = false, cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "FKUSER", unique = true, nullable = false, updatable = false)
+	@OneToOne(optional = true)
+	@JoinColumn(name = "FKUSER", unique = true, nullable = true, updatable = true)
 	private User user;
 
 	@ManyToMany(mappedBy = "personneContacts")
@@ -97,7 +97,6 @@ public class PersonneContact {
 	public PersonneContact(Long id, String nom, String prenom, LocalDate dateNaissance,String email, 
 			String tel1, String tel2, String adresse, StatutM statut, TypePersonne choix, User user) {
 		
-		assert (user.getRole() == Roles.PERSONNECONTACT);
 		this.id = id;
 		this.nom = nom;
 		this.prenom = prenom;

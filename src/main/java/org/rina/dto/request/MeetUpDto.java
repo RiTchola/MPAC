@@ -47,11 +47,6 @@ public class MeetUpDto {
 	@NotBlank
 	private String motifRefus;
 
-	@NotNull
-	private Long personneContactId;
-
-	@NotNull
-	private Long etablissementId;
 
 	/**
 	 * @param id
@@ -62,12 +57,9 @@ public class MeetUpDto {
 	 * @param etat
 	 * @param motifRefus
 	 * @param resident
-	 * @param personneContactId
-	 * @param etablissementId
 	 */
 	public MeetUpDto(Long id, TypeMeetUp typeM, String motifDemande, Date date, String nomResid, String prenomResid,
-			Date dateBirthresid, int nbParticipants, Etat etat, String motifRefus, Long personneContactId,
-			Long etablissementId) {
+			Date dateBirthresid, int nbParticipants, Etat etat, String motifRefus) {
 
 		this.id = id;
 		this.typeM = typeM;
@@ -79,8 +71,6 @@ public class MeetUpDto {
 		this.nbParticipants = nbParticipants;
 		this.etat = etat;
 		this.motifRefus = motifRefus;
-		this.personneContactId = personneContactId;
-		this.etablissementId = etablissementId;
 	}
 
 	/**
@@ -91,7 +81,7 @@ public class MeetUpDto {
 	 * @return
 	 */
 	public MeetUp toMeetUp(Etablissement etab, PersonneContact persC) {
-		return new MeetUp(etablissementId, typeM, motifDemande, date, nomResid, prenomResid, dateBirthresid,
+		return new MeetUp(id, typeM, motifDemande, date, nomResid, prenomResid, dateBirthresid,
 				nbParticipants, etat, motifRefus, persC, etab);
 	}
 
@@ -102,8 +92,6 @@ public class MeetUpDto {
 	 * @return
 	 */
 	public static MeetUpDto toDto(MeetUp meet) {
-		PersonneContactDto pDto = PersonneContactDto.toDto(meet.getPersonneContact());
-		EtablissementDto eDto = EtablissementDto.toDto(meet.getEtablissement());
 		return new MeetUpDto(
 				meet.getId(), 
 				meet.getTypeM(), 
@@ -114,9 +102,7 @@ public class MeetUpDto {
 				meet.getDateBirthresid(), 
 				meet.getNbParticipants(), 
 				meet.getEtat(),
-				meet.getMotifRefus(), 
-				pDto.getId(), 
-				eDto.getId());
+				meet.getMotifRefus() );
 
 	}
 

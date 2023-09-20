@@ -1,60 +1,67 @@
 package org.rina.controller;
 
-
-import org.rina.dao.IRapportVisiteJpaDao;
+import org.rina.controller.exceptions.NotExistException;
+import org.rina.dto.request.RapportVisiteDto;
+import org.rina.model.Etablissement;
 import org.rina.model.RapportVisite;
+import org.rina.service.EtablissementServices;
+import org.rina.service.RapportVisiteServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/rapports-visites")
+@RequestMapping("/rapport-visite")
 public class RapportVisiteController {
 
     @Autowired
-    private IRapportVisiteJpaDao rapportVisiteDao;
+    private RapportVisiteServices rapportVService;
+    @Autowired
+	private EtablissementServices etablissementService;
 
+    /**
+     * Récupérer tous les rapports de visites.
+     */
     @GetMapping
-    public List<RapportVisite> getAllRapportsVisites() {
-        return rapportVisiteDao.findAll();
+    public ResponseEntity<List<RapportVisite>> getAllRapportVisite() {
+        List<RapportVisite> rapVisites = rapportVService.findAll();
+        return ResponseEntity.ok(rapVisites);
     }
 
+    /**
+     * Récupérer une rapport de visite par son ID.
+     */
     @GetMapping("/{id}")
     public ResponseEntity<RapportVisite> getRapportVisiteById(@PathVariable Long id) {
-        Optional<RapportVisite> rapportVisite = rapportVisiteDao.findById(id);
-        if (rapportVisite.isPresent()) {
-            return ResponseEntity.ok(rapportVisite.get());
+        Optional<RapportVisite> rapVisite = rapportVService.findById(id);
+        if (rapVisite.isPresent()) {
+            return ResponseEntity.ok(rapVisite.get());
         }
-        return ResponseEntity.notFound().build();
+        
+        else return ResponseEntity.notFound().build();
     }
 
+    /**
+     * Créer un nouveau rapport de visite.
+     */
     @PostMapping
-    public RapportVisite createRapportVisite(@RequestBody RapportVisite rapportVisite) {
-        return rapportVisiteDao.save(rapportVisite);
+    public ResponseEntity<RapportVisite> createRapportVisite(@Valid @RequestBody RapportVisiteDto rapVisiteDto) {
+    	Long idEtab = Long.valueOf(1);
+		Etablissement etab = etablissementService.findById(idEtab)
+				.orElseThrow(() -> new NotExistException(idEtab.toString()));
+		
+		// Crée et insère le rapport
+		RapportVisite newRapVisite = rapVisiteDto.toRapportVisite(etab);
+		rapportVService.insert(newRapVisite);
+				
+		// Renvoie la réponse avec le rapport créé et l'ID généré
+    	return ResponseEntity.ok(newRapVisite);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<RapportVisite> updateRapportVisite(@PathVariable Long id, @RequestBody RapportVisite rapportDetails) {
-        Optional<RapportVisite> existingRapport = rapportVisiteDao.findById(id);
-
-        if (existingRapport.isPresent()) {
-            RapportVisite updatedRapport = existingRapport.get();
-            updatedRapport.setDateVisite(rapportDetails.getDateVisite());
-            updatedRapport.setCommentaire(rapportDetails.getCommentaire());
-            return ResponseEntity.ok(rapportVisiteDao.save(updatedRapport));
-        }
-        return ResponseEntity.notFound().build();
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteRapportVisite(@PathVariable Long id) {
-        if (rapportVisiteDao.existsById(id)) {
-            rapportVisiteDao.deleteById(id);
-            return ResponseEntity.ok().build();
-        }
-        return ResponseEntity.notFound().build();
-    }
+  
 }

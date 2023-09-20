@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import org.rina.dao.IPersonneContactJpaDao;
 import org.rina.model.PersonneContact;
-import org.rina.model.Resident;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
@@ -41,8 +40,8 @@ private IPersonneContactJpaDao personneContactdao;
 	 * @param prenom
 	 * @return
 	 */
-	public Optional<PersonneContact> findByName(String nom, String prenom) {
-		return personneContactdao.findByName(nom, prenom);
+	public Optional<PersonneContact> findByName(String nom) {
+		return personneContactdao.findByName(nom);
 	}
 
 	/**
@@ -55,26 +54,11 @@ private IPersonneContactJpaDao personneContactdao;
 	}
 
 	/**
-	 * @param resident
+	 * @param idResid
 	 * @return
 	 */
 	public List<PersonneContact> findAllPersonContactToResid(Long idResid) {
 		return personneContactdao.findAllPersonContactToResid(idResid);
-	}
-
-	/**
-	 * @return
-	 */
-	public List<PersonneContact> findAll() {
-		return personneContactdao.findAll();
-	}
-
-	/**
-	 * @param personcontact
-	 * @return
-	 */
-	public List<Resident> findAllResidToPersonContact(Long idpc) {
-		return personneContactdao.findAllResidToPersonContact(idpc);
 	}
 
 	/**
@@ -110,16 +94,20 @@ private IPersonneContactJpaDao personneContactdao;
 	/**
 	 * Ajout d'un nouveau PersonneContact
 	 * 
-	 * @param c1
+	 * @param pc1
 	 * @return
 	 */
 	public PersonneContact insert(PersonneContact pc1) {
-		return update(pc1);
+		return personneContactdao.save(pc1);
 	}
 
-	public PersonneContact update(PersonneContact pc1) {
-		assert pc1 != null : "La personneContact doit exister";
+	/**
+	 * @param id
+	 * @param personC
+	 * @see 
+	 */
+	public PersonneContact updatePersonneContact(Long id, PersonneContact pc1) {
 		return personneContactdao.save(pc1);
-	}	
+	}
 
 }

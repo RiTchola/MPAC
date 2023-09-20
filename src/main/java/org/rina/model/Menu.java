@@ -1,13 +1,20 @@
 package org.rina.model;
 
-import jakarta.persistence.*;
+import java.time.LocalDate;
+import java.util.List;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Date;
-import java.util.List;
 
 @Data
 @Builder
@@ -21,35 +28,35 @@ public class Menu {
     private Long id;
 	
 	@Column( nullable = false)
-	private Date dateDebutSemaine ;
+	private LocalDate dateDebutSemaine ;
 	
 	@ElementCollection
 	@Column( nullable = false)
-	private List<String> lundi;
+	private List<String> menuLundi;
 
 	@ElementCollection
 	@Column( nullable = false)
-	private List<String> mardi;
+	private List<String> menuMardi;
 	
 	@ElementCollection
 	@Column( nullable = false)
-	private List<String> mercredi;
+	private List<String> menuMercredi;
 	
 	@ElementCollection
 	@Column( nullable = false)
-	private List<String> jeudi;
+	private List<String> menuJeudi;
 	
 	@ElementCollection
 	@Column( nullable = false)
-	private List<String> vendredi;
+	private List<String> menuVendredi;
 	
 	@ElementCollection
 	@Column( nullable = false)
-	private List<String> samedi;
+	private List<String> menuSamedi;
 	
 	@ElementCollection
 	@Column( nullable = false)
-	private List<String> dimanche;
+	private List<String> menuDimanche;
 	
 	/**
 	 * jointure à d'autres classes 
@@ -69,19 +76,19 @@ public class Menu {
 	 * @param dimanche
 	 * @param etablissement
 	 */
-	public Menu(Long id, Date dateDebutSemaine, List<String> lundi, List<String> mardi,
-			List<String> mercredi, List<String> jeudi, List<String> vendredi,
-			List<String> samedi, List<String> dimanche, Etablissement etablissement) {
+	public Menu(Long id, LocalDate dateDebutSemaine, List<String> menuLundi, List<String> menuMardi,
+			List<String> menuMercredi, List<String> menuJeudi, List<String> menuVendredi,
+			List<String> menuSamedi, List<String> menuDimanche, Etablissement etablissement) {
 		
 		this.id = id;
 		this.dateDebutSemaine = dateDebutSemaine;
-		this.lundi = lundi;
-		this.mardi = mardi;
-		this.mercredi = mercredi;
-		this.jeudi = jeudi;
-		this.vendredi = vendredi;
-		this.samedi = samedi;
-		this.dimanche = dimanche;
+		this.menuLundi = menuLundi;
+		this.menuMardi = menuMardi;
+		this.menuMercredi = menuMercredi;
+		this.menuJeudi = menuJeudi;
+		this.menuVendredi = menuVendredi;
+		this.menuSamedi = menuSamedi;
+		this.menuDimanche = menuDimanche;
 		this.etablissement = etablissement;
 	}
 	

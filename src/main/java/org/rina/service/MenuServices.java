@@ -125,11 +125,16 @@ public class MenuServices {
 	 * @return
 	 */
 	public Menu insert(Menu ms1) {
-		return update(ms1);
+		return menudao.save(ms1);
 	}
 
-	public Menu update(Menu ms1) {
-		assert ms1 != null : "Le menu doit exister";
+	/**
+	 * @param id
+	 * @param menu ms1
+	 * @see 
+	 */
+	public Menu updateMenu(Long id, Menu ms1) {
 		return menudao.save(ms1);
-	}	
+	}
+	
 }

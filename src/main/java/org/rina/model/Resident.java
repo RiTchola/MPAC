@@ -1,7 +1,26 @@
 package org.rina.model;
 
-import jakarta.persistence.*;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
+import org.rina.enums.Roles;
+import org.rina.enums.StatutM;
+import org.springframework.format.annotation.NumberFormat;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -9,14 +28,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.rina.enums.Roles;
-import org.rina.enums.StatutM;
-import org.springframework.format.annotation.NumberFormat;
 
 @Data
 @Builder 
@@ -39,7 +50,7 @@ public class Resident {
 	private String prenom;
 
 	@Column(nullable = false)
-	private Date dateNaissance;
+	private LocalDate dateNaissance;
 
 	@Email(message = "{email.nonValide}")
 	@Column(length = 60, nullable = false)
@@ -59,14 +70,14 @@ public class Resident {
 	private StatutM statut;
 
 	@Column(nullable = false)
-	private Date dateEntree;
+	private LocalDate dateEntree;
 
 	@Size(min = 5, max = 400, message = "{}")
 	@Column(nullable = false)
 	private String motifEntree;
 	
 	@Column(nullable = true)
-	private Date dateSortie;
+	private LocalDate dateSortie;
 
 	@Size(min = 5, max = 400, message = "{}")
 	@Column(nullable = true)
@@ -143,8 +154,8 @@ public class Resident {
 	 * @param etablissement
 	 * @param personneContacts
 	 */
-	public Resident(Long id, String nom, String prenom, Date dateNaissance, String email, String tel,
-			String adresse, StatutM statut, Date dateEntree, String motifEntree, Date dateSortie,
+	public Resident(Long id, String nom, String prenom, LocalDate dateNaissance, String email, String tel,
+			String adresse, StatutM statut, LocalDate dateEntree, String motifEntree, LocalDate dateSortie,
 			String motifSortie, String antMedical, String antChirugical, int nbEnfant, String chambre, String etatSante,
 			Boolean actif, User user, MedecinTraitant medecinTraitant, Etablissement etablissement) {
 

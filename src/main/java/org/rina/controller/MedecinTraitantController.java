@@ -13,44 +13,58 @@ import jakarta.validation.Valid;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/doctor")
+@RequestMapping("/medecinTraitant")
 public class MedecinTraitantController {
 
-    @Autowired
-    private MedecinTraitantServices medecinService;
+	@Autowired
+	private MedecinTraitantServices medecinService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<MedecinTraitant> getDoctorById(@PathVariable Long id) {
-        Optional<MedecinTraitant> medecinT = medecinService.findById(id);
-        if (medecinT.isPresent()) {
-        	return ResponseEntity.ok(medecinT.get());
-        }
-        
-        return ResponseEntity.notFound().build();
-    }
+	/**
+     * Récupérer un medecinTraitant par son ID.
+     */
+	@GetMapping("/{id}")
+	public ResponseEntity<MedecinTraitant> getmedecinTById(@PathVariable Long id) {
+		Optional<MedecinTraitant> medecinT = medecinService.findById(id);
+		if (medecinT.isPresent()) {
+			return ResponseEntity.ok(medecinT.get());
+		}
+		
+		else return ResponseEntity.notFound().build();
+	}
 
-    @PostMapping
-    public MedecinTraitant createDoctor(@Valid @RequestBody MedecinTraitantDto medecinDto) {
-        return medecinService.insert(medecinDto.toMedecinTraitant());
-    }
+	/**
+     * Créer un nouveau medecinTraitant.
+     */
+	@PostMapping
+	public ResponseEntity<MedecinTraitant> createmedecinT(@Valid @RequestBody MedecinTraitantDto medecinDto) {
+		//Crée et insère le medecin
+		MedecinTraitant newMedecinT = medecinDto.toMedecinTraitant();
+		medecinService.insert(newMedecinT);
+		
+		//Renvoie la réponse avec le medecin créé et l'ID généré
+        return ResponseEntity.ok(newMedecinT);
+	}
 
-    @PutMapping("/{id}")
-    public ResponseEntity<MedecinTraitant> updateDoctor(@PathVariable Long id, @Valid @RequestBody MedecinTraitantDto medecinDto) {
-        Optional<MedecinTraitant> existingMedecinTraitant = medecinService.findById(id);
-
-        if (existingMedecinTraitant.isPresent()) {
-            MedecinTraitant updatedMedecinTraitant = existingMedecinTraitant.get();
-           updatedMedecinTraitant.setNom(medecinDto.getNom());
-            updatedMedecinTraitant.setPrenom(medecinDto.getPrenom());
-            updatedMedecinTraitant.setEmail(medecinDto.getEmail());
-            updatedMedecinTraitant.setTel1(medecinDto.getTel1());
-           updatedMedecinTraitant.setTel2(medecinDto.getTel2());
-updatedMedecinTraitant.setAdresse(medecinDto.getAdresse());
-            return ResponseEntity.ok(medecinService.update(updatedMedecinTraitant));
-        }
-        
-        return ResponseEntity.notFound().build();
-    }
-
-
+	 /**
+     * Mettre à jour un medecinTraitant existant.
+     */
+	@PutMapping("/{id}")
+	public ResponseEntity<MedecinTraitant> updatemedecinT(@PathVariable Long id, @Valid @RequestBody MedecinTraitantDto medecinDto) {
+		// Vérifie d'abord si le médecin traitant existe en fonction de l'ID
+		Optional<MedecinTraitant> existingMedecinT = medecinService.findById(id);
+		
+		if (existingMedecinT.isPresent()) {
+			
+			// Mise à jour du médecin traitant existant avec les nouvelles valeurs
+			medecinDto.setId(id);
+			MedecinTraitant updateMedecinT = medecinService.updateMedecinTraitant(id, medecinDto.toMedecinTraitant());
+			
+			//Renvoie la réponse avec le medecin mis à jour
+			return ResponseEntity.ok(updateMedecinT);
+		}
+		
+		else return ResponseEntity.notFound().build();	
+	}
+	
+	
 }

@@ -22,24 +22,19 @@ public class ActiviteDto {
 	private String nom;
 	
 	@NotNull
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-ddThh:mm:ss.mmmZ")
 	private Date date;
-
-	@NotNull
-	private Long idEtablissement;
 
 	/**
 	 * @param id
 	 * @param nom
 	 * @param date
-	 * @param idEtablissement
 	 */
-	public ActiviteDto(Long id, String nom, Date date, Long idEtablissement) {
+	public ActiviteDto(Long id, String nom, Date date) {
 		
 		this.id = id;
 		this.nom = nom;
 		this.date = date;
-		this.idEtablissement = idEtablissement;
 	}
 	
 	/**
@@ -57,12 +52,10 @@ public class ActiviteDto {
 	 * @return
 	 */
 	public static ActiviteDto toDto(Activite act) {
-		EtablissementDto eDto = EtablissementDto.toDto(act.getEtablissement());
 		return new ActiviteDto(
 				act.getId(),
 				act.getNom(), 
-				act.getDate(), 
-				eDto.getId() );	
+				act.getDate() );	
 	}	
 	
 }

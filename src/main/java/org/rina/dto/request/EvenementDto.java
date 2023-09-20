@@ -1,14 +1,13 @@
 package org.rina.dto.request;
 
-import java.util.Date;
-
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import java.time.LocalDate;
 
 import org.rina.model.Etablissement;
 import org.rina.model.Evenement;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -23,22 +22,17 @@ public class EvenementDto {
 	
 	@NotNull
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date dateEvent;
-	
-	@NotNull
-	private Long idEtablissement;
+    private LocalDate dateEvent;
 
 	/**
 	 * @param nom
 	 * @param dateEvent
-	 * @param idEtablissement
 	 */
-	public EvenementDto(Long id, String nom, Date dateEvent,Long idEtablissement) {
+	public EvenementDto(Long id, String nom, LocalDate dateEvent) {
 	
 		this.id = id;
 		this.nom = nom;
 		this.dateEvent = dateEvent;
-		this.idEtablissement = idEtablissement;
 	}
 	
 	/**
@@ -57,12 +51,10 @@ public class EvenementDto {
      * @return
      */
     public static EvenementDto toDto(Evenement event) {
-    	EtablissementDto eDto = EtablissementDto.toDto(event.getEtablissement());
     	return new EvenementDto(
     			event.getId(),
     			event.getNom(),
-    			event.getDateEvent(),
-    			eDto.getId() );
+    			event.getDateEvent() );
     }
 
 }

@@ -1,19 +1,17 @@
 package org.rina.dto.request;
 
-import java.util.Date;
+import java.time.LocalDate;
+
+import org.rina.model.Etablissement;
+import org.rina.model.User;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.NumberFormat;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
-import org.rina.model.Etablissement;
-import org.rina.enums.Roles;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.NumberFormat;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
 import lombok.Data;
 
 @Data
@@ -36,7 +34,6 @@ public class EtablissementDto {
 	private String tel1;
     
 	@NumberFormat
-	@NotNull
 	@Size(min = 4, max = 30, message = "{tel.nonValide}")
 	private String tel2;
     
@@ -45,18 +42,17 @@ public class EtablissementDto {
     
 	@NotNull
 	@DateTimeFormat( pattern = "yyyy-MM-dd")
-	private Date dateCreation;
+	private LocalDate dateCreation;
 	
-	@Valid // N�cessaire pour la validation en cascade Etablissement ==>User
-	private UserDto user;
+	@Valid 
+	private String etabUsername;
 	
 	public EtablissementDto() {
-		nom = null;
-		user = new UserDto();
-		user.setRole(Roles.ETABLISSEMENT);
-	}
+		    
+	    }
 
     /**
+     * @param id
      * @param nom
      * @param email1
      * @param email2
@@ -64,10 +60,10 @@ public class EtablissementDto {
      * @param tel2
      * @param adresse
      * @param dateCreation
-     * @param user
+     * @param etabUser
      */
     public EtablissementDto(Long id, String nom, String email1, String email2, String tel1,
-            String tel2, String adresse, Date dateCreation, UserDto user) {
+            String tel2, String adresse, LocalDate dateCreation, String etabUsername) {
 
     	this.id = id;
         this.nom = nom;
@@ -77,26 +73,18 @@ public class EtablissementDto {
         this.tel2 = tel2;
         this.adresse = adresse;
         this.dateCreation = dateCreation;
-        user.setRole(Roles.ETABLISSEMENT);
-		this.user = user;
+		this.etabUsername = etabUsername;
     }
     
-    /**
-	 * Conversion Dto ==> Etablissement
-	 * 
-	 * @return Etablissement sans cryptage du PW
-	 */
-	public Etablissement toEtablissement() {
-		return new Etablissement(id, nom, email1, email2, tel1, tel2, adresse, dateCreation, user.toUser());
-	}
+   
 	
 	/**
-	 * Conversion Dto ==> Etablissement cryte le pw
+	 * Conversion Dto ==> Etablissement 
 	 * 
-	 * @return Etablissement avec le pw crypté
+	 * @return Etablissement 
 	 */
-	public Etablissement toEtablissement(PasswordEncoder encodeur) {
-		return new Etablissement(id, nom, email1, email2, tel1, tel2, adresse, dateCreation, user.toUser(encodeur));
+	public Etablissement toEtablissement(User user) {
+		return new Etablissement(id, nom, email1, email2, tel1, tel2, adresse, dateCreation, user);
 	}
 
 	/**
@@ -106,7 +94,7 @@ public class EtablissementDto {
 	 */
 	public static EtablissementDto toDto(Etablissement etab) {
 		UserDto uDto = UserDto.toUserDto(etab.getUser());
-	    EtablissementDto etabDto = new EtablissementDto(
+	   return new EtablissementDto(
             etab.getId(),
 	    	etab.getNom(),
             etab.getEmail1(),
@@ -115,9 +103,7 @@ public class EtablissementDto {
             etab.getTel2(),
             etab.getAdresse(),
             etab.getDateCreation(),
-            uDto
-	        );
-	     return etabDto;
+            uDto.getUsername() ); 
 	}
 
 }

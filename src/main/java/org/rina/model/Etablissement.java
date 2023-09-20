@@ -1,9 +1,11 @@
 package org.rina.model;
 
+import java.time.LocalDate;
+
+import org.rina.enums.Roles;
+import org.springframework.format.annotation.NumberFormat;
 
 import jakarta.persistence.CascadeType;
-
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,11 +21,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.Date;
-
-import org.rina.enums.Roles;
-import org.springframework.format.annotation.NumberFormat;
 
 @Data
 @Builder
@@ -64,7 +61,7 @@ public class Etablissement {
 	private String adresse;
 	
 	@Column(nullable = false)
-	private Date dateCreation;
+	private LocalDate dateCreation;
 	
 	/**
 	 * jointure à d'autres classes 
@@ -86,7 +83,7 @@ public class Etablissement {
 	 * @param user
 	 */
 	public Etablissement(Long id, String nom, String email1, String email2, String tel1,
-			String tel2, String adresse, Date dateCreation,
+			String tel2, String adresse, LocalDate dateCreation,
 			User user) {
 		
 		assert (user.getRole() == Roles.ETABLISSEMENT);

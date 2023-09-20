@@ -20,7 +20,7 @@ public class RapportVisiteDto {
     private Long id;
     
     @NotNull
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-ddThh:mm:ss.mmmZ")
     private Date dateVisite;
     
     @NotBlank
@@ -29,7 +29,8 @@ public class RapportVisiteDto {
     @NotBlank
     private String prenomResid;
 
-    @NotBlank
+    @NotNull
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateBirthresid;
 
     @NotBlank
@@ -40,9 +41,6 @@ public class RapportVisiteDto {
     
     @NotBlank
     private String commentaire;
-    
-    @NotBlank
-    private Long  idEtablissement;
    
     /**
 	 * @param id
@@ -53,11 +51,9 @@ public class RapportVisiteDto {
 	 * @param nomVisiteur
 	 * @param typeVisiteur
 	 * @param commentaire
-	 * @param idEtablissement
 	 */
 	public RapportVisiteDto(Long id, Date dateVisite, String nomResid, String prenomResid,
-			Date dateBirthresid, String nomVisiteur, TypePersonne typeVisiteur,
-			String commentaire, Long idEtablissement) {
+			Date dateBirthresid, String nomVisiteur, TypePersonne typeVisiteur, String commentaire) {
 		
 		this.id = id;
 		this.dateVisite = dateVisite;
@@ -67,7 +63,6 @@ public class RapportVisiteDto {
 		this.nomVisiteur = nomVisiteur;
 		this.typeVisiteur = typeVisiteur;
 		this.commentaire = commentaire;
-		this.idEtablissement = idEtablissement;
 	}
     
     /**
@@ -95,8 +90,7 @@ public class RapportVisiteDto {
             rapVi.getDateBirthresid(),
             rapVi.getNomVisiteur(),
             rapVi.getTypeVisiteur(),
-            rapVi.getCommentaire(),
-            rapVi.getEtablissement().getId() );
+            rapVi.getCommentaire() );
     }
 
 }

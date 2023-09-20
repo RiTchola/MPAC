@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.rina.model.Menu;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import java.util.Date;
@@ -43,5 +44,9 @@ public interface IMenuJpaDao extends JpaRepository<Menu, Long> {
 	@Query(value = "select m.dimanche from TMENU m where m.semaine=?1", nativeQuery = true)
 	List<String> findMenuForSunday(Date dateDebutSemaine);
 	
+	// Utilisation d'un Query natif pour mettre à jour un menu
+	@Modifying
+	@Query(value = "UPDATE TMENU m SET m =?2 WHERE m.id =?1", nativeQuery = true)
+	void updateMenu(Long id, Menu menu);
 	
 }
