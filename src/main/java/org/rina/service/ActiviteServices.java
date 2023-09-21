@@ -21,15 +21,20 @@ public class ActiviteServices {
 	}
 
 	/**
-	 * @param nom
-	 * @return
+	 * Recherche des activités par nom et date.
+	 * 
+	 * @param nom   Le nom de l'activité à rechercher.
+	 * @param date  La date de l'activité à rechercher.
+	 * @return      Une liste d'activités correspondant aux critères de recherche.
 	 */
 	public List<Activite> findActivityByName(String nom, Date date ) {
 		return activitedao.findActivityByName(nom, date);
 	}
 
 	/**
-	 * @return
+	 * Récupère toutes les activités.
+	 * 
+	 * @return  Une liste contenant toutes les activités.
 	 */
 	public List<Activite> findAll() {
 		return activitedao.findAll();
@@ -37,38 +42,48 @@ public class ActiviteServices {
 	
 
 	/**
-	 * @param id
-	 * @return
+	 * Recherche une activité par son identifiant.
+	 * 
+	 * @param id  L'identifiant de l'activité à rechercher.
+	 * @return    L'activité correspondant à l'identifiant, s'il existe.
 	 */
 	public Optional<Activite> findById(Long id) {
 		return activitedao.findById(id);
 	}
 
 	/**
-	 * @param id
-	 * @return
+	 * Vérifie l'existence d'une activité par son identifiant.
+	 * 
+	 * @param id  L'identifiant de l'activité à vérifier.
+	 * @return    true si l'activité existe, sinon false.
 	 */
 	public boolean existsById(Long id) {
 		return activitedao.existsById(id);
 	}
 
 	/**
-	 * @return
+	 * Compte le nombre total d'activités.
+	 * 
+	 * @return  Le nombre total d'activités.
 	 */
 	public long count() {
 		return activitedao.count();
 	}
 
 	/**
-	 * @param id
+	 * Supprime une activité par son identifiant.
+	 * 
+	 * @param id  L'identifiant de l'activité à supprimer.
 	 */
 	public void deleteById(Long id) {
 		activitedao.deleteById(id);
 	}
 
 	/**
-	 * @param date
-	 * @return
+	 * Recherche des activités par date.
+	 * 
+	 * @param date  La date des activités à rechercher.
+	 * @return      Une liste d'activités correspondant à la date donnée.
 	 */
 	public List<Activite> findActivityByDate(Date date) {
 		return activitedao.findActivityByDate(date);
@@ -76,19 +91,21 @@ public class ActiviteServices {
 
 	
 	/**
-	 * Ajout d'une nouvelle Activite
+	 * Ajoute une nouvelle activité.
 	 * 
-	 * @param activite a1
-	 * @return
+	 * @param a1  L'activité à ajouter.
+	 * @return    L'activité ajoutée.
 	 */
 	public Activite insert(Activite a1) {
 		return activitedao.save(a1);
 	}
 
 	/**
-	 * @param id
-	 * @param activite a1
-	 * @see 
+	 * Met à jour une activité existante.
+	 * 
+	 * @param id   L'identifiant de l'activité à mettre à jour.
+	 * @param a1   Les données de l'activité mise à jour.
+	 * @return     L'activité mise à jour.
 	 */
 	public Activite updateActivite(Long id, Activite a1) {
 		return activitedao.save(a1);
