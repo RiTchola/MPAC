@@ -75,8 +75,6 @@ public class EtablissementDto {
         this.dateCreation = dateCreation;
 		this.etabUsername = etabUsername;
     }
-    
-   
 	
 	/**
 	 * Conversion Dto ==> Etablissement 

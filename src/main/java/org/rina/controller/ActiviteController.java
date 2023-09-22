@@ -1,7 +1,10 @@
 package org.rina.controller;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.rina.controller.exceptions.NotExistException;
-import org.rina.dto.response.ActiviteResponseDto;
 import org.rina.dto.request.ActiviteDto;
 import org.rina.dto.response.ActiviteResponseDto;
 import org.rina.model.Activite;
@@ -10,11 +13,16 @@ import org.rina.service.ActiviteServices;
 import org.rina.service.EtablissementServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import jakarta.validation.Valid;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/activite")
