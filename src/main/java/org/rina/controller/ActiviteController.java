@@ -1,6 +1,7 @@
 package org.rina.controller;
 
 import org.rina.controller.exceptions.NotExistException;
+import org.rina.dto.response.ActiviteResponseDto;
 import org.rina.dto.request.ActiviteDto;
 import org.rina.model.Activite;
 import org.rina.model.Etablissement;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/activite")
@@ -22,27 +24,33 @@ public class ActiviteController {
     @Autowired
     private EtablissementServices etablissementService;
 
-    /**
-     * Récupérer tous les activités.
-     */
     @GetMapping
-    public ResponseEntity<List<Activite>> getAllActivity() {
+    public ResponseEntity<List<ActiviteResponseDto>> getAllActivity() {
         // Récupère la liste de toutes les activités
         List<Activite> activities = activiteService.findAll();
+
+        // Convertit la liste d'activités en liste d'ActiviteResponseDto
+        List<ActiviteResponseDto> actDtoList = activities.stream()
+                .map(ActiviteResponseDto::new)
+                .collect(Collectors.toList());
+
         // Renvoie la liste des activités en réponse
-        return ResponseEntity.ok(activities);
+        return ResponseEntity.ok(actDtoList);
     }
 
     /**
      * Récupérer une activité par son ID.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Activite> getActivityById(@PathVariable Long id) {
+    public ResponseEntity<ActiviteResponseDto> getActivityById(@PathVariable Long id) {
         // Recherche une activité par son ID
-        Optional<Activite> activite = activiteService.findById(id);
-        // Si l'activité existe, renvoie-la en réponse, sinon renvoie une réponse 404 (non trouvée)
-        if (activite.isPresent()) {
-            return ResponseEntity.ok(activite.get());
+        Optional<Activite> existingActivite = activiteService.findById(id);
+
+        // Si l'activité existe, renvoie-la en réponse sous forme d'ActiviteResponseDto
+        if (existingActivite.isPresent()) {
+            Activite activite = existingActivite.get();
+            ActiviteResponseDto actDto = new ActiviteResponseDto(activite);
+            return ResponseEntity.ok(actDto);
         } else {
             return ResponseEntity.notFound().build();
         }
