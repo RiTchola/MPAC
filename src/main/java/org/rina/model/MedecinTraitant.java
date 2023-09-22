@@ -9,70 +9,68 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@Builder
-@NoArgsConstructor
-@Table(name = "TMEDECINTRAITANT", uniqueConstraints = @UniqueConstraint(columnNames = { "numInami" }))
-@Entity
+@Data 
+@Builder 
+@NoArgsConstructor 
+@Table(name = "TMEDECINTRAITANT", uniqueConstraints = @UniqueConstraint(columnNames = { "numInami" })) 
+@Entity 
 public class MedecinTraitant {
-	
-	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY) 
     private Long id;
-	
-	@Column(length = 50, nullable = false)
-	private String numInami;
 
-	@Size(min = 1, max = 40, message = "{elem.nom}")
-	@Column(length = 40, nullable = false)
-	private String nom;
-	
-	@Size(min = 1, max = 40, message = "{elem.prenom}")
-	@Column(length = 40, nullable = false)
-	private String prenom;
+    @Column(length = 50, nullable = false) 
+    private String numInami;
 
-	@Email(message = "{email.nonValide}")
-	@Column(length = 40, nullable = false)
-	@Size(min = 4, max = 40, message = "{}")
-	private String email;
+    @Size(min = 1, max = 40, message = "{elem.nom}") 
+    @Column(length = 40, nullable = false) 
+    private String nom;
 
-	@NumberFormat
-	@Column(length = 50, nullable = false)
-	@Size(min = 4, max = 30, message = "{tel.nonValide}")
-	private String tel1;
-	
-	@NumberFormat
-	@Column(length = 50, nullable = true)
-	@Size(min = 4, max = 30, message = "{tel.nonValide}")
-	private String tel2;
-	
-	@Column(nullable = false)
-	@Size(min = 10, max = 200, message = "{}")
-	private String adresse;
-	
-	
-	/**
-	 * Construction 
-	 *
-	 * @param id
-	 * @param numInami
-	 * @param nom
-	 * @param prenom
-	 * @param email
-	 * @param tel1
-	 * @param tel2
-	 * @param adresse
-	 */
-	public MedecinTraitant( Long id, String numInami, String nom, String prenom,
-			String email, String tel1, String tel2, String adresse) {
-		
-		this.id = id;
-		this.numInami = numInami;
-		this.nom = nom;
-		this.prenom = prenom;
-		this.email = email;
-		this.tel1 = tel1;
-		this.tel2 = tel2;
-		this.adresse = adresse;	
-	}
+    @Size(min = 1, max = 40, message = "{elem.prenom}") 
+    @Column(length = 40, nullable = false) 
+    private String prenom;
+
+    @Email(message = "{email.nonValide}") 
+    @Column(length = 40, nullable = false) 
+    @Size(min = 4, max = 40, message = "{}") 
+    private String email;
+
+    @NumberFormat 
+    @Column(length = 50, nullable = false) 
+    @Size(min = 4, max = 30, message = "{tel.nonValide}") 
+    private String tel1;
+
+    @NumberFormat 
+    @Column(length = 50, nullable = true) 
+    @Size(min = 4, max = 30, message = "{tel.nonValide}") 
+    private String tel2;
+
+    @Column(nullable = false) 
+    @Size(min = 10, max = 200, message = "{}") 
+    private String adresse;
+
+    /**
+     * Constructeur avec des arguments 
+     * @param id L'identifiant du médecin traitant
+     * @param numInami Le numéro Inami du médecin traitant
+     * @param nom Le nom du médecin traitant 
+     * @param prenom Le prénom du médecin traitant
+     * @param email L'adresse email du médecin traitant 
+     * @param tel1 Le numéro de téléphone principal du médecin traitant
+     * @param tel2 Le numéro de téléphone secondaire du médecin traitant 
+     * @param adresse L'adresse du médecin traitant 
+     */
+    public MedecinTraitant(Long id, String numInami, String nom, String prenom,
+            String email, String tel1, String tel2, String adresse) {
+
+        this.id = id;
+        this.numInami = numInami;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.tel1 = tel1;
+        this.tel2 = tel2;
+        this.adresse = adresse;
+    }
 }
