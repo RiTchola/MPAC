@@ -19,56 +19,56 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@Builder
-@NoArgsConstructor
-@Entity
-@Table(name = "TFICHIER")
+@Data 
+@Builder 
+@NoArgsConstructor 
+@Entity 
+@Table(name = "TFICHIER") 
 public class Fichier {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
 
-	@Column(length = 50, nullable = false)
-	private TypeFichier typeF;
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY) 
+    private Long id;
 
-	@Column(nullable = false)
-	private LocalDate date;
+    @Column(length = 50, nullable = false) 
+    private TypeFichier typeF;
 
-	//Chemin vers le fichier sur le serveur
-	@Column(nullable = false)
-	private String fileURL;
+    @Column(nullable = false) 
+    private LocalDate date;
 
-	@Lob
-    @Basic(fetch = FetchType.LAZY)
+    // Chemin vers le fichier sur le serveur
+    @Column(nullable = false) 
+    private String fileURL;
+
+    @Lob
+    @Basic(fetch = FetchType.LAZY) 
     private byte[] contenu;
-	
-	/**
-	 * jointure à d'autres classes
-	 */
-	@ManyToOne
-	@JoinColumn(name = "FKPERSONNECONTACT", nullable = false)
-	private PersonneContact personneContact;
 
-	/**
-	 * Construction
-	 *
-	 * @param id
-	 * @param typeF
-	 * @param date
-	 * @param fileURL
-	 * @param personneContact
-	 */
-	public Fichier(Long id, TypeFichier typeF, LocalDate date, String fileURL,  byte[] contenu,
-			PersonneContact personneContact) {
+    /**
+     * jointure à d'autres classes
+     */
+    @ManyToOne 
+    @JoinColumn(name = "FKPERSONNECONTACT", nullable = false) 
+    private PersonneContact personneContact;
 
-		this.id = id;
-		this.typeF = typeF;
-		this.date = date;
-		this.fileURL = fileURL;
-		this.contenu = contenu;
-		this.personneContact = personneContact;
-	}
+    /**
+     * Constructeur avec des arguments 
+     * @param id L'identifiant du fichier
+     * @param typeF Le type de fichier
+     * @param date La date du fichier 
+     * @param fileURL Le chemin vers le fichier sur le serveur
+     * @param contenu Le contenu du fichier
+     * @param personneContact La personne de contact liée à ce fichier 
+     */
+    public Fichier(Long id, TypeFichier typeF, LocalDate date, String fileURL, byte[] contenu,
+            PersonneContact personneContact) {
 
+        this.id = id;
+        this.typeF = typeF;
+        this.date = date;
+        this.fileURL = fileURL;
+        this.contenu = contenu;
+        this.personneContact = personneContact;
+    }
+    
 }

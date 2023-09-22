@@ -3,9 +3,9 @@ package org.rina.dto.request;
 import java.io.IOException;
 import java.time.LocalDate;
 
-import org.rina.enums.TypeFichier;
 import org.rina.model.Fichier;
 import org.rina.model.PersonneContact;
+import org.rina.enums.TypeFichier;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,17 +31,19 @@ public class FichierDto {
 	private String fileUrl;
 	
 	@NotNull
-	//représente le fichier téléchargé
+	// Représente le fichier téléchargé
     private MultipartFile fichierIn;
 
 	/**
-	 * @param id
-	 * @param typeF
-	 * @param date
-	 * @param document
+	 * Constructeur avec des arguments pour initialiser les champs
+	 * 
+	 * @param id       L'identifiant du fichier
+	 * @param typeF    Le type de fichier
+	 * @param date     La date du fichier
+	 * @param fileUrl  L'URL du fichier
+	 * @param fichierIn Le fichier téléchargé
 	 */
 	public FichierDto(Long id, TypeFichier typeF, LocalDate date, String fileUrl, MultipartFile fichierIn) {
-		
 		this.id = id;
 		this.typeF = typeF;
 		this.date = date;
@@ -50,28 +52,14 @@ public class FichierDto {
 	}
 	
 	/**
-	 * Conversion Dto ==> Fichier
-	 * @param personc
-	 * @return
-	 * @throws IOException 
+	 * Conversion de l'objet FichierDto en Fichier en utilisant l'objet PersonneContact
+	 * 
+	 * @param persC La personne de contact liée à ce fichier
+	 * @return Une instance de la classe Fichier
+	 * @throws IOException En cas d'erreur d'entrée/sortie lors de la lecture du fichier
 	 */
 	public Fichier toFichier(PersonneContact persC) throws IOException {
 		return new Fichier(id, typeF, date, fileUrl, fichierIn.getBytes(), persC);
-		
 	}
-
-    /**
-     * Conversion Fichier ==> Dto
-     * @param fichier
-     * @return
-     */
-    public static FichierDto toDto(Fichier fichier) {
-    	return new FichierDto(
-            fichier.getId(),
-            fichier.getTypeF(),
-            fichier.getDate(),
-            fichier.getFileURL(),
-            null);
-    }
 	
 }
