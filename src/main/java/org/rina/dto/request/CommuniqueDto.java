@@ -35,11 +35,12 @@ public class CommuniqueDto {
 	private List<String> fileURL;
 
 	/**
-	 * @param id
-	 * @param date
-	 * @param titre
-	 * @param contenu
-	 * @param fileURL
+	 * Constructeur avec des arguments pour initialiser les champs
+	 * @param id L'identifiant du communiqué
+	 * @param date La date du communiqué
+	 * @param titre Le titre du communiqué
+	 * @param contenu Le contenu du communiqué
+	 * @param fileURL La liste des chemins de fichiers liés au communiqué
 	 */
 	public CommuniqueDto(Long id, LocalDate date, String titre, String contenu, List<String> fileURL) {
 		
@@ -51,28 +52,25 @@ public class CommuniqueDto {
 	}
 	
 	/**
-	 * Conversion Dto ==> Communique
-	 * @param etab
-	 * @return
+	 * Conversion de l'objet CommuniqueDto en Communique en utilisant l'objet Etablissement
+	 * @param etab L'établissement lié à ce communiqué
+	 * @return Une instance de la classe Communique
 	 */
 	public Communique toCommunique (Etablissement etab) {
 		return new Communique(id, date, titre, contenu, fileURL, etab);
 	}
 	
-	 /**
-	  * Conversion Communique ==> Dto
-	  * @param communique
-	  * @return
-	  */
-	public static CommuniqueDto toDto(Communique com) {
+	/**
+	 * Conversion de l'objet Communique en CommuniqueDto
+	 * @param communique L'objet Communique à convertir
+	 * @return Une instance de la classe CommuniqueDto
+	 */
+	public static CommuniqueDto toDto(Communique communique) {
 		 return new CommuniqueDto(
-				 com.getId(),
-				 com.getDate(),
-				 com.getTitre(),
-				 com.getContenu(),
-				 com.getFileURL() );
+				 communique.getId(),
+				 communique.getDate(),
+				 communique.getTitre(),
+				 communique.getContenu(),
+				 communique.getFileURL() );
 	 }
-
-	
-	 
 }
