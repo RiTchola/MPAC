@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class CommuniqueResponseDto {
-	
+
     private Long id;
     
     private LocalDate date;
@@ -29,5 +29,5 @@ public class CommuniqueResponseDto {
         this.contenu = communique.getContenu();
         this.fileURL = communique.getFileURL();
     }
-}
 
+}
