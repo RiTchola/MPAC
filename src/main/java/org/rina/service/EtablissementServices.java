@@ -1,7 +1,6 @@
 package org.rina.service;
 
 import java.util.List;
-
 import java.util.Optional;
 
 import org.rina.dao.IEtablissementJpaDao;
@@ -14,103 +13,109 @@ import jakarta.transaction.Transactional;
 @Transactional
 @Service
 public class EtablissementServices {
-	
+
 	private IEtablissementJpaDao etablissementdao;
-		
-		public EtablissementServices(IEtablissementJpaDao etablissementdao) {
-			this.etablissementdao = etablissementdao;
-		}
 
-		/**
-		 * @param etablissement
-		 * @return
-		 */
-		public List<Resident> findAllResid() {
-			return etablissementdao.findAllResid();
-		}
+	public EtablissementServices(IEtablissementJpaDao etablissementdao) {
+		this.etablissementdao = etablissementdao;
+	}
 
-		/**
-		 * @param etablissement
-		 * @return
-		 */
-		public int countAllResid() {
-			return etablissementdao.countAllResid();
-		}
+	/**
+	 * Récupère la liste de tous les résidents de l'établissement.
+	 * 
+	 * @return Une liste de résidents.
+	 */
+	public List<Resident> findAllResid() {
+		return etablissementdao.findAllResid();
+	}
 
-		/**
-		 * @param nom
-		 * @param adresse
-		 * @return
-		 */
-		public Optional<Etablissement> findByNameAndAdresse(String nom, String adresse) {
-			return etablissementdao.findByNameAndAdresse(nom, adresse);
-		}
+	/**
+	 * Compte le nombre total de résidents dans l'établissement.
+	 * 
+	 * @return Le nombre total de résidents.
+	 */
+	public int countAllResid() {
+		return etablissementdao.countAllResid();
+	}
 
-		/**
-		 * @param username
-		 * @return
-		 */
-		public Optional<Etablissement> findByUsername(String username) {
-			return etablissementdao.findByUsername(username);
-		}
+	/**
+	 * Recherche un établissement par nom et adresse.
+	 * 
+	 * @param nom     Le nom de l'établissement à rechercher.
+	 * @param adresse L'adresse de l'établissement à rechercher.
+	 * @return L'établissement correspondant aux critères de recherche, s'il existe.
+	 */
+	public Optional<Etablissement> findByNameAndAdresse(String nom, String adresse) {
+		return etablissementdao.findByNameAndAdresse(nom, adresse);
+	}
 
-		/**
-		 * @return
-		 */
-		public List<Etablissement> findAll() {
-			return etablissementdao.findAll();
-		}
+	/**
+	 * Recherche un établissement par nom d'utilisateur.
+	 * 
+	 * @param username Le nom d'utilisateur de l'établissement à rechercher.
+	 * @return L'établissement correspondant au nom d'utilisateur, s'il existe.
+	 */
+	public Optional<Etablissement> findByUsername(String username) {
+		return etablissementdao.findByUsername(username);
+	}
 
-		/**
-		 * @param username
-		 * @return
-		 */
-		public boolean existEtabByUserName(String username) {
-			return etablissementdao.existEtabByUserName(username);
-		}
+	/**
+	 * Vérifie l'existence d'un établissement par nom d'utilisateur.
+	 * 
+	 * @param username Le nom d'utilisateur de l'établissement à vérifier.
+	 * @return true si l'établissement existe, sinon false.
+	 */
+	public boolean existEtabByUserName(String username) {
+		return etablissementdao.existEtabByUserName(username);
+	}
 
-		/**
-		 * @param id
-		 * @return
-		 */
-		public Optional<Etablissement> findById(Long id) {
-			return etablissementdao.findById(id);
-		}
+	/**
+	 * Recherche un établissement par son identifiant.
+	 * 
+	 * @param id L'identifiant de l'établissement à rechercher.
+	 * @return L'établissement correspondant à l'identifiant, s'il existe.
+	 */
+	public Optional<Etablissement> findById(Long id) {
+		return etablissementdao.findById(id);
+	}
 
-		/**
-		 * @param id
-		 * @return
-		 */
-		public boolean existsById(Long id) {
-			return etablissementdao.existsById(id);
-		}
-		
-		/**
-		 * @return
-		 * @see 
-		 */
-		public long count() {
-			return etablissementdao.count();
-		}
+	/**
+	 * Vérifie l'existence d'un établissement par son identifiant.
+	 * 
+	 * @param id L'identifiant de l'établissement à vérifier.
+	 * @return true si l'établissement existe, sinon false.
+	 */
+	public boolean existsById(Long id) {
+		return etablissementdao.existsById(id);
+	}
 
-		/**
-		 * Ajout d'un nouvel Etablissement
-		 * 
-		 * @param etablissement et1
-		 * @return
-		 */
-		public Etablissement insert(Etablissement et1) {
-			return etablissementdao.save(et1);
-		}
+	/**
+	 * Compte le nombre total d'établissements.
+	 * 
+	 * @return Le nombre total d'établissements.
+	 */
+	public long count() {
+		return etablissementdao.count();
+	}
 
-		/**
-		 * @param id
-		 * @param etablissement et1
-		 * @see 
-		 */
-		public Etablissement updateEtablissement(Long id, Etablissement et1) {
-			return etablissementdao.save(et1);
-		}
-		
+	/**
+	 * Ajout d'un nouvel établissement.
+	 * 
+	 * @param et1 L'établissement à ajouter.
+	 * @return L'établissement ajouté.
+	 */
+	public Etablissement insert(Etablissement et1) {
+		return etablissementdao.save(et1);
+	}
 
+	/**
+	 * Met à jour un établissement existant.
+	 * 
+	 * @param id  L'identifiant de l'établissement à mettre à jour.
+	 * @param et1 Les données de l'établissement mis à jour.
+	 * @return L'établissement mis à jour.
+	 */
+	public Etablissement updateEtablissement(Long id, Etablissement et1) {
+		return etablissementdao.save(et1);
+	}
 }

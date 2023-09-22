@@ -22,80 +22,79 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
-@Builder
-@NoArgsConstructor
-@Entity
-@Table(name="TETABLISSEMENT", uniqueConstraints = @UniqueConstraint(columnNames = { "nom", "adresse" }))
+@Data 
+@Builder // Génère un constructeur de type Builder
+@NoArgsConstructor 
+@Entity 
+@Table(name = "TETABLISSEMENT", uniqueConstraints = @UniqueConstraint(columnNames = { "nom", "adresse" })) 
 public class Etablissement {
-	
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY) 
     private Long id;
-    
+
+    @Column(length = 50, nullable = false) // Spécifie les propriétés de la colonne nom
+    private String nom;
+
+    @Email(message = "{email.nonValide}")
+    @Column(length = 40, nullable = false)
+    @Size(min = 4, max = 40)
+    private String email1;
+
+    @Email(message = "{email.nonValide}")
+    @Column(length = 40, nullable = false)
+    @Size(min = 4, max = 40)
+    private String email2;
+
+    @NumberFormat
     @Column(length = 50, nullable = false)
-	private String nom;
-	
-	@Email(message = "{email.nonValide}")
-	@Column(length = 40, nullable = false)
-	@Size(min = 4, max = 40)
-	private String email1;
-	
-	@Email(message = "{email.nonValide}")
-	@Column(length = 40, nullable = false)
-	@Size(min = 4, max = 40)
-	private String email2;
+    @Size(min = 4, max = 30, message = "{tel.nonValide}")
+    private String tel1;
 
-	@NumberFormat
-	@Column(length = 50, nullable = false)
-	@Size(min = 4, max = 30, message = "{tel.nonValide}")
-	private String tel1;
-	
-	@NumberFormat
-	@Column(length = 50, nullable = false)
-	@Size(min = 4, max = 30, message = "{tel.nonValide}")
-	private String tel2;
-	
-	@Column(nullable = false, updatable = true)
-	@Size(min = 10, max = 125, message = "{}")
-	private String adresse;
-	
-	@Column(nullable = false)
-	private LocalDate dateCreation;
-	
-	/**
-	 * jointure à d'autres classes 
-	 */
-	
-	@Getter
-	@OneToOne(optional = false, cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "FKUSER", unique = true, nullable = false, updatable = false)
-	private User user;
+    @NumberFormat
+    @Column(length = 50, nullable = false)
+    @Size(min = 4, max = 30, message = "{tel.nonValide}")
+    private String tel2;
 
-	
-	/**
-	 * Construction 
-	 * @param nom
-	 * @param email1
-	 * @param tel1
-	 * @param adresse
-	 * @param dateCreation
-	 * @param user
-	 */
-	public Etablissement(Long id, String nom, String email1, String email2, String tel1,
-			String tel2, String adresse, LocalDate dateCreation,
-			User user) {
-		
-		assert (user.getRole() == Roles.ETABLISSEMENT);
-		this.id = id;
-		this.nom = nom;
-		this.email1 = email1;
-		this.email2 = email2;
-		this.tel1 = tel1;
-		this.tel2 = tel2;
-		this.adresse = adresse;
-		this.dateCreation = dateCreation;
-		this.user = user;
-	}
-	
+    @Column(nullable = false, updatable = true)
+    @Size(min = 10, max = 125, message = "{}")
+    private String adresse;
+
+    @Column(nullable = false)
+    private LocalDate dateCreation;
+
+    /**
+     * jointure à d'autres classes
+     */
+    @Getter
+    @OneToOne(optional = false, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "FKUSER", unique = true, nullable = false, updatable = false)
+    private User user;
+
+    /**
+     * Construction
+     * @param nom Le nom de l'établissement
+     * @param email1 L'email 1 
+     * @param email2 L'email 2 
+     * @param tel1 Le numéro de téléphone 1 
+     * @param tel2 Le numéro de téléphone 2 
+     * @param adresse L'adresse de l'établissement
+     * @param dateCreation La date de création de l'établissement
+     * @param user L'utilisateur lié à cet établissement
+     */
+    public Etablissement(Long id, String nom, String email1, String email2, String tel1,
+            String tel2, String adresse, LocalDate dateCreation,
+            User user) {
+        
+        assert (user.getRole() == Roles.ETABLISSEMENT);
+        this.id = id;
+        this.nom = nom;
+        this.email1 = email1;
+        this.email2 = email2;
+        this.tel1 = tel1;
+        this.tel2 = tel2;
+        this.adresse = adresse;
+        this.dateCreation = dateCreation;
+        this.user = user;
+    }
 }

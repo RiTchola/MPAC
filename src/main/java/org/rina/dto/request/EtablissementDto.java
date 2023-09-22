@@ -41,7 +41,7 @@ public class EtablissementDto {
 	private String adresse;
     
 	@NotNull
-	@DateTimeFormat( pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dateCreation;
 	
 	@Valid 
@@ -49,59 +49,42 @@ public class EtablissementDto {
 	
 	public EtablissementDto() {
 		    
-	    }
+	}
 
-    /**
-     * @param id
-     * @param nom
-     * @param email1
-     * @param email2
-     * @param tel1
-     * @param tel2
-     * @param adresse
-     * @param dateCreation
-     * @param etabUser
-     */
-    public EtablissementDto(Long id, String nom, String email1, String email2, String tel1,
-            String tel2, String adresse, LocalDate dateCreation, String etabUsername) {
+	/**
+	 * Constructeur avec des arguments pour initialiser les champs
+	 * 
+	 * @param id           L'identifiant de l'établissement
+	 * @param nom          Le nom de l'établissement
+	 * @param email1       L'adresse email principale
+	 * @param email2       L'adresse email secondaire
+	 * @param tel1         Le numéro de téléphone principal
+	 * @param tel2         Le numéro de téléphone secondaire
+	 * @param adresse      L'adresse de l'établissement
+	 * @param dateCreation La date de création de l'établissement
+	 * @param etabUsername Le nom d'utilisateur de l'établissement
+	 */
+	public EtablissementDto(Long id, String nom, String email1, String email2, String tel1,
+			String tel2, String adresse, LocalDate dateCreation, String etabUsername) {
 
-    	this.id = id;
-        this.nom = nom;
-        this.email1 = email1;
-        this.email2 = email2;
-        this.tel1 = tel1;
-        this.tel2 = tel2;
-        this.adresse = adresse;
-        this.dateCreation = dateCreation;
+		this.id = id;
+		this.nom = nom;
+		this.email1 = email1;
+		this.email2 = email2;
+		this.tel1 = tel1;
+		this.tel2 = tel2;
+		this.adresse = adresse;
+		this.dateCreation = dateCreation;
 		this.etabUsername = etabUsername;
-    }
+	}
 	
 	/**
-	 * Conversion Dto ==> Etablissement 
+	 * Conversion de l'objet EtablissementDto en Etablissement en utilisant l'objet User
 	 * 
-	 * @return Etablissement 
+	 * @param user L'utilisateur associé à cet établissement
+	 * @return Une instance de la classe Etablissement
 	 */
 	public Etablissement toEtablissement(User user) {
 		return new Etablissement(id, nom, email1, email2, tel1, tel2, adresse, dateCreation, user);
 	}
-
-	/**
-	 * Conversion Etablissement ==> Dto
-	 * @param etab
-	 * @return
-	 */
-	public static EtablissementDto toDto(Etablissement etab) {
-		UserDto uDto = UserDto.toUserDto(etab.getUser());
-	   return new EtablissementDto(
-            etab.getId(),
-	    	etab.getNom(),
-            etab.getEmail1(),
-            etab.getEmail2(),
-            etab.getTel1(),
-            etab.getTel2(),
-            etab.getAdresse(),
-            etab.getDateCreation(),
-            uDto.getUsername() ); 
-	}
-
 }
