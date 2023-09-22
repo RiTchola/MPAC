@@ -11,10 +11,15 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class CommuniqueResponseDto {
+	
     private Long id;
+    
     private LocalDate date;
+    
     private String titre;
+    
     private String contenu;
+    
     private List<String> fileURL;
 
     public CommuniqueResponseDto(Communique communique) {
