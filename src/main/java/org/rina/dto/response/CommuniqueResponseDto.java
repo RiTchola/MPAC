@@ -13,13 +13,13 @@ import lombok.NoArgsConstructor;
 public class CommuniqueResponseDto {
 
     private Long id;
-
+    
     private LocalDate date;
-
+    
     private String titre;
-
+    
     private String contenu;
-
+    
     private List<String> fileURL;
 
     public CommuniqueResponseDto(Communique communique) {
@@ -29,4 +29,5 @@ public class CommuniqueResponseDto {
         this.contenu = communique.getContenu();
         this.fileURL = communique.getFileURL();
     }
+
 }

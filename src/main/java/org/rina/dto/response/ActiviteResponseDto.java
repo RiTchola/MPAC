@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class ActiviteResponseDto {
-
+    
     private Long id;
-
+    
     private String nom;
-
+  
     private Date date;
 
     public ActiviteResponseDto(Activite activite) {

@@ -1,6 +1,7 @@
 package org.rina.controller;
 
 import org.rina.controller.exceptions.NotExistException;
+import org.rina.dto.response.ActiviteResponseDto;
 import org.rina.dto.request.ActiviteDto;
 import org.rina.dto.response.ActiviteResponseDto;
 import org.rina.model.Activite;
@@ -24,9 +25,6 @@ public class ActiviteController {
     @Autowired
     private EtablissementServices etablissementService;
 
-    /**
-     * Récupérer tous les activités.
-     */
     @GetMapping
     public ResponseEntity<List<ActiviteResponseDto>> getAllActivity() {
         // Récupère la liste de toutes les activités
@@ -47,7 +45,8 @@ public class ActiviteController {
     @GetMapping("/{id}")
     public ResponseEntity<ActiviteResponseDto> getActivityById(@PathVariable Long id) {
         // Recherche une activité par son ID
-    	Optional<Activite> existingActivite = activiteService.findById(id);
+
+        Optional<Activite> existingActivite = activiteService.findById(id);
 
         // Si l'activité existe, renvoie-la en réponse sous forme d'ActiviteResponseDto
         if (existingActivite.isPresent()) {
