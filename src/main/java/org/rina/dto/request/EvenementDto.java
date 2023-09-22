@@ -25,36 +25,24 @@ public class EvenementDto {
     private LocalDate dateEvent;
 
 	/**
-	 * @param nom
-	 * @param dateEvent
+	 * Constructeur avec des arguments pour initialiser les champs
+	 * @param id L'identifiant de l'événement
+	 * @param nom Le nom de l'événement
+	 * @param dateEvent La date de l'événement
 	 */
 	public EvenementDto(Long id, String nom, LocalDate dateEvent) {
-	
 		this.id = id;
 		this.nom = nom;
 		this.dateEvent = dateEvent;
 	}
 	
 	/**
-	 * Conversion Dto ==> Evenement
-	 * @param etab
-	 * @return
+	 * Conversion de l'objet EvenementDto en Evenement en utilisant l'objet Etablissement
+	 * @param etab L'établissement lié à cet événement
+	 * @return Une instance de la classe Evenement
 	 */
 	public Evenement toEvenement(Etablissement etab) {
 		return new Evenement(id, nom, dateEvent, etab);
 	}
     
-    
-    /**
-     * Conversion Evenement ==> Dto
-     * @param evenement
-     * @return
-     */
-    public static EvenementDto toDto(Evenement event) {
-    	return new EvenementDto(
-    			event.getId(),
-    			event.getNom(),
-    			event.getDateEvent() );
-    }
-
 }
