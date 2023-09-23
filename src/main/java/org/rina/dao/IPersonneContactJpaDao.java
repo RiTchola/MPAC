@@ -22,7 +22,7 @@ public interface IPersonneContactJpaDao extends JpaRepository<PersonneContact, L
 	List<PersonneContact> findAllPersonContactToResid(Long idResid);
 	
 	// Utilisation d'un Query natif pour avoir une personne de contact grace au username
-	@Query(value = "select * from TPERSONNECONTACT p where fkuser=?1", nativeQuery = true)
+	@Query(value = "select * from TPERSONNECONTACT p where p.EMAIL=?1", nativeQuery = true)
 	Optional<PersonneContact> findByUsername(String username);
 
 	// Utilisation d'un Query natif pour savoir si une personne de contact existe grace au username

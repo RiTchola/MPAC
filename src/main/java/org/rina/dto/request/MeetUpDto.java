@@ -1,5 +1,6 @@
 package org.rina.dto.request;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import jakarta.validation.constraints.NotBlank;
@@ -36,7 +37,7 @@ public class MeetUpDto {
 	private String prenomResid;
 
 	@NotNull
-	private Date dateBirthresid;
+	private LocalDate dateBirthresid;
 
 	@NotNull
 	private int nbParticipants;
@@ -47,19 +48,22 @@ public class MeetUpDto {
 	@NotBlank
 	private String motifRefus;
 
-
 	/**
-	 * @param id
-	 * @param typeM
-	 * @param motifDemande
-	 * @param date
-	 * @param nbParticipants
-	 * @param etat
-	 * @param motifRefus
-	 * @param resident
+	 * Constructeur avec des arguments pour initialiser les champs
+	 * 
+	 * @param id             L'identifiant du meetup
+	 * @param typeM          Le type du meetup
+	 * @param motifDemande   Le motif de la demande
+	 * @param date           La date du meetup
+	 * @param nomResid       Le nom du résident
+	 * @param prenomResid    Le prénom du résident
+	 * @param dateBirthresid La date de naissance du résident
+	 * @param nbParticipants Le nombre de participants
+	 * @param etat           L'état du meetup
+	 * @param motifRefus     Le motif de refus
 	 */
 	public MeetUpDto(Long id, TypeMeetUp typeM, String motifDemande, Date date, String nomResid, String prenomResid,
-			Date dateBirthresid, int nbParticipants, Etat etat, String motifRefus) {
+			LocalDate dateBirthresid, int nbParticipants, Etat etat, String motifRefus) {
 
 		this.id = id;
 		this.typeM = typeM;
@@ -74,36 +78,16 @@ public class MeetUpDto {
 	}
 
 	/**
-	 * Conversion Dto ==> MeetUp
+	 * Conversion de l'objet MeetUpDto en MeetUp en utilisant l'objet Etablissement et PersonneContact
 	 * 
-	 * @param etab
-	 * @param persC
-	 * @return
+	 * @param etab L'établissement lié à ce meetup
+	 * @param persC La personne de contact liée à ce meetup
+	 * @return Une instance de la classe MeetUp
 	 */
 	public MeetUp toMeetUp(Etablissement etab, PersonneContact persC) {
 		return new MeetUp(id, typeM, motifDemande, date, nomResid, prenomResid, dateBirthresid,
 				nbParticipants, etat, motifRefus, persC, etab);
 	}
 
-	/**
-	 * Conversion MeetUp ==> Dto
-	 * 
-	 * @param meet
-	 * @return
-	 */
-	public static MeetUpDto toDto(MeetUp meet) {
-		return new MeetUpDto(
-				meet.getId(), 
-				meet.getTypeM(), 
-				meet.getMotifDemande(), 
-				meet.getDate(), 
-				meet.getNomResid(),
-				meet.getPrenomResid(), 
-				meet.getDateBirthresid(), 
-				meet.getNbParticipants(), 
-				meet.getEtat(),
-				meet.getMotifRefus() );
-
-	}
-
 }
+

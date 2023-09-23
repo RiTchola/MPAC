@@ -151,30 +151,30 @@ public class ResidentDto {
 				chambre, etatSante, actif, user, medecin, etab);	
    	}
     
-    public static ResidentDto toDto(Resident resid) {
-    	UserDto uDto = UserDto.toUserDto(resid.getUser());
-    	MedecinTraitantDto mDto = MedecinTraitantDto.toDto(resid.getMedecinTraitant());
-    	return new ResidentDto(
-        		resid.getId(),
-        		resid.getNom(),
-        		resid.getPrenom(),
-        		resid.getDateNaissance(),
-        		resid.getEmail(),
-        		resid.getTel(),
-                resid.getAdresse(),
-                resid.getStatut(),
-                resid.getDateEntree(),
-                resid.getMotifEntree(),
-                resid.getDateSortie(),
-                resid.getMotifSortie(),
-                resid.getAntMedical(),
-                resid.getAntChirugical(),
-                resid.getNbEnfant(),
-                resid.getChambre(),
-                resid.getEtatSante(),
-                resid.getActif(),
-                uDto.getId(),
-                mDto.getId() );
-    }
+//    public static ResidentDto toDto(Resident resid) {
+//    	UserDto uDto = UserDto.toUserDto(resid.getUser());
+//    	MedecinTraitantDto mDto = MedecinTraitantDto.toDto(resid.getMedecinTraitant());
+//    	return new ResidentDto(
+//        		resid.getId(),
+//        		resid.getNom(),
+//        		resid.getPrenom(),
+//        		resid.getDateNaissance(),
+//        		resid.getEmail(),
+//        		resid.getTel(),
+//                resid.getAdresse(),
+//                resid.getStatut(),
+//                resid.getDateEntree(),
+//                resid.getMotifEntree(),
+//                resid.getDateSortie(),
+//                resid.getMotifSortie(),
+//                resid.getAntMedical(),
+//                resid.getAntChirugical(),
+//                resid.getNbEnfant(),
+//                resid.getChambre(),
+//                resid.getEtatSante(),
+//                resid.getActif(),
+//                uDto.getId(),
+//                mDto.getId() );
+//    }
 
 }
