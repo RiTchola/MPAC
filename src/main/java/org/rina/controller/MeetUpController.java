@@ -47,6 +47,7 @@ public class MeetUpController {
      */
     @GetMapping("/liste/{username}")
     public ResponseEntity<List<MeetUpResponseDto>> getAllMeetUps(@PathVariable String username) {
+        // Vérifier si l'utilisateur existe
         Optional<User> existingUser = userService.findByUsername(username);
         if (existingUser.isPresent()) {
             User user = existingUser.get();
@@ -61,6 +62,7 @@ public class MeetUpController {
                     List<MeetUpResponseDto> meetUpResponseDtos = meetUpsId.stream()
                             .map(MeetUpResponseDto::new)
                             .collect(Collectors.toList());
+                    // Renvoyer la liste des meetUps en réponse
                     return ResponseEntity.ok(meetUpResponseDtos);
                 }
             } else if (user.getRole() == Roles.ETABLISSEMENT || user.getRole() == Roles.ADMIN) {
@@ -70,10 +72,11 @@ public class MeetUpController {
                 List<MeetUpResponseDto> meetUpResponseDtos = meetUps.stream()
                         .map(MeetUpResponseDto::new)
                         .collect(Collectors.toList());
+                // Renvoyer la liste des meetUps en réponse
                 return ResponseEntity.ok(meetUpResponseDtos);
             }
         }
-        // Renvoyer une réponse 404 si l'utilisateur n'existe pas ou ne correspond pas à un rôle invalide
+        // Renvoyer une réponse 404 si l'utilisateur n'existe pas ou ne correspond pas à un rôle valide
         return ResponseEntity.notFound().build();
     }
 
@@ -82,8 +85,10 @@ public class MeetUpController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<MeetUp> getMeetUpById(@PathVariable Long id) {
+        // Vérifier si le meetUp avec l'ID donné existe
         Optional<MeetUp> meetUp = meetUpService.findById(id);
         if (meetUp.isPresent()) {
+            // Renvoyer le meetUp en réponse
             return ResponseEntity.ok(meetUp.get());
         } else {
             // Renvoyer une réponse 404 si le meetUp n'existe pas
@@ -96,6 +101,7 @@ public class MeetUpController {
      */
     @PostMapping("/{username}")
     public ResponseEntity<String> createMeetUp(@PathVariable String username, @Valid @RequestBody MeetUpDto meetUpDto) {
+        // Vérifier si l'utilisateur existe
         Optional<User> existingUser = userService.findByUsername(username);
         if (existingUser.isPresent()) {
             User user = existingUser.get();
@@ -105,8 +111,10 @@ public class MeetUpController {
                 PersonneContact persC = persCService.findByUsername(username)
                         .orElseThrow(() -> new NotExistException(username));
                 Long idEtab = Long.valueOf(1);
+                // Récupérer l'établissement associé au meetUp
                 Etablissement etab = etablissementService.findById(idEtab)
                         .orElseThrow(() -> new NotExistException(idEtab.toString()));
+                // Créer et insérer le meetUp dans la base de données
                 @SuppressWarnings("unused")
                 MeetUp meetUp = meetUpService.insert(meetUpDto.toMeetUp(etab, persC));
                 // Renvoyer une réponse 200 si la création du meetUp est réussie
@@ -139,6 +147,7 @@ public class MeetUpController {
                     // Récupérer la personne de contact correspondante
                     PersonneContact persC = meetUp.getPersonneContact();
                     Long idEtab = Long.valueOf(1);
+                    // Récupérer l'établissement associé au meetUp
                     Etablissement etab = etablissementService.findById(idEtab)
                             .orElseThrow(() -> new NotExistException(idEtab.toString()));
                     // Mise à jour du meetUp existant avec les nouvelles valeurs

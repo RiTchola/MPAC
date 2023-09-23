@@ -10,7 +10,6 @@ import jakarta.persistence.ElementCollection;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 @Data
 @NoArgsConstructor
 public class MenuDto {
@@ -49,15 +48,17 @@ public class MenuDto {
 	private List<String> menuDimanche;
 
 	/**
-	 * @param id
-	 * @param dateDebutSemaine
-	 * @param menuLundi
-	 * @param menuMardi
-	 * @param menuMercredi
-	 * @param menuJeudi
-	 * @param menuVendredi
-	 * @param menuSamedi
-	 * @param menuDimanche
+	 * Constructeur avec des arguments pour initialiser les champs
+	 * 
+	 * @param id               L'identifiant du menu
+	 * @param dateDebutSemaine La date de début de semaine du menu
+	 * @param menuLundi        Le menu du lundi
+	 * @param menuMardi        Le menu du mardi
+	 * @param menuMercredi     Le menu du mercredi
+	 * @param menuJeudi        Le menu du jeudi
+	 * @param menuVendredi     Le menu du vendredi
+	 * @param menuSamedi       Le menu du samedi
+	 * @param menuDimanche     Le menu du dimanche
 	 */
 	public MenuDto(Long id,  LocalDate dateDebutSemaine,  List<String> menuLundi,  List<String> menuMardi,
 			 List<String> menuMercredi,  List<String> menuJeudi,  List<String> menuVendredi,
@@ -75,31 +76,14 @@ public class MenuDto {
 	}
 
 	/**
-	 * Conversion Dto ==> MenuSemaine
-	 * @param etab
-	 * @return
+	 * Conversion de l'objet MenuDto en Menu en utilisant l'objet Etablissement
+	 * 
+	 * @param etab L'établissement lié à ce menu
+	 * @return Une instance de la classe Menu
 	 */
 	public Menu toMenu(Etablissement etab) {
 		return new Menu(id, dateDebutSemaine, menuLundi, menuMardi, menuMercredi, menuJeudi, 
 				menuVendredi, menuSamedi, menuDimanche, etab);	
-	}
-	
-	/**
-	 * Conversion MenuSemaine ==> Dto
-	 * @param menuSem
-	 * @return
-	 */
-	public static MenuDto toDto(Menu menuSem) {
-		return new MenuDto(
-				menuSem.getId(), 
-				menuSem.getDateDebutSemaine(), 
-				menuSem.getMenuLundi(), 
-				menuSem.getMenuMardi(), 
-				menuSem.getMenuMercredi(), 
-				menuSem.getMenuJeudi(), 
-				menuSem.getMenuVendredi(), 
-				menuSem.getMenuSamedi(), 
-				menuSem.getMenuDimanche() );	
 	}
 	
 }

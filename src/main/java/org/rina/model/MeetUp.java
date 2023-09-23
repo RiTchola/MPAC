@@ -1,7 +1,8 @@
 package org.rina.model;
 
 import jakarta.persistence.*;
-
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -40,7 +41,9 @@ public class MeetUp {
     @Column(nullable = false)
     private LocalDate dateBirthresid;
 
-    @Column(nullable = false) 
+    @Column(nullable = false)
+    @Min(value = 1, message = "Le nombre de participants doit être au moins 1.")
+    @Max(value = 15, message = "Le nombre de participants ne peut pas dépasser 15.")
     private int nbParticipants;
 
     @Column(nullable = false) 
