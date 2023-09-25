@@ -30,31 +30,31 @@ public class Menu {
     @Column(nullable = false)
     private LocalDate dateDebutSemaine;
 
-    @ElementCollection 
+    @ElementCollection
     @Column(nullable = false) 
     private List<String> menuLundi;
 
-    @ElementCollection 
+    @ElementCollection
     @Column(nullable = false)
     private List<String> menuMardi;
 
-    @ElementCollection 
+    @ElementCollection
     @Column(nullable = false) 
     private List<String> menuMercredi;
-
-    @ElementCollection 
+ 
+    @ElementCollection
     @Column(nullable = false) 
     private List<String> menuJeudi;
 
-    @ElementCollection 
+    @ElementCollection
     @Column(nullable = false) 
     private List<String> menuVendredi;
-
-    @ElementCollection 
+ 
+    @ElementCollection
     @Column(nullable = false) 
     private List<String> menuSamedi;
-
-    @ElementCollection 
+ 
+    @ElementCollection
     @Column(nullable = false) 
     private List<String> menuDimanche;
 

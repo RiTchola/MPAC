@@ -1,9 +1,7 @@
 package org.rina.service;
 
-import java.util.Date;
-
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import org.rina.dao.IMenuJpaDao;
 import org.rina.model.Menu;
@@ -25,35 +23,36 @@ public class MenuServices {
 	public MenuServices(IMenuJpaDao menudao) {
 		this.menudao = menudao;
 	}
-
+	
 	/**
-	 * Récupère la liste de tous les menus.
-	 * 
-	 * @return  Une liste de menus.
+	 * Recherche et renvoie l'identifiant du menu correspondant à la date de début de semaine spécifiée.
+	 *
+	 * @param dateDebutSemaine La date de début de semaine pour laquelle rechercher l'identifiant du menu.
+	 * @return L'identifiant du menu correspondant à la date de début de semaine, ou null si aucun menu correspondant n'est trouvé.
 	 */
-	public List<Menu> findAll() {
-		return menudao.findAll();
+	public Long findIdByDateDebutSemaine(LocalDate dateDebutSemaine) {
+	    return menudao.findIdByDateDebutSemaine(dateDebutSemaine);
 	}
 
 	/**
-	 * Recherche un menu par son identifiant.
+	 * Vérifie si un menu existe pour une certaine date de début de semaine.
 	 * 
-	 * @param id  L'identifiant du menu à rechercher.
-	 * @return    Le menu correspondant à l'identifiant, s'il existe.
+	 * @param dateDebutSemaine La date de début de semaine à vérifier.
+	 * @return true si un menu existe pour la date de début de semaine spécifiée, sinon false.
 	 */
-	public Optional<Menu> findById(Long id) {
-		return menudao.findById(id);
+	public boolean existsByDateDebutSemaine(LocalDate dateDebutSemaine) {
+	    return menudao.existsByDateDebutSemaine(dateDebutSemaine);
 	}
-
-	/**
-	 * Vérifie l'existence d'un menu par son identifiant.
-	 * 
-	 * @param id  L'identifiant du menu à vérifier.
-	 * @return    true si le menu existe, sinon false.
-	 */
-	public boolean existsById(Long id) {
-		return menudao.existsById(id);
-	}
+//
+//	/**
+//	 * Vérifie si un menu avec l'identifiant spécifié existe dans la base de données.
+//	 *
+//	 * @param id L'identifiant du menu à vérifier.
+//	 * @return true si un menu avec cet identifiant existe, sinon false.
+//	 */
+//	public boolean existsById(Long id) {
+//	    return menudao.existsById(id);
+//	}
 
 	/**
 	 * Recherche les menus par date de début de semaine.
@@ -61,7 +60,7 @@ public class MenuServices {
 	 * @param dateDebutSemaine  La date de début de semaine pour laquelle on recherche les menus.
 	 * @return                  Une liste de menus correspondant à la date de début de semaine.
 	 */
-	public List<Menu> findByDateDebutSemaine(Date dateDebutSemaine) {
+	public List<Menu> findByDateDebutSemaine(LocalDate dateDebutSemaine) {
 		return menudao.findByDateDebutSemaine(dateDebutSemaine);
 	}
 
@@ -71,7 +70,7 @@ public class MenuServices {
 	 * @param dateDebutSemaine  La date de début de semaine pour laquelle on recherche le menu du lundi.
 	 * @return                  Une liste de plats du menu du lundi.
 	 */
-	public List<String> findMenuForMonday(Date dateDebutSemaine) {
+	public List<String> findMenuForMonday(LocalDate dateDebutSemaine) {
 		return menudao.findMenuForMonday(dateDebutSemaine);
 	}
 
@@ -81,7 +80,7 @@ public class MenuServices {
 	 * @param dateDebutSemaine  La date de début de semaine pour laquelle on recherche le menu du mardi.
 	 * @return                  Une liste de plats du menu du mardi.
 	 */
-	public List<String> findMenuForTuesday(Date dateDebutSemaine) {
+	public List<String> findMenuForTuesday(LocalDate dateDebutSemaine) {
 		return menudao.findMenuForTuesday(dateDebutSemaine);
 	}
 
@@ -91,7 +90,7 @@ public class MenuServices {
 	 * @param dateDebutSemaine  La date de début de semaine pour laquelle on recherche le menu du mercredi.
 	 * @return                  Une liste de plats du menu du mercredi.
 	 */
-	public List<String> findMenuForWednesday(Date dateDebutSemaine) {
+	public List<String> findMenuForWednesday(LocalDate dateDebutSemaine) {
 		return menudao.findMenuForWednesday(dateDebutSemaine);
 	}
 
@@ -101,7 +100,7 @@ public class MenuServices {
 	 * @param dateDebutSemaine  La date de début de semaine pour laquelle on recherche le menu du jeudi.
 	 * @return                  Une liste de plats du menu du jeudi.
 	 */
-	public List<String> findMenuForThursday(Date dateDebutSemaine) {
+	public List<String> findMenuForThursday(LocalDate dateDebutSemaine) {
 		return menudao.findMenuForThursday(dateDebutSemaine);
 	}
 
@@ -111,7 +110,7 @@ public class MenuServices {
 	 * @param dateDebutSemaine  La date de début de semaine pour laquelle on recherche le menu du vendredi.
 	 * @return                  Une liste de plats du menu du vendredi.
 	 */
-	public List<String> findMenuForFriday(Date dateDebutSemaine) {
+	public List<String> findMenuForFriday(LocalDate dateDebutSemaine) {
 		return menudao.findMenuForFriday(dateDebutSemaine);
 	}
 
@@ -121,7 +120,7 @@ public class MenuServices {
 	 * @param dateDebutSemaine  La date de début de semaine pour laquelle on recherche le menu du samedi.
 	 * @return                  Une liste de plats du menu du samedi.
 	 */
-	public List<String> findMenuForSaturday(Date dateDebutSemaine) {
+	public List<String> findMenuForSaturday(LocalDate dateDebutSemaine) {
 		return menudao.findMenuForSaturday(dateDebutSemaine);
 	}
 
@@ -131,19 +130,10 @@ public class MenuServices {
 	 * @param dateDebutSemaine  La date de début de semaine pour laquelle on recherche le menu du dimanche.
 	 * @return                  Une liste de plats du menu du dimanche.
 	 */
-	public List<String> findMenuForSunday(Date dateDebutSemaine) {
+	public List<String> findMenuForSunday(LocalDate dateDebutSemaine) {
 		return menudao.findMenuForSunday(dateDebutSemaine);
 	}
 
-	/**
-	 * Supprime un menu par son identifiant.
-	 * 
-	 * @param id  L'identifiant du menu à supprimer.
-	 */
-	public void deleteById(Long id) {
-		menudao.deleteById(id);
-	}
-	
 	/**
 	 * Ajout d'un nouveau menu.
 	 * 
@@ -155,14 +145,73 @@ public class MenuServices {
 	}
 
 	/**
-	 * Met à jour un menu existant.
-	 * 
+	 * Met à jour le menu du lundi pour un menu spécifié.
+	 *
 	 * @param id   L'identifiant du menu à mettre à jour.
-	 * @param menu Le menu mis à jour.
-	 * @return     Le menu mis à jour.
+	 * @param menu La nouvelle liste de plats pour le lundi.
 	 */
-	public Menu updateMenu(Long id, Menu menu) {
-		return menudao.save(menu);
+	public void updateMenuMonday(Long id, List<String> menu) {
+	    menudao.updateMenuMonday(id, menu);
 	}
 
+	/**
+	 * Met à jour le menu du mardi pour un menu spécifié.
+	 *
+	 * @param id   L'identifiant du menu à mettre à jour.
+	 * @param menu La nouvelle liste de plats pour le mardi.
+	 */
+	public void updateMenuTuesday(Long id, List<String> menu) {
+	    menudao.updateMenuTuesday(id, menu);
+	}
+
+	/**
+	 * Met à jour le menu du mercredi pour un menu spécifié.
+	 *
+	 * @param id   L'identifiant du menu à mettre à jour.
+	 * @param menu La nouvelle liste de plats pour le mercredi.
+	 */
+	public void updateMenuWednesday(Long id, List<String> menu) {
+	    menudao.updateMenuWednesday(id, menu);
+	}
+
+	/**
+	 * Met à jour le menu du jeudi pour un menu spécifié.
+	 *
+	 * @param id   L'identifiant du menu à mettre à jour.
+	 * @param menu La nouvelle liste de plats pour le jeudi.
+	 */
+	public void updateMenuThursday(Long id, List<String> menu) {
+	    menudao.updateMenuThursday(id, menu);
+	}
+
+	/**
+	 * Met à jour le menu du vendredi pour un menu spécifié.
+	 *
+	 * @param id   L'identifiant du menu à mettre à jour.
+	 * @param menu La nouvelle liste de plats pour le vendredi.
+	 */
+	public void updateMenuFriday(Long id, List<String> menu) {
+	    menudao.updateMenuFriday(id, menu);
+	}
+
+	/**
+	 * Met à jour le menu du samedi pour un menu spécifié.
+	 *
+	 * @param id   L'identifiant du menu à mettre à jour.
+	 * @param menu La nouvelle liste de plats pour le samedi.
+	 */
+	public void updateMenuSaturday(Long id, List<String> menu) {
+	    menudao.updateMenuSaturday(id, menu);
+	}
+
+	/**
+	 * Met à jour le menu du dimanche pour un menu spécifié.
+	 *
+	 * @param id   L'identifiant du menu à mettre à jour.
+	 * @param menu La nouvelle liste de plats pour le dimanche.
+	 */
+	public void updateMenuSunday(Long id, List<String> menu) {
+	    menudao.updateMenuSunday(id, menu);
+	}
+	
 }
