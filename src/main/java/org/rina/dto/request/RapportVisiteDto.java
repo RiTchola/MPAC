@@ -1,5 +1,6 @@
 package org.rina.dto.request;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import jakarta.validation.constraints.NotBlank;
@@ -31,13 +32,13 @@ public class RapportVisiteDto {
 
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date dateBirthresid;
+    private LocalDate dateBirthResid;
 
     @NotBlank
     private String nomVisiteur;
     
     @NotNull
-    private TypePersonne typeVisiteur;
+    private TypePersonne typePersonne;
     
     @NotBlank
     private String commentaire;
@@ -51,19 +52,19 @@ public class RapportVisiteDto {
 	 * @param prenomResid    Le prénom du résident
 	 * @param dateBirthresid La date de naissance du résident
 	 * @param nomVisiteur    Le nom du visiteur
-	 * @param typeVisiteur   Le type de personne du visiteur
+	 * @param typePersonne   Le type de personne du visiteur
 	 * @param commentaire    Le commentaire du rapport de visite
 	 */
 	public RapportVisiteDto(Long id, Date dateVisite, String nomResid, String prenomResid,
-			Date dateBirthresid, String nomVisiteur, TypePersonne typeVisiteur, String commentaire) {
+			LocalDate dateBirthResid, String nomVisiteur, TypePersonne typePersonne, String commentaire) {
 		
 		this.id = id;
 		this.dateVisite = dateVisite;
 		this.nomResid = nomResid;
 		this.prenomResid = prenomResid;
-		this.dateBirthresid = dateBirthresid;
+		this.dateBirthResid = dateBirthResid;
 		this.nomVisiteur = nomVisiteur;
-		this.typeVisiteur = typeVisiteur;
+		this.typePersonne = typePersonne;
 		this.commentaire = commentaire;
 	}
     
@@ -74,7 +75,7 @@ public class RapportVisiteDto {
      * @return Une instance de la classe RapportVisite
      */
     public RapportVisite toRapportVisite(Etablissement etab) {
-		return new RapportVisite(id, dateVisite, nomResid, prenomResid, dateBirthresid, nomVisiteur, typeVisiteur, commentaire, etab);
+		return new RapportVisite(id, dateVisite, nomResid, prenomResid, dateBirthResid, nomVisiteur, typePersonne, commentaire, etab);
     }
 }
 

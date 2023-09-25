@@ -1,5 +1,6 @@
 package org.rina.dto.response;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import org.rina.enums.TypePersonne;
@@ -20,11 +21,11 @@ public class RapportVisitResponseDto {
     
     private String prenomResid;
     
-    private Date dateBirthresid;
+    private LocalDate dateBirthResid;
     
     private String nomVisiteur;
     
-    private TypePersonne typeVisiteur;
+    private TypePersonne typePersonne;
     
     private String commentaire;
 
@@ -33,9 +34,9 @@ public class RapportVisitResponseDto {
         this.dateVisite = rapportVisite.getDateVisite();
         this.nomResid = rapportVisite.getNomResid();
         this.prenomResid = rapportVisite.getPrenomResid();
-        this.dateBirthresid = rapportVisite.getDateBirthresid();
+        this.dateBirthResid = rapportVisite.getDateBirthResid();
         this.nomVisiteur = rapportVisite.getNomVisiteur();
-        this.typeVisiteur = rapportVisite.getTypeVisiteur();
+        this.typePersonne = rapportVisite.getTypePersonne();
         this.commentaire = rapportVisite.getCommentaire();
     }
 

@@ -1,7 +1,6 @@
 package org.rina.service;
 
 import java.util.Date;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -15,90 +14,87 @@ import jakarta.transaction.Transactional;
 @Transactional
 @Service
 public class RapportQuotidienServices {
-private IRapportQuotidienJpaDao rapportQuotidiendao;
+	private IRapportQuotidienJpaDao rapportQuotidiendao;
 	
-	public RapportQuotidienServices (IRapportQuotidienJpaDao rapportQuotidiendao) {
+	public RapportQuotidienServices(IRapportQuotidienJpaDao rapportQuotidiendao) {
 		this.rapportQuotidiendao = rapportQuotidiendao;
 	}
 
 	/**
-	 * @param resident
-	 * @return
+	 * Recherche les rapports quotidiens par résident.
+	 * 
+	 * @param resident  Le résident pour lequel on recherche les rapports quotidiens.
+	 * @return          Une liste de rapports quotidiens associés au résident.
 	 */
 	public List<RapportQuotidien> findByResident(Resident resident) {
 		return rapportQuotidiendao.findByResident(resident);
 	}
 
 	/**
-	 * @return
+	 * Récupère la liste de tous les rapports quotidiens triés par date de manière décroissante.
+	 * 
+	 * @return  Une liste de rapports quotidiens triés par date décroissante.
 	 */
-	public List<RapportQuotidien> findRapportQuotidienOrderByDateDesc() {
-		return rapportQuotidiendao.findRapportQuotidienOrderByDateDesc();
+	public List<RapportQuotidien> findAllRapportQuotidienOrderByDateDesc() {
+		return rapportQuotidiendao.findAllRapportQuotidienOrderByDateDesc();
 	}
 
 	/**
-	 * @param date
-	 * @return
+	 * Recherche un rapport quotidien par date.
+	 * 
+	 * @param date  La date du rapport quotidien à rechercher.
+	 * @return      Le rapport quotidien correspondant à la date, s'il existe.
 	 */
 	public Optional<RapportQuotidien> findRapportQuotidienByDate(Date date) {
 		return rapportQuotidiendao.findRapportQuotidienByDate(date);
 	}
 
 	/**
-	 * @return
-	 */
-	public List<RapportQuotidien> findAll() {
-		return rapportQuotidiendao.findAll();
-	}
-
-	/**
-	 * @param id
-	 * @return
+	 * Recherche un rapport quotidien par son identifiant.
+	 * 
+	 * @param id  L'identifiant du rapport quotidien à rechercher.
+	 * @return    Le rapport quotidien correspondant à l'identifiant, s'il existe.
 	 */
 	public Optional<RapportQuotidien> findById(Long id) {
 		return rapportQuotidiendao.findById(id);
 	}
 
 	/**
-	 * @param id
-	 * @return
+	 * Vérifie l'existence d'un rapport quotidien par son identifiant.
+	 * 
+	 * @param id  L'identifiant du rapport quotidien à vérifier.
+	 * @return    true si le rapport quotidien existe, sinon false.
 	 */
 	public boolean existsById(Long id) {
 		return rapportQuotidiendao.existsById(id);
 	}
 
 	/**
-	 * @param id
-	 */
-	public void deleteById(Long id) {
-		rapportQuotidiendao.deleteById(id);
-	}
-
-	/**
-	 * @param numero
-	 * @return
-	 */
-	public Optional<RapportQuotidien> findRapportQuotidienByNumber(Long numero) {
-		return rapportQuotidiendao.findRapportQuotidienByNumber(numero);
-	}
-
-	/**
-	 * Ajout d'un nouveau RapportQuotidien
+	 * Ajout d'un nouveau rapport quotidien.
 	 * 
-	 * @param rapQuot
-	 * @return
+	 * @param rapQuot  Le rapport quotidien à ajouter.
+	 * @return         Le rapport quotidien ajouté.
 	 */
 	public RapportQuotidien insert(RapportQuotidien rapQuot) {
 		return rapportQuotidiendao.save(rapQuot);
-	}	
+	}
 
 	/**
-	 * @param id
-	 * @param rapQuot
-	 * @return
+	 * Met à jour un rapport quotidien existant.
+	 * 
+	 * @param id       L'identifiant du rapport quotidien à mettre à jour.
+	 * @param rapQuot  Le rapport quotidien mis à jour.
+	 * @return         Le rapport quotidien mis à jour.
 	 */
 	public RapportQuotidien updateRapportQuotidien(Long id, RapportQuotidien rapQuot) {
 		return rapportQuotidiendao.save(rapQuot);
 	}
 
+	/**
+	 * @param string
+	 * @return
+	 */
+	public String findLastNumeroR(String string) {
+		return rapportQuotidiendao.findLastNumeroR(string);
+	}
 }

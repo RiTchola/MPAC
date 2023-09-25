@@ -22,9 +22,8 @@ public class RapportQuotidienDto {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@NotNull
-	private Integer numeroR;
+	private String numeroR; // Utilise une chaîne pour stocker le numéroR au format souhaité
 	
 	@NotNull
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -74,30 +73,31 @@ public class RapportQuotidienDto {
 
 	@NotBlank
 	private String commentaire;
-
+	
 	
 	/**
-	 * @param id
-	 * @param numeroR
-	 * @param date
-	 * @param freqCardiaque
-	 * @param freqRespiratoire
-	 * @param presArterielle
-	 * @param temperature
-	 * @param satOxygene
-	 * @param sommeil
-	 * @param selle
-	 * @param urine
-	 * @param coiffure
-	 * @param manicure
-	 * @param pedicure
-	 * @param toilette
-	 * @param vetements
-	 * @param humeur
-	 * @param commentaire
-	 * @param residentId
+	 * Constructeur avec des arguments pour initialiser les champs
+	 * 
+	 * @param id                L'identifiant du rapport quotidien
+	 * @param numeroR           Le numéro du rapport
+	 * @param date              La date du rapport
+	 * @param freqCardiaque     La fréquence cardiaque
+	 * @param freqRespiratoire  La fréquence respiratoire
+	 * @param presArterielle    La pression artérielle
+	 * @param temperature       La température
+	 * @param satOxygene        La saturation en oxygène
+	 * @param sommeil           L'état de sommeil
+	 * @param selle             L'état de selle
+	 * @param urine             L'état d'urine
+	 * @param coiffure          L'état de coiffure
+	 * @param manicure          L'état de manucure
+	 * @param pedicure          L'état de pédicure
+	 * @param toilette          L'état de toilette
+	 * @param vetements         L'état des vêtements
+	 * @param humeur            L'humeur
+	 * @param commentaire       Le commentaire du rapport quotidien
 	 */
-	public RapportQuotidienDto( Long id, Integer numeroR, Date date,
+	public RapportQuotidienDto( Long id, String numeroR, Date date,
 			String freqCardiaque, String freqRespiratoire, String presArterielle,
 			String temperature, String satOxygene, Boolean sommeil, Boolean selle,
 			Boolean urine, Boolean coiffure, Boolean manicure, Boolean pedicure,
@@ -122,42 +122,15 @@ public class RapportQuotidienDto {
 		this.humeur = humeur;
 		this.commentaire = commentaire;
 	}
+
 	/**
-	 * conersion Dto ==> RapportQuotidien
-	 * @param resid
-	 * @return
+	 * Conversion de l'objet RapportQuotidienDto en RapportQuotidien en utilisant l'objet Resident
+	 * 
+	 * @param resid Le résident lié à ce rapport quotidien
+	 * @return Une instance de la classe RapportQuotidien
 	 */
 	public RapportQuotidien toRapportQuotidien( Resident resid) {
 		return new RapportQuotidien(id, numeroR, date, freqCardiaque, freqRespiratoire, presArterielle, temperature, satOxygene, selle, urine, 
 				sommeil, coiffure, manicure, pedicure, toilette, vetements, humeur, commentaire, resid);
 	}
-    /**
-     * conersion RapportQuotidien ==> Dto 
-     * @param rapQuot
-     * @return
-     */
-    public static RapportQuotidienDto toDto(RapportQuotidien rapQuot) {
-    	return new RapportQuotidienDto(
-    		rapQuot.getId(),
-            rapQuot.getNumeroR(),
-            rapQuot.getDate(),
-            rapQuot.getFreqCardiaque(),
-            rapQuot.getFreqRespiratoire(),
-            rapQuot.getPresArterielle(),
-            rapQuot.getTemperature(),
-            rapQuot.getSatOxygene(),
-            rapQuot.getSommeil(),
-            rapQuot.getSelle(),
-            rapQuot.getUrine(),
-            rapQuot.getCoiffure(),
-            rapQuot.getManicure(),
-            rapQuot.getPedicure(),
-            rapQuot.getToilette(),
-            rapQuot.getVetements(),
-            rapQuot.getHumeur(),
-            rapQuot.getCommentaire() );
-    }
-
-	
-    
 }

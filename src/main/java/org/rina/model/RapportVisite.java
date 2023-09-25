@@ -2,10 +2,12 @@ package org.rina.model;
 
 import jakarta.persistence.*;
 
+
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import org.rina.enums.TypePersonne;
@@ -31,13 +33,13 @@ public class RapportVisite {
     private String prenomResid;
 
     @Column(nullable = false) 
-    private Date dateBirthresid;
+    private LocalDate dateBirthResid;
 
     @Column(nullable = true) 
     private String nomVisiteur;
 
     @Column(nullable = true) 
-    private TypePersonne typeVisiteur;
+    private TypePersonne typePersonne;
 
     @Column(length = 800, nullable = true) 
     private String commentaire;
@@ -57,20 +59,20 @@ public class RapportVisite {
      * @param prenomResid Le prénom du résident
      * @param dateBirthresid La date de naissance du résident
      * @param nomVisiteur Le nom du visiteur
-     * @param typeVisiteur Le type de personne du visiteur
+     * @param typePersonne Le type de personne du visiteur
      * @param commentaire Les commentaires du rapport de visite
      * @param etablissement L'établissement lié à ce rapport de visite
      */
-    public RapportVisite(Long id, Date dateVisite, String nomResid, String prenomResid, Date dateBirthresid,
-            String nomVisiteur, TypePersonne typeVisiteur, String commentaire, Etablissement etablissement) {
+    public RapportVisite(Long id, Date dateVisite, String nomResid, String prenomResid, LocalDate dateBirthResid,
+            String nomVisiteur, TypePersonne typePersonne, String commentaire, Etablissement etablissement) {
 
         this.id = id;
         this.dateVisite = dateVisite;
         this.nomResid = nomResid;
         this.prenomResid = prenomResid;
-        this.dateBirthresid = dateBirthresid;
+        this.dateBirthResid = dateBirthResid;
         this.nomVisiteur = nomVisiteur;
-        this.typeVisiteur = typeVisiteur;
+        this.typePersonne = typePersonne;
         this.commentaire = commentaire;
         this.etablissement = etablissement;
     }

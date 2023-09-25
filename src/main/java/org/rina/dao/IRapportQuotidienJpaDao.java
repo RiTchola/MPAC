@@ -14,23 +14,24 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IRapportQuotidienJpaDao extends JpaRepository<RapportQuotidien, Long> {
 
-	// Utilisation d'un Query natif pour avoir la liste des rapports quotidien d'un résident
-	List<RapportQuotidien> findByResident(Resident resident);
+    // Requête personnalisée pour obtenir la liste des rapports quotidiens d'un résident
+    List<RapportQuotidien> findByResident(Resident resident);
 
-	// Utilisation d'un Query natif pour avoir la liste des rapports classé par date décroissante
-	@Query(value = "SELECT * FROM TRAPPORTQUOTIDIEN q ORDER BY q.DATE DESC", nativeQuery = true)
-	List<RapportQuotidien> findRapportQuotidienOrderByDateDesc();
+    // Requête personnalisée pour obtenir la liste des rapports classés par date décroissante
+    @Query(value = "SELECT * FROM TRAPPORTQUOTIDIEN q ORDER BY q.DATE DESC", nativeQuery = true)
+    List<RapportQuotidien> findAllRapportQuotidienOrderByDateDesc();
 
-	// Utilisation d'un Query natif pour avoir les informations d'un rapport grace à une date
-	@Query(value = "SELECT * FROM TRAPPORTQUOTIDIEN q WHERE q.DATE = ?1", nativeQuery = true)
-	Optional<RapportQuotidien> findRapportQuotidienByDate(Date date);
+    // Requête personnalisée pour obtenir les informations d'un rapport quotidien grâce à une date
+    @Query(value = "SELECT * FROM TRAPPORTQUOTIDIEN q WHERE q.DATE = ?1", nativeQuery = true)
+    Optional<RapportQuotidien> findRapportQuotidienByDate(Date date);
 
-	// Utilisation d'un Query natif pour avoir les informations d'un rapport grace à son numéro
-	@Query(value = "SELECT * FROM TRAPPORTQUOTIDIEN q WHERE q.NUMERO_R = ?1", nativeQuery = true)
-	Optional<RapportQuotidien> findRapportQuotidienByNumber(Long numero);
+    // Requête personnalisée pour mettre à jour un rapport quotidien
+    @Modifying
+    @Query(value = "UPDATE TRAPPORTQUOTIDIEN r SET r =?2 WHERE r.id =?1", nativeQuery = true)
+    void updateRapportQuotidien(Long id, RapportQuotidien rapportQuot);
 
-	// Utilisation d'un Query natif pour mettre à jour un rapport
-	@Modifying
-	@Query(value = "UPDATE TRAPPORTQUOTIDIEN r SET r =?2 WHERE r.id =?1", nativeQuery = true)
-	void updateRapportQuotidien(Long id, RapportQuotidien rapportQuot);
+    // Requête personnalisée pour obtenir le dernier numéro de rapport quotidien
+    @Query(value = "SELECT r.numeroR FROM TRAPPORTQUOTIDIEN r WHERE r.numeroR LIKE :?1 ORDER BY r.numeroR DESC LIMIT 1", nativeQuery = true)
+    String findLastNumeroR(String string);
+
 }
