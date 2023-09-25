@@ -10,8 +10,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IRapportVisiteJpaDao extends JpaRepository<RapportVisite, Long> {
 
-	// Utilisation d'un Query natif pour avoir la liste des rapports de visites classés par ordre décroissant
-	@Query(value = "SELECT * FROM TRAPPORTVISITE v ORDER BY v.DATE_VISITE DESC", nativeQuery = true)
-	List<RapportVisite> findRapportVisiteOrderByDateDesc();
+    // Requête personnalisée pour obtenir la liste des rapports de visite classés par ordre décroissant de date
+    @Query(value = "SELECT * FROM TRAPPORTVISITE v WHERE v.fketablissement = 1 ORDER BY v.DATE_VISITE DESC", nativeQuery = true)
+    List<RapportVisite> findRapportVisiteOrderByDateDesc();
 
 }
+

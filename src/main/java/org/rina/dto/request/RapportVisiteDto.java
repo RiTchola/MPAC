@@ -42,15 +42,17 @@ public class RapportVisiteDto {
     @NotBlank
     private String commentaire;
    
-    /**
-	 * @param id
-	 * @param dateVisite
-	 * @param nomResid
-	 * @param prenomResid
-	 * @param dateBirthresid
-	 * @param nomVisiteur
-	 * @param typeVisiteur
-	 * @param commentaire
+	/**
+	 * Constructeur avec des arguments pour initialiser les champs
+	 * 
+	 * @param id             L'identifiant du rapport de visite
+	 * @param dateVisite     La date de la visite
+	 * @param nomResid       Le nom du résident
+	 * @param prenomResid    Le prénom du résident
+	 * @param dateBirthresid La date de naissance du résident
+	 * @param nomVisiteur    Le nom du visiteur
+	 * @param typeVisiteur   Le type de personne du visiteur
+	 * @param commentaire    Le commentaire du rapport de visite
 	 */
 	public RapportVisiteDto(Long id, Date dateVisite, String nomResid, String prenomResid,
 			Date dateBirthresid, String nomVisiteur, TypePersonne typeVisiteur, String commentaire) {
@@ -66,31 +68,13 @@ public class RapportVisiteDto {
 	}
     
     /**
-     * conversion Dto ==> RapportVisite
-     * @param etab
-     * @param persE
-     * @param resid
-     * @return
+     * Conversion de l'objet RapportVisiteDto en RapportVisite en utilisant l'objet Etablissement
+     * 
+     * @param etab L'établissement lié à ce rapport de visite
+     * @return Une instance de la classe RapportVisite
      */
     public RapportVisite toRapportVisite(Etablissement etab) {
 		return new RapportVisite(id, dateVisite, nomResid, prenomResid, dateBirthresid, nomVisiteur, typeVisiteur, commentaire, etab);
     }
-    
-    /**
-     * conversion RapportVisite ==> Dto
-     * @param rapVi
-     * @return
-     */
-    public static RapportVisiteDto toDto(RapportVisite rapVi) {
-    	 return new RapportVisiteDto(
-            rapVi.getId(),
-            rapVi.getDateVisite(),
-            rapVi.getNomResid(),
-            rapVi.getPrenomResid(),
-            rapVi.getDateBirthresid(),
-            rapVi.getNomVisiteur(),
-            rapVi.getTypeVisiteur(),
-            rapVi.getCommentaire() );
-    }
-
 }
+

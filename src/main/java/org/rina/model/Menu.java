@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @Entity
-@Table(name = "TMENU")
+@Table(name = "TMENU", uniqueConstraints = @UniqueConstraint(columnNames = { "dateDebutSemaine" }))
 public class Menu {
 
     @Id 
