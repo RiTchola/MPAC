@@ -26,8 +26,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.security.auth.login.CredentialException;
-
 @RestController
 @RequestMapping("/resident")
 public class ResidentController {
