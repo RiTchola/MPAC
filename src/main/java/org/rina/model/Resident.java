@@ -29,159 +29,155 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
+@Data 
 @Builder 
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor 
+@AllArgsConstructor 
 @Table(name = "TRESIDENT", uniqueConstraints = @UniqueConstraint(columnNames = { "nom", "prenom", "dateNaissance" }))
 @Entity
 public class Resident {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY) 
+    private Long id;
 
-	@Size(min = 1, max = 50, message = "{elem.nom}")
-	@Column(length = 50, nullable = false)
-	private String nom;
+    @Size(min = 1, max = 50, message = "{elem.nom}") 
+    @Column(length = 50, nullable = false) 
+    private String nom;
 
-	@Size(min = 1, max = 50, message = "{elem.prenom}")
-	@Column(length = 50, nullable = false)
-	private String prenom;
+    @Size(min = 1, max = 50, message = "{elem.prenom}") 
+    @Column(length = 50, nullable = false) 
+    private String prenom;
 
-	@Column(nullable = false)
-	private LocalDate dateNaissance;
+    @Column(nullable = false) 
+    private LocalDate dateNaissance;
 
-	@Email(message = "{email.nonValide}")
-	@Column(length = 60, nullable = false)
-	@Size(min = 4, max = 60, message = "{elem.prenom}")
-	private String email;
+    @Email(message = "{email.nonValide}")
+    @Column(length = 60, nullable = false) 
+    @Size(min = 4, max = 60, message = "{elem.prenom}")
+    private String email;
 
-	@NumberFormat
-	@Column(length = 50, nullable = false)
-	@Size(min = 4, max = 30, message = "{tel.nonValide}")
-	private String tel;
+    @NumberFormat
+    @Column(length = 50, nullable = false) 
+    @Size(min = 4, max = 30, message = "{tel.nonValide}") 
+    private String tel;
 
-	@Column(nullable = false)
-	@Size(min = 10, max = 125, message = "{}")
-	private String adresse;
+    @Column(nullable = false) 
+    @Size(min = 10, max = 125, message = "{}") 
+    private String adresse;
 
-	@Column(nullable = false)
-	private StatutM statut;
+    @Column(nullable = false) 
+    private StatutM statut;
 
-	@Column(nullable = false)
-	private LocalDate dateEntree;
+    @Column(nullable = false) 
+    private LocalDate dateEntree;
 
-	@Size(min = 5, max = 400, message = "{}")
-	@Column(nullable = false)
-	private String motifEntree;
-	
-	@Column(nullable = true)
-	private LocalDate dateSortie;
+    @Size(min = 5, max = 400, message = "{}") 
+    @Column(nullable = false) 
+    private String motifEntree;
 
-	@Size(min = 5, max = 400, message = "{}")
-	@Column(nullable = true)
-	private String motifSortie;
+    @Column(nullable = true) 
+    private LocalDate dateSortie;
 
-	@Size(min = 5, max = 800, message = "{}")
-	@Column(nullable = false)
-	private String antMedical;
+    @Size(min = 5, max = 400, message = "{}") 
+    @Column(nullable = true) 
+    private String motifSortie;
 
-	@Size(min = 5, max = 800, message = "{}")
-	@Column(nullable = true)
-	private String antChirugical;
+    @Size(min = 5, max = 800, message = "{}") 
+    @Column(nullable = false) 
+    private String antMedical;
 
-	@Column(nullable = false)
-	private int nbEnfant;
+    @Size(min = 5, max = 800, message = "{}")
+    @Column(nullable = true) 
+    private String antChirugical;
 
-	@Column(nullable = false, updatable = true)
-	private String chambre;
+    @Column(nullable = false)
+    private int nbEnfant;
 
-	@Size(min = 5, max = 400, message = "{}")
-	@Column(nullable = false)
-	private String etatSante;
-	
-	@Column(nullable = false)
-	private Boolean actif;
-	
-	/**
-	 * jointure à d'autres classes
-	 */
+    @Column(nullable = false, updatable = true) 
+    private String chambre;
 
-	@Getter
-	@OneToOne(optional = false, cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "FKUSER", unique = true, nullable = false, updatable = false)
-	private User user;
+    @Size(min = 5, max = 400, message = "{}") 
+    @Column(nullable = false)
+    private String etatSante;
 
-	@ManyToOne
-	@JoinColumn(name = "FKMedecinTraitant", nullable = false)
-	private MedecinTraitant medecinTraitant;
+    @Column(nullable = false)
+    private Boolean actif;
 
-	@ManyToOne
-	@JoinColumn(name = "FKEtablissement", nullable = false)
-	private Etablissement etablissement;
+    /**
+     * jointure à d'autres classes
+     */
+    @Getter 
+    @OneToOne(optional = false, cascade = CascadeType.PERSIST) 
+    @JoinColumn(name = "FKUSER", unique = true, nullable = false, updatable = false) 
+    private User user;
 
-	@ManyToMany(cascade = CascadeType.PERSIST)
-	@JoinTable(name = "TLIAISON", joinColumns = @JoinColumn(name = "FKRESIDENT"), inverseJoinColumns = @JoinColumn(name = "FKPERSONNECONTACT"))
-	protected Set<PersonneContact> personneContacts = new HashSet<PersonneContact>();
+    @ManyToOne 
+    @JoinColumn(name = "FKMedecinTraitant", nullable = false) 
+    private MedecinTraitant medecinTraitant;
 
-	public Set<PersonneContact> getPersonneContacts() {
-		return personneContacts;
-	}
-	
-	
-	/**
-	 * @param id
-	 * @param nom
-	 * @param prenom
-	 * @param dateNaissance
-	 * @param email
-	 * @param tel
-	 * @param adresse
-	 * @param statut
-	 * @param dateEntree
-	 * @param motifEntree
-	 * @param dateSortie
-	 * @param motifSortie
-	 * @param antMedical
-	 * @param antChirugical
-	 * @param nbEnfant
-	 * @param chambre
-	 * @param etatSante
-	 * @param actif
-	 * @param user
-	 * @param medecinTraitant
-	 * @param etablissement
-	 * @param personneContacts
-	 */
-	public Resident(Long id, String nom, String prenom, LocalDate dateNaissance, String email, String tel,
-			String adresse, StatutM statut, LocalDate dateEntree, String motifEntree, LocalDate dateSortie,
-			String motifSortie, String antMedical, String antChirugical, int nbEnfant, String chambre, String etatSante,
-			Boolean actif, User user, MedecinTraitant medecinTraitant, Etablissement etablissement) {
+    @ManyToOne 
+    @JoinColumn(name = "FKEtablissement", nullable = false) 
+    private Etablissement etablissement;
 
-		assert (user.getRole() == Roles.RESIDENT);
-		this.id = id;
-		this.nom = nom;
-		this.prenom = prenom;
-		this.dateNaissance = dateNaissance;
-		this.email = email;
-		this.tel = tel;
-		this.adresse = adresse;
-		this.statut = statut;
-		this.dateEntree = dateEntree;
-		this.motifEntree = motifEntree;
-		this.dateSortie = dateSortie;
-		this.motifSortie = motifSortie;
-		this.antMedical = antMedical;
-		this.antChirugical = antChirugical;
-		this.nbEnfant = nbEnfant;
-		this.chambre = chambre;
-		this.etatSante = etatSante;
-		this.actif = actif;
-		this.user = user;
-		this.medecinTraitant = medecinTraitant;
-		this.etablissement = etablissement;
-	}
+    @ManyToMany(cascade = CascadeType.PERSIST) 
+    @JoinTable(name = "TLIAISON", joinColumns = @JoinColumn(name = "FKRESIDENT"), inverseJoinColumns = @JoinColumn(name = "FKPERSONNECONTACT"))
+    protected Set<PersonneContact> personneContacts = new HashSet<PersonneContact>();
 
+    public Set<PersonneContact> getPersonneContacts() {
+        return personneContacts;
+    }
 
+    /**
+     * Constructeur avec des arguments
+     * @param id L'identifiant du résident
+     * @param nom Le nom du résident
+     * @param prenom Le prénom du résident
+     * @param dateNaissance La date de naissance du résident
+     * @param email L'adresse e-mail du résident
+     * @param tel Le numéro de téléphone du résident
+     * @param adresse L'adresse du résident
+     * @param statut Le statut du résident
+     * @param dateEntree La date d'entrée du résident
+     * @param motifEntree Le motif d'entrée du résident
+     * @param dateSortie La date de sortie du résident
+     * @param motifSortie Le motif de sortie du résident
+     * @param antMedical Les antécédents médicaux du résident
+     * @param antChirugical Les antécédents chirurgicaux du résident
+     * @param nbEnfant Le nombre d'enfants du résident
+     * @param chambre La chambre du résident
+     * @param etatSante L'état de santé du résident
+     * @param actif L'état d'activité du résident
+     * @param user L'utilisateur associé au résident
+     * @param medecinTraitant Le médecin traitant du résident
+     * @param etablissement L'établissement du résident
+     */
+    public Resident(Long id, String nom, String prenom, LocalDate dateNaissance, String email, String tel,
+                    String adresse, StatutM statut, LocalDate dateEntree, String motifEntree, LocalDate dateSortie,
+                    String motifSortie, String antMedical, String antChirugical, int nbEnfant, String chambre,
+                    String etatSante, Boolean actif, User user, MedecinTraitant medecinTraitant, Etablissement etablissement) {
+        
+    	assert (user.getRole() == Roles.RESIDENT);
+        this.id = id;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.dateNaissance = dateNaissance;
+        this.email = email;
+        this.tel = tel;
+        this.adresse = adresse;
+        this.statut = statut;
+        this.dateEntree = dateEntree;
+        this.motifEntree = motifEntree;
+        this.dateSortie = dateSortie;
+        this.motifSortie = motifSortie;
+        this.antMedical = antMedical;
+        this.antChirugical = antChirugical;
+        this.nbEnfant = nbEnfant;
+        this.chambre = chambre;
+        this.etatSante = etatSante;
+        this.actif = actif;
+        this.user = user;
+        this.medecinTraitant = medecinTraitant;
+        this.etablissement = etablissement;
+    }
 }

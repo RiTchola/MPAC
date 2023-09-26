@@ -75,47 +75,39 @@ public class ResidentDto {
     @NotBlank
     private String etatSante;
     
-    //Initialise actif à True par défaut
+    // Initialise actif à True par défaut
 	private Boolean actif = true;
-    
-    @NotNull
-    private Long medecinId;
-    
-    @NotNull
-	private Long userId;
     
     public ResidentDto() {
     	
     }
     
     /**
-     * @param id
-     * @param user
-     * @param nom
-     * @param prenom
-     * @param dateNaissance
-     * @param email
-     * @param tel
-     * @param adresse
-     * @param statut
-     * @param dateEntree
-     * @param motifEntree
-     * @param dateSortie
-     * @param motifSortie
-     * @param etatSante
-     * @param antMedical
-     * @param antChirugical
-     * @param nbEnfant
-     * @param chambre
-     * @param actif
-     * @param medecinId
-     * @param idEtablissement
+     * Constructeur avec des arguments pour initialiser les champs
+     * 
+     * @param id            L'identifiant du résident
+     * @param nom           Le nom du résident
+     * @param prenom        Le prénom du résident
+     * @param dateNaissance La date de naissance du résident
+     * @param email         L'adresse e-mail du résident
+     * @param tel           Le numéro de téléphone du résident
+     * @param adresse       L'adresse du résident
+     * @param statut        Le statut du résident
+     * @param dateEntree    La date d'entrée du résident
+     * @param motifEntree   Le motif d'entrée du résident
+     * @param dateSortie    La date de sortie du résident
+     * @param motifSortie   Le motif de sortie du résident
+     * @param antMedical    Les antécédents médicaux du résident
+     * @param antChirugical Les antécédents chirurgicaux du résident
+     * @param nbEnfant      Le nombre d'enfants du résident
+     * @param chambre       Le numéro de chambre du résident
+     * @param etatSante     L'état de santé du résident
+     * @param actif         L'état d'activité du résident
      */
     public ResidentDto(Long id, String nom, String prenom, LocalDate dateNaissance, String email,
             String tel, String adresse, StatutM statut, LocalDate dateEntree, String motifEntree,
             LocalDate dateSortie, String motifSortie, String antMedical,
-            String antChirugical, Integer nbEnfant, String chambre,  String etatSante, Boolean actif,
-            Long userId, Long medecinId) {
+            String antChirugical, Integer nbEnfant, String chambre,  String etatSante, Boolean actif) {
     	
         this.id = id;
       	this.nom = nom;
@@ -135,46 +127,20 @@ public class ResidentDto {
         this.chambre = chambre;
         this.etatSante = etatSante;
         this.actif = actif;
-        this.userId = userId;
-        this.medecinId = medecinId;
        
     }
     
     /**
    	 * Conversion Dto ==> Resident
    	 * 
-   	 * @return
+   	 * @param user    L'utilisateur associé au résident
+   	 * @param medecin Le médecin traitant associé au résident
+   	 * @param etab    L'établissement lié au résident
+   	 * @return Une instance de la classe Resident
    	 */
    	public Resident toResident(User user, MedecinTraitant medecin, Etablissement etab) {
 		return new Resident(id, nom, prenom, dateNaissance, email, tel, adresse, statut, 
 				dateEntree, motifEntree, dateSortie, motifSortie, antMedical, antChirugical, nbEnfant,
 				chambre, etatSante, actif, user, medecin, etab);	
    	}
-    
-//    public static ResidentDto toDto(Resident resid) {
-//    	UserDto uDto = UserDto.toUserDto(resid.getUser());
-//    	MedecinTraitantDto mDto = MedecinTraitantDto.toDto(resid.getMedecinTraitant());
-//    	return new ResidentDto(
-//        		resid.getId(),
-//        		resid.getNom(),
-//        		resid.getPrenom(),
-//        		resid.getDateNaissance(),
-//        		resid.getEmail(),
-//        		resid.getTel(),
-//                resid.getAdresse(),
-//                resid.getStatut(),
-//                resid.getDateEntree(),
-//                resid.getMotifEntree(),
-//                resid.getDateSortie(),
-//                resid.getMotifSortie(),
-//                resid.getAntMedical(),
-//                resid.getAntChirugical(),
-//                resid.getNbEnfant(),
-//                resid.getChambre(),
-//                resid.getEtatSante(),
-//                resid.getActif(),
-//                uDto.getId(),
-//                mDto.getId() );
-//    }
-
 }
