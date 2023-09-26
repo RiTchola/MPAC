@@ -1,52 +1,45 @@
 package org.rina.dto.request;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import org.rina.model.Etablissement;
 import org.rina.model.Menu;
 
-import jakarta.persistence.ElementCollection;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 public class MenuDto {
 
 	private Long id;
 
 	@NotNull
 	private LocalDate dateDebutSemaine ;
-
-	@ElementCollection
+	
 	@NotNull
-	private List<String> menuLundi;
-
-	@ElementCollection
+	private String menuLundi;
+	
 	@NotNull
-	private List<String> menuMardi;
-
-	@ElementCollection
+	private String menuMardi;
+	
 	@NotNull
-	private List<String> menuMercredi;
-
-	@ElementCollection
+	private String menuMercredi;
+	
 	@NotNull
-	private List<String> menuJeudi;
-
-	@ElementCollection
+	private String menuJeudi;
+	
 	@NotNull
-	private List<String> menuVendredi;
+	private String menuVendredi;
 
-	@ElementCollection
 	@NotNull
-	private List<String> menuSamedi;
-
-	@ElementCollection
+	private String menuSamedi;
+	
 	@NotNull
-	private List<String> menuDimanche;
+	private String menuDimanche;
+	
+	public MenuDto () {
+		
+	}
 
 	/**
 	 * Constructeur avec des arguments pour initialiser les champs
@@ -61,9 +54,9 @@ public class MenuDto {
 	 * @param menuSamedi       Le menu du samedi
 	 * @param menuDimanche     Le menu du dimanche
 	 */
-	public MenuDto(Long id,  LocalDate dateDebutSemaine,  List<String> menuLundi,  List<String> menuMardi,
-			 List<String> menuMercredi,  List<String> menuJeudi,  List<String> menuVendredi,
-			 List<String> menuSamedi,  List<String> menuDimanche) {
+	public MenuDto(Long id,  LocalDate dateDebutSemaine,  String menuLundi,  String menuMardi,
+			 String menuMercredi,  String menuJeudi,  String menuVendredi,
+			String menuSamedi, String menuDimanche) {
 		
 		this.id = id;
 		this.dateDebutSemaine = dateDebutSemaine;

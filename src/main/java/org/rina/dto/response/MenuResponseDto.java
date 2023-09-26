@@ -1,7 +1,6 @@
 package org.rina.dto.response;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import org.rina.model.Menu;
 
@@ -16,19 +15,19 @@ public class MenuResponseDto {
     
     private LocalDate dateDebutSemaine;
     
-    private List<String> menuLundi;
+    private String menuLundi;
     
-    private List<String> menuMardi;
+    private String menuMardi;
     
-    private List<String> menuMercredi;
+    private String menuMercredi;
     
-    private List<String> menuJeudi;
+    private String menuJeudi;
     
-    private List<String> menuVendredi;
+    private String menuVendredi;
     
-    private List<String> menuSamedi;
+    private String menuSamedi;
     
-    private List<String> menuDimanche;
+    private String menuDimanche;
 
     public MenuResponseDto(Menu menu) {
     	

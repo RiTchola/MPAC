@@ -1,10 +1,8 @@
 package org.rina.model;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,75 +22,69 @@ import lombok.NoArgsConstructor;
 @Table(name = "TMENU", uniqueConstraints = @UniqueConstraint(columnNames = { "dateDebutSemaine" }))
 public class Menu {
 
-    @Id 
-    @GeneratedValue(strategy = GenerationType.IDENTITY) 
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column(nullable = false)
-    private LocalDate dateDebutSemaine;
+	@Column(nullable = false)
+	private LocalDate dateDebutSemaine;
 
-    @ElementCollection
-    @Column(nullable = false) 
-    private List<String> menuLundi;
+	@Column(nullable = false)
+	private String menuLundi;
 
-    @ElementCollection
-    @Column(nullable = false)
-    private List<String> menuMardi;
+	@Column(nullable = false)
+	private String menuMardi;
 
-    @ElementCollection
-    @Column(nullable = false) 
-    private List<String> menuMercredi;
- 
-    @ElementCollection
-    @Column(nullable = false) 
-    private List<String> menuJeudi;
+	@Column(nullable = false)
+	private String menuMercredi;
 
-    @ElementCollection
-    @Column(nullable = false) 
-    private List<String> menuVendredi;
- 
-    @ElementCollection
-    @Column(nullable = false) 
-    private List<String> menuSamedi;
- 
-    @ElementCollection
-    @Column(nullable = false) 
-    private List<String> menuDimanche;
+	@Column(nullable = false)
+	private String menuJeudi;
 
-    /**
-     * jointure à d'autres classes
-     */
-    @ManyToOne 
-    @JoinColumn(name = "FKETABLISSEMENT", nullable = false) 
-    private Etablissement etablissement;
+	@Column(nullable = false)
+	private String menuVendredi;
 
-    /**
-     * Constructeur avec des arguments 
-     * @param id L'identifiant du menu
-     * @param dateDebutSemaine La date de début de la semaine du menu
-     * @param menuLundi Le menu du lundi
-     * @param menuMardi Le menu du mardi
-     * @param menuMercredi Le menu du mercredi
-     * @param menuJeudi Le menu du jeudi
-     * @param menuVendredi Le menu du vendredi
-     * @param menuSamedi Le menu du samedi
-     * @param menuDimanche Le menu du dimanche
-     * @param etablissement L'établissement lié à ce menu
-     */
-    public Menu(Long id, LocalDate dateDebutSemaine, List<String> menuLundi, List<String> menuMardi,
-            List<String> menuMercredi, List<String> menuJeudi, List<String> menuVendredi,
-            List<String> menuSamedi, List<String> menuDimanche, Etablissement etablissement) {
+	@Column(nullable = false)
+	private String menuSamedi;
 
-        this.id = id;
-        this.dateDebutSemaine = dateDebutSemaine;
-        this.menuLundi = menuLundi;
-        this.menuMardi = menuMardi;
-        this.menuMercredi = menuMercredi;
-        this.menuJeudi = menuJeudi;
-        this.menuVendredi = menuVendredi;
-        this.menuSamedi = menuSamedi;
-        this.menuDimanche = menuDimanche;
-        this.etablissement = etablissement;
-    }
-    
+	@Column(nullable = false)
+	private String menuDimanche;
+
+	/**
+	 * jointure à d'autres classes
+	 */
+	@ManyToOne
+	@JoinColumn(name = "FKETABLISSEMENT", nullable = false)
+	private Etablissement etablissement;
+
+	/**
+	 * Constructeur avec des arguments
+	 * 
+	 * @param id               L'identifiant du menu
+	 * @param dateDebutSemaine La date de début de la semaine du menu
+	 * @param menuLundi        Le menu du lundi
+	 * @param menuMardi        Le menu du mardi
+	 * @param menuMercredi     Le menu du mercredi
+	 * @param menuJeudi        Le menu du jeudi
+	 * @param menuVendredi     Le menu du vendredi
+	 * @param menuSamedi       Le menu du samedi
+	 * @param menuDimanche     Le menu du dimanche
+	 * @param etablissement    L'établissement lié à ce menu
+	 */
+	public Menu(Long id, LocalDate dateDebutSemaine, String menuLundi, String menuMardi,
+			String menuMercredi, String menuJeudi, String menuVendredi, String menuSamedi,
+			String menuDimanche, Etablissement etablissement) {
+
+		this.id = id;
+		this.dateDebutSemaine = dateDebutSemaine;
+		this.menuLundi = menuLundi;
+		this.menuMardi = menuMardi;
+		this.menuMercredi = menuMercredi;
+		this.menuJeudi = menuJeudi;
+		this.menuVendredi = menuVendredi;
+		this.menuSamedi = menuSamedi;
+		this.menuDimanche = menuDimanche;
+		this.etablissement = etablissement;
+	}
+
 }

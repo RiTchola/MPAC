@@ -1,7 +1,6 @@
 package org.rina.controller;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import org.rina.controller.exceptions.NotExistException;
 import org.rina.dto.request.MenuDto;
@@ -42,21 +41,10 @@ public class MenuController {
 
         if (date) {
             Long id = menuService.findIdByDateDebutSemaine(dateDebutSemaine);
-            Long idEtab = Long.valueOf(1);
-            // Récupérer l'établissement associé au menu
-            Etablissement etab = etablissementService.findById(idEtab)
-                    .orElseThrow(() -> new NotExistException(idEtab.toString()));
-            // Récupérer la liste de menus correspondant à la date de début de semaine
-            List<String> lundi = menuService.findMenuForMonday(dateDebutSemaine);
-            List<String> mardi = menuService.findMenuForTuesday(dateDebutSemaine);
-            List<String> mercredi = menuService.findMenuForWednesday(dateDebutSemaine);
-            List<String> jeudi = menuService.findMenuForThursday(dateDebutSemaine);
-            List<String> vendredi = menuService.findMenuForFriday(dateDebutSemaine);
-            List<String> samedi = menuService.findMenuForSaturday(dateDebutSemaine);
-            List<String> dimanche = menuService.findMenuForSunday(dateDebutSemaine);
-
+   
             // Mapper les menus en objets DTO
-            Menu menu = new Menu(id, dateDebutSemaine, lundi, mardi, mercredi, jeudi, vendredi, samedi, dimanche, etab);
+            Menu menu = menuService.findById(id)
+            		.orElseThrow(() -> new NotExistException(id.toString()));
             // Renvoyer la liste des menus en réponse
             return ResponseEntity.ok(new MenuResponseDto(menu));
         } else {
@@ -75,6 +63,15 @@ public class MenuController {
         Etablissement etab = etablissementService.findById(idEtab)
                 .orElseThrow(() -> new NotExistException(idEtab.toString()));
 
+        // Remplacer les séparateurs autres que la virgule par des virgules dans les menus
+        menuDto.setMenuLundi(checkAndReplaceSeparators(menuDto.getMenuLundi()));
+        menuDto.setMenuMardi(checkAndReplaceSeparators(menuDto.getMenuMardi()));
+        menuDto.setMenuMercredi(checkAndReplaceSeparators(menuDto.getMenuMercredi()));
+        menuDto.setMenuJeudi(checkAndReplaceSeparators(menuDto.getMenuJeudi()));
+        menuDto.setMenuVendredi(checkAndReplaceSeparators(menuDto.getMenuVendredi()));
+        menuDto.setMenuSamedi(checkAndReplaceSeparators(menuDto.getMenuSamedi()));
+        menuDto.setMenuDimanche(checkAndReplaceSeparators(menuDto.getMenuDimanche()));
+
         // Créer et insérer le menu dans la base de données
         Menu newMenu = menuDto.toMenu(etab);
         menuService.insert(newMenu);
@@ -85,7 +82,7 @@ public class MenuController {
 
     /**
      * Mettre à jour un menu existant.
-     
+     */
     @PutMapping("/{dateDebutSemaine}")
     public ResponseEntity<String> updateMenu(@PathVariable LocalDate dateDebutSemaine, @Valid @RequestBody MenuDto menuDto) {
         // Vérifier si un menu existe pour la date de début de semaine spécifiée
@@ -93,24 +90,45 @@ public class MenuController {
 
         if (date) {
             Long id = menuService.findIdByDateDebutSemaine(dateDebutSemaine);
+            Long idEtab = Long.valueOf(1);
+            // Récupérer l'établissement associé au menu
+            Etablissement etab = etablissementService.findById(idEtab)
+                    .orElseThrow(() -> new NotExistException(idEtab.toString()));
+
+            // Remplacer les séparateurs autres que la virgule par des virgules dans les menus
+            menuDto.setMenuLundi(checkAndReplaceSeparators(menuDto.getMenuLundi()));
+            menuDto.setMenuMardi(checkAndReplaceSeparators(menuDto.getMenuMardi()));
+            menuDto.setMenuMercredi(checkAndReplaceSeparators(menuDto.getMenuMercredi()));
+            menuDto.setMenuJeudi(checkAndReplaceSeparators(menuDto.getMenuJeudi()));
+            menuDto.setMenuVendredi(checkAndReplaceSeparators(menuDto.getMenuVendredi()));
+            menuDto.setMenuSamedi(checkAndReplaceSeparators(menuDto.getMenuSamedi()));
+            menuDto.setMenuDimanche(checkAndReplaceSeparators(menuDto.getMenuDimanche()));
 
             // Mise à jour du menu existant avec les nouvelles valeurs
             menuDto.setId(id);
-            menuService.updateMenuMonday(id, menuDto.getMenuLundi());
-            menuService.updateMenuTuesday(id, menuDto.getMenuMardi());
-            menuService.updateMenuWednesday(id, menuDto.getMenuMercredi());
-            menuService.updateMenuThursday(id, menuDto.getMenuJeudi());
-            menuService.updateMenuFriday(id, menuDto.getMenuVendredi());
-            menuService.updateMenuSaturday(id, menuDto.getMenuSamedi());
-            menuService.updateMenuSunday(id, menuDto.getMenuDimanche());
+            menuDto.setDateDebutSemaine(dateDebutSemaine);
+            menuService.updateMenu(id, menuDto.toMenu(etab));
 
             // Mapper le menu mis à jour en un objet DTO et le renvoyer en réponse
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok("Le menu a été mis à jour.");
         } else {
             // Renvoyer une réponse 400 si le menu n'existe pas
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Le menu n'existe pas.");
         }
     }
-	*/
-}
+    
+    /**
+     * Remplace les séparateurs autres que la virgule par des virgules dans la chaîne de menu.
+     */
+    private String checkAndReplaceSeparators(String input) {
+        // Vérifier si la chaîne est nulle ou vide
+        if (input == null || input.isEmpty()) {
+            return input; // Rien à faire si la chaîne est nulle ou vide
+        }
 
+        // Remplacer les séparateurs spécifiques (par exemple, ; ! : | / .) par des virgules
+        String result = input.replaceAll("[;!:|/.]+", ",");
+
+        return result;
+    }
+}
