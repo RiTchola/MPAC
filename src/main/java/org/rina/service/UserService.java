@@ -28,18 +28,20 @@ public class UserService {
     private final UserRepository userRepository;
     
     /**
-	 * Ajout d'un nouveau User
+	 * Ajout d'un nouveau utilisateur.
 	 * 
-	 * @param user u1
-	 * @return
+	 * @param user  L'utilisateur à ajouter.
+	 * @return      L'utilisateur ajouté.
 	 */
     public User insert(User u1) {
         return userRepository.save(u1);
     }
     
     /**
-	 * @param username
-	 * @param usee u1
+	 * Met à jour un utilisateur existant.
+	 * 
+	 * @param username  Le nom d'utilisateur de l'utilisateur à mettre à jour.
+	 * @param user      L'utilisateur mis à jour.
 	 * @see 
 	 */
 	public User updateUser(String username, User u1) {
@@ -47,67 +49,77 @@ public class UserService {
 	}
 
     /**
-     * @param username
-     * @return
+     * Recherche un utilisateur par son nom d'utilisateur.
+     * 
+     * @param username  Le nom d'utilisateur de l'utilisateur à rechercher.
+     * @return          L'utilisateur correspondant au nom d'utilisateur, s'il existe.
+     * @throws UsernameNotFoundException
      */
     public Optional<User> findByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username);
     }
     
     /**
+	 * Change le mot de passe d'un utilisateur.
 	 * 
-	 * @param user 
-	 * @param oldPassword non crypté
-	 * @param newPassword non crypté et supposé validé
-	 * @throws CredentialException 
+	 * @param user         L'utilisateur dont le mot de passe doit être modifié.
+	 * @param oldPassword  L'ancien mot de passe (non crypté).
+	 * @param newPassword  Le nouveau mot de passe (non crypté et supposé valide).
+	 * @throws CredentialException
 	 */
-	@PreAuthorize("hasRole('ADMIN') or  #user.username eq authentication.name")
+	@PreAuthorize("hasRole('ADMIN') or #user.username eq authentication.name")
 	public void changePassword(User user, String oldPassword, String newPassword) throws CredentialException {
-		//vérifie l'existance du user
-		//récupère le user dans la BD pour voir s'il existe bien 
-		User userDb=userRepository.findByUsername(user.getUsername()).orElseThrow(
-				()->new NotExistException("{user.inexistant}", user.getUsername()));
-		//Vérifie qu'il correspond avec celui à modifier
-		if(! user.equals(userDb))
-			throw  new CredentialException("{user.different}");
-		
-		//vérification du pw
-		if(!encodeur.matches(oldPassword, userDb.getPassword()))
-			throw new CredentialException("{user.badPassword}");	
-		userRepository.save(new User(user.getId(), user.getUsername(),encodeur.encode(newPassword),user.getRole(),true));
+		// Vérifie l'existence de l'utilisateur
+		// Récupère l'utilisateur dans la base de données pour vérifier s'il existe bien
+		User userDb = userRepository.findByUsername(user.getUsername()).orElseThrow(
+				() -> new NotExistException("{user.inexistant}", user.getUsername()));
+		// Vérifie qu'il correspond à celui à modifier
+		if (!user.equals(userDb))
+			throw new CredentialException("{user.different}");
+
+		// Vérification du mot de passe
+		if (!encodeur.matches(oldPassword, userDb.getPassword()))
+			throw new CredentialException("{user.badPassword}");
+		userRepository.save(new User(user.getId(), user.getUsername(), encodeur.encode(newPassword), user.getRole(), true));
 	}
 	
     /**
-     * @param id
-     * @return
+     * Recherche un utilisateur par son identifiant.
+     * 
+     * @param id  L'identifiant de l'utilisateur à rechercher.
+     * @return    L'utilisateur correspondant à l'identifiant, s'il existe.
      */
     public Optional<User> findById(Long id) {
         return userRepository.findById(id);
     }
 
-    
     /**
-     * @param id
+     * Supprime un utilisateur par son identifiant.
+     * 
+     * @param id  L'identifiant de l'utilisateur à supprimer.
      */
     public void deleteById(Long id) {
         userRepository.deleteById(id);
     }
 
 	/**
-	 * @param id
-	 * @return
+	 * Vérifie l'existence d'un utilisateur par son identifiant.
+	 * 
+	 * @param id  L'identifiant de l'utilisateur à vérifier.
+	 * @return    true si l'utilisateur existe, sinon false.
 	 */
 	public boolean existsById(Long id) {
 		return userRepository.existsById(id);
 	}
 
 	/**
-	 * @param username
-	 * @return
+	 * Vérifie l'existence d'un utilisateur par son nom d'utilisateur.
+	 * 
+	 * @param username  Le nom d'utilisateur à vérifier.
+	 * @return          true si l'utilisateur existe, sinon false.
 	 */
 	public boolean existsByUsername(String username) {
 		return userRepository.existsByUsername(username);
 	}
-
 
 }

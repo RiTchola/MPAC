@@ -9,8 +9,11 @@ import org.rina.dto.request.ChangePasswordDto;
 import org.rina.dto.request.CredentialValidation;
 import org.rina.dto.request.UserDto;
 import org.rina.enums.Roles;
+import org.rina.model.PersonneContact;
 import org.rina.model.User;
+import org.rina.service.PersonneContactServices;
 import org.rina.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +21,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,6 +42,8 @@ public class UserController {
     private final UserService userSrv;
     private final JwtService jwtService;
     private final PasswordEncoder encodeur;
+    @Autowired
+    private PersonneContactServices personService;
     
 
     /**
@@ -47,16 +51,22 @@ public class UserController {
      */
     @GetMapping
     public ResponseEntity<User> getUsername(HttpServletRequest userDto) {
+        // Obtenir le token d'authentification à partir de l'en-tête de la requête
         String token = userDto.getHeader(HttpHeaders.AUTHORIZATION);
-        if(token==null || !token.startsWith("Bearer ")){
+        if (token == null || !token.startsWith("Bearer ")) {
+            // Renvoyer une réponse 403 si le token est manquant ou invalide
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
+        // Extraire le nom d'utilisateur à partir du token JWT
         String utilToken = token.substring(7);
         String currentUsername = jwtService.extractUsername(utilToken);
-        if(currentUsername!=null){
+        if (currentUsername != null) {
+            // Récupérer l'utilisateur associé au nom d'utilisateur extrait
             User user = userSrv.findByUsername(currentUsername).orElseThrow();
+            // Renvoyer l'utilisateur en réponse
             return ResponseEntity.ok(user);
         }
+        // Renvoyer une réponse 403 si le nom d'utilisateur n'est pas trouvé dans le token
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
@@ -65,116 +75,118 @@ public class UserController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        // Vérifier si un utilisateur existe pour l'ID spécifié
         Optional<User> user = userSrv.findById(id);
         if (user.isPresent()) {
-			return ResponseEntity.ok(user.get());
-		}
-
-		else return ResponseEntity.notFound().build();
+            // Renvoyer l'utilisateur en réponse
+            return ResponseEntity.ok(user.get());
+        } else {
+            // Renvoyer une réponse 404 si l'utilisateur n'existe pas
+            return ResponseEntity.notFound().build();
+        }
     }
-    
+
     /**
      * Créer un nouveau user.
      */
     @SuppressWarnings("unused")
 	@PostMapping
     public ResponseEntity<String> createUser(@Valid @RequestBody UserDto userDto) {
-    	//Vérifie que l'utilisateur n'existe pas en fonction du Username
-    	Optional<User> exitingUser = userSrv.findByUsername(userDto.getUsername());
-    	
-    	if (exitingUser.isEmpty()) {
-    		
-    		User newUser = userSrv.insert(userDto.toUser(encodeur));
-    		return ResponseEntity.ok().build();
-        } 
-        
-        else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("L'utilisateur existe déjà.");
+        // Vérifier si l'utilisateur existe déjà en fonction du nom d'utilisateur
+        Optional<User> exitingUser = userSrv.findByUsername(userDto.getUsername());
+
+        if (exitingUser.isEmpty()) {
+            if (userDto.getRole() == Roles.PERSONNECONTACT) {
+                // Vérifier si la personne de contact correspondante existe
+                Optional<PersonneContact> existingPersC = personService.findByUsername(userDto.getUsername());
+                if (existingPersC.isPresent()) {
+                    // Associer la personne de contact au nouvel utilisateur
+                    PersonneContact persC = existingPersC.get();
+                    User newUser = userSrv.insert(userDto.toUser(encodeur));
+                    persC.setUser(newUser);
+                    // Renvoyer une réponse 200 si la création de l'utilisateur est réussie
+                    return ResponseEntity.ok().build();
+                } else {
+                    // Renvoyer une réponse 400 si la personne de contact n'existe pas encore
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("La personne n'existe pas encore.");
+                }
+            }
+            // Créer un nouvel utilisateur dans le cas général
+            User newUser = userSrv.insert(userDto.toUser(encodeur));
+            // Renvoyer une réponse 200 si la création de l'utilisateur est réussie
+            return ResponseEntity.ok().build();
+        } else {
+            // Renvoyer une réponse 400 si l'utilisateur existe déjà
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("L'utilisateur existe déjà.");
+        }
     }
 
     /**
-     * Demander un noucveau mot de passe.
+     * Demander un nouveau mot de passe.
      */
     @GetMapping("/{username}/newPassword")
     public ResponseEntity<User> newPassword(@PathVariable String username) {
-    	// Vérifie d'abord si l'utilisateur existe en fonction du username
-    	Optional<User> existingUser = userSrv.findByUsername(username);
-    	
-    	if (existingUser.isPresent()) {
-    		User updateUser = existingUser.get();
-        	//Renvoie la réponse avec le user 
+        // Vérifie d'abord si l'utilisateur existe en fonction du username
+        Optional<User> existingUser = userSrv.findByUsername(username);
+
+        if (existingUser.isPresent()) {
+            // Récupérer l'utilisateur existant
+            User updateUser = existingUser.get();
+            // Renvoyer la réponse avec l'utilisateur
             return ResponseEntity.ok(updateUser);
-    	}
-    
-    	else return ResponseEntity.notFound().build();
-    }  
+        } else {
+            // Renvoyer une réponse 404 si l'utilisateur n'existe pas
+            return ResponseEntity.notFound().build();
+        }
+    }
     
     /**
      * Mettre à jour un mot de passe.
      */
-    @GetMapping("/{username}/update")
-	public ResponseEntity<String> changePWGet(@PathVariable String username, Authentication auth, Model model) {
-		// vérifie si le user existe
-		Optional<User> existingUser = userSrv.findByUsername(username);
-		
-		if ( existingUser.isPresent()) {
-			User user = existingUser.get();
-			// vérifie que c'est bien l'utilisateur connecté
-			// Vérifie s'il a les droits admin ou prof loggé sinon déclenche exception 403
-			if (auth == null || (!(auth.getName().equals(user.getUsername()) || hasRole(auth, Roles.ADMIN))))
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Accés refusé");
-	
-			ChangePasswordDto cpd = ChangePasswordDto.createPwDto(user);
-			model.addAttribute("userDto", cpd);
-			return ResponseEntity.ok().build();
-		}
-		
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("l'utilisateur n'existe pas");
-	}
+//    @GetMapping("/{username}/update")
+//    public ResponseEntity<String> changePWGet(@PathVariable String username, Authentication auth, Model model) {
+//        // Vérifier si l'utilisateur existe en fonction du nom d'utilisateur
+//        Optional<User> existingUser = userSrv.findByUsername(username);
+//
+//        if (existingUser.isPresent()) {
+//            User user = existingUser.get();
+//            // Vérifier si l'utilisateur connecté a les droits nécessaires
+//            if (auth == null || (!(auth.getName().equals(user.getUsername()) || hasRole(auth, Roles.ADMIN)))) {
+//                // Renvoyer une réponse 400 si l'accès est refusé
+//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Accès refusé");
+//            }
+//
+//            // Créer un objet DTO pour la mise à jour du mot de passe
+//            ChangePasswordDto cpd = ChangePasswordDto.createPwDto(user);
+//            model.addAttribute("userDto", cpd);
+//            // Renvoyer une réponse 200 si tout est en ordre
+//            return ResponseEntity.ok().build();
+//        }
+//
+//        // Renvoyer une réponse 400 si l'utilisateur n'existe pas
+//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("L'utilisateur n'existe pas");
+//    }
+    @PutMapping("/{username}/update")
+    public ResponseEntity<String> changePWPut(@PathVariable String username,
+            @Validated(CredentialValidation.class) @RequestBody ChangePasswordDto userCPwDto, Authentication auth, Model model) {
+        // Vérifier si l'utilisateur existe en fonction du nom d'utilisateur
+        Optional<User> existingUser = userSrv.findByUsername(username);
 
-	@PutMapping("/{username}/update")
-	public ResponseEntity<String> changePWPut(@PathVariable String username,
-			@Validated(CredentialValidation.class) @RequestBody ChangePasswordDto userCPwDto, Authentication auth, Model model) {
-		// vérifie si le user existe
-		Optional<User> existingUser = userSrv.findByUsername(username);
+        if (existingUser.isPresent()) {
+            User user = existingUser.get();
+            // Changer le mot de passe de l'utilisateur
+            try {
+                userSrv.changePassword(user, userCPwDto.getOldPassword(), userCPwDto.getPassword());
+                // Renvoyer une réponse 202 si le mot de passe est changé avec succès
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body("Mot de passe changé avec succès");
+            } catch (CredentialException e) {
+                // Renvoyer une réponse 404 si le changement de mot de passe échoue
+                return ResponseEntity.notFound().build();
+            }
+        }
 
-		if (existingUser.isPresent()) {
-			User user = existingUser.get();
-			// change le pw
-			try {
-				userSrv.changePassword(user, userCPwDto.getOldPassword(), userCPwDto.getPassword());
-				return ResponseEntity.status(HttpStatus.ACCEPTED).body("Mot de passe changé avec succés");
-			} catch (CredentialException e) {
-				return ResponseEntity.notFound().build();
-			}
-		}
-		
-		return ResponseEntity.notFound().build();
-	}
+        // Renvoyer une réponse 404 si l'utilisateur n'existe pas
+        return ResponseEntity.notFound().build();
+    }
 
-    /**
-     * Supprimer un user par son ID.
-     */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
-	    if (userSrv.existsById(id)) {
-	    	userSrv.deleteById(id);
-			return ResponseEntity.ok().build();
-		}
-		
-		 else return ResponseEntity.notFound().build();
-	}
-    
-    /**
-	 * Petite méthode privée qui vérifie si l'objet auth possède le role désigné
-	 * 
-	 * @param auth
-	 * @param role
-	 * @return vrai s'il possède le role
-	 */
-	private boolean hasRole(Authentication auth, Roles role) {
-		String roleStr = role.name();
-		return auth.getAuthorities().stream().anyMatch(a -> roleStr.equals(a.getAuthority()));
-	}
-	
-	
 }

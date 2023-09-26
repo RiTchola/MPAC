@@ -15,13 +15,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @PasswordValueMatch.List({
-@PasswordValueMatch(groups = CredentialValidation.class, field = "password", fieldMatch = "confirmPassword", message = "{PasswordMatchError}") })
+		@PasswordValueMatch(groups = CredentialValidation.class, field = "password", fieldMatch = "confirmPassword", message = "{PasswordMatchError}") })
 @Data
 @AllArgsConstructor
 public class UserDto {
-	
-	private Long id ;
-	
+
+	private Long id;
+
 	@NotBlank(groups = CredentialValidation.class)
 	private String username;
 
@@ -41,25 +41,32 @@ public class UserDto {
 	}
 
 	/**
-	 * Créer un user à partir d'un Dto sans crypter le password
+	 * Crée un utilisateur à partir d'un Dto sans crypter le mot de passe
 	 * 
-	 * @param encodeur
-	 * @return User
+	 * @return Un objet User
 	 */
 	public User toUser() {
-		return new User( id, username, password, role, true);
-	}
-
-	public User toUser(PasswordEncoder encodeur) {
-		return new User( id, username, encodeur.encode(password), role, true);
+		return new User(id, username, password, role, true);
 	}
 
 	/**
-	 * Conversion User ==> Dto
-	 * @param user
-	 * @return
+	 * Crée un utilisateur à partir d'un Dto avec le mot de passe crypté
+	 * 
+	 * @param encodeur L'encodeur de mot de passe
+	 * @return Un objet User
+	 */
+	public User toUser(PasswordEncoder encodeur) {
+		return new User(id, username, encodeur.encode(password), role, true);
+	}
+
+	/**
+	 * Conversion de l'objet User en UserDto
+	 * 
+	 * @param user L'objet User à convertir
+	 * @return Une instance de la classe UserDto
 	 */
 	public static UserDto toUserDto(User user) {
-		return new UserDto( user.getId(), user.getUsername(), user.getPassword(), user.getPassword(), user.getRole());
+		return new UserDto(user.getId(), user.getUsername(), user.getPassword(), user.getPassword(), user.getRole());
 	}
+
 }
