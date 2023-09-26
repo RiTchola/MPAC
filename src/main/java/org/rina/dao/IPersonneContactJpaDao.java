@@ -12,29 +12,28 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IPersonneContactJpaDao extends JpaRepository<PersonneContact, Long> {
 
-	// Utilisation d'un Query natif pour mettre à jour un résident
-	@Modifying
-	@Query(value = "UPDATE TPERSONNECONTACT p SET p =?2 WHERE p.id =?1", nativeQuery = true)
-	void updatePersonneContact(Long id, PersonneContact personC);
+    // Requête personnalisée pour mettre à jour une personne de contact
+    @Modifying
+    @Query(value = "UPDATE TPERSONNECONTACT p SET p =?2 WHERE p.id =?1", nativeQuery = true)
+    void updatePersonneContact(Long id, PersonneContact personC);
 
-	// Query pour avoir la liste des personne de contact d'un resident
-	@Query(value = "select p.*  from TPERSONNECONTACT p join TLIAISON l on p.id=l.fkpersonnecontact join TRESIDENT r on l.fkresident=r.id where r.id=?1 ORDER BY r.DATE_ENTREE DESC", nativeQuery = true)
-	List<PersonneContact> findAllPersonContactToResid(Long idResid);
-	
-	// Utilisation d'un Query natif pour avoir une personne de contact grace au username
-	@Query(value = "select * from TPERSONNECONTACT p where p.EMAIL=?1", nativeQuery = true)
-	Optional<PersonneContact> findByUsername(String username);
+    // Requête pour obtenir la liste des personnes de contact d'un résident
+    @Query(value = "SELECT p.*  FROM TPERSONNECONTACT p JOIN TLIAISON l ON p.id=l.fkpersonnecontact JOIN TRESIDENT r ON l.fkresident=r.id WHERE r.id=?1 ORDER BY r.DATE_ENTREE DESC", nativeQuery = true)
+    List<PersonneContact> findAllPersonContactToResid(Long idResid);
 
-	// Utilisation d'un Query natif pour savoir si une personne de contact existe grace au username
-	@Query(value = "select count(*)=1 from TUSER u where u.username=?1 and u.role=3", nativeQuery = true)
-	boolean existByUserName(String username);
+    // Requête personnalisée pour obtenir une personne de contact par son email
+    @Query(value = "SELECT * FROM TPERSONNECONTACT p WHERE p.EMAIL=?1", nativeQuery = true)
+    Optional<PersonneContact> findByUsername(String username);
 
-	// Utilisation d'un Query natif pour avoir une personne de contact grace au name
-	@Query(value = "select * from TPERSONNECONTACT p where p.nom=?1 or p.prenom=?1", nativeQuery = true)
-	Optional<PersonneContact> findByName(String nom);
+    // Requête personnalisée pour vérifier si une personne de contact existe par son email
+    @Query(value = "SELECT COUNT(*)=1 FROM TUSER u WHERE u.username=?1 AND u.role=3", nativeQuery = true)
+    boolean existByUserName(String username);
 
-	// Utilisation d'un Query natif pour savoir si une personne de contact existe grace au name
-	@Query(value = "select count(*)=1 from TPERSONNECONTACT p where p.nom=?1 and p.prenom=?2", nativeQuery = true)
-	boolean existByName(String nom, String prenom);
+    // Requête personnalisée pour obtenir une personne de contact par son nom ou prénom
+    @Query(value = "SELECT * FROM TPERSONNECONTACT p WHERE p.nom=?1 OR p.prenom=?1", nativeQuery = true)
+    Optional<PersonneContact> findByName(String nom);
 
+    // Requête personnalisée pour vérifier si une personne de contact existe par son nom et prénom
+    @Query(value = "SELECT COUNT(*)=1 FROM TPERSONNECONTACT p WHERE p.nom=?1 AND p.prenom=?2", nativeQuery = true)
+    boolean existByName(String nom, String prenom);
 }

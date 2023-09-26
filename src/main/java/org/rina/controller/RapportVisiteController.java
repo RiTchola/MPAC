@@ -19,7 +19,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/rapport-visite")
+@RequestMapping("/externe/rapport-visite")
 public class RapportVisiteController {
 
     @Autowired

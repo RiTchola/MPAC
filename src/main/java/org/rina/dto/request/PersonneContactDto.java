@@ -49,15 +49,27 @@ public class PersonneContactDto {
 
 	@NotNull
 	private TypePersonne choix;
-	
-	private Long userId;
 
 	public PersonneContactDto() {
 		
 	}
 
+	/**
+	 * Constructeur avec des arguments pour initialiser les champs
+	 * 
+	 * @param id            L'identifiant de la personne de contact
+	 * @param nom           Le nom de la personne de contact
+	 * @param prenom        Le prénom de la personne de contact
+	 * @param dateNaissance La date de naissance de la personne de contact
+	 * @param email         L'adresse e-mail de la personne de contact
+	 * @param tel1          Le premier numéro de téléphone de la personne de contact
+	 * @param tel2          Le deuxième numéro de téléphone de la personne de contact
+	 * @param adresse       L'adresse de la personne de contact
+	 * @param statut        Le statut de la personne de contact
+	 * @param choix         Le type de personne (choix) de la personne de contact
+	 */
 	public PersonneContactDto(Long id, String nom, String prenom, LocalDate dateNaissance, String email, 
-			String tel1, String tel2, String adresse, StatutM statut, TypePersonne choix, Long userId) {
+			String tel1, String tel2, String adresse, StatutM statut, TypePersonne choix) {
 
 		this.id = id;
 		this.nom = nom;
@@ -69,13 +81,13 @@ public class PersonneContactDto {
 		this.adresse = adresse;
 		this.statut = statut;
 		this.choix = choix;
-		this.userId = userId;
 	}
 
 	/**
 	 * Conversion Dto ==> PersonneContact avec utilisateur 
 	 * 
-	 * @return PersonneContact 
+	 * @param user L'utilisateur associé à la personne de contact
+	 * @return Une instance de la classe PersonneContact
 	 */
 	public PersonneContact toPersonneContact(User user) {
 		return new PersonneContact(id, nom, prenom, dateNaissance, email, tel1,
@@ -85,31 +97,10 @@ public class PersonneContactDto {
 	/**
 	 * Conversion Dto ==> PersonneContact sans utilisateur 
 	 * 
-	 * @return PersonneContact 
+	 * @return Une instance de la classe PersonneContact
 	 */
 	public PersonneContact toPersonneContact() {
 		return new PersonneContact(id, nom, prenom, dateNaissance, email, tel1,
 				tel2, adresse, statut, choix, null);
 	}
-	
-	/**
-	 * Conversion PersonneContact ==> Dto 
-	 * @param persC
-	 * @return
-	 */
-	public static PersonneContactDto toDto(PersonneContact persC) {
-		UserDto uDto = UserDto.toUserDto(persC.getUser());
-		return new PersonneContactDto(
-	            persC.getId(),
-	            persC.getNom(),
-	            persC.getPrenom(),
-	            persC.getDateNaissance(),
-	            persC.getEmail(),
-	            persC.getTel1(),
-	            persC.getTel2(),
-	            persC.getAdresse(),
-	            persC.getStatut(),
-	            persC.getChoix(), 
-	            uDto.getId() );
-	 }
 }

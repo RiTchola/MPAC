@@ -51,7 +51,8 @@ public class SecurityConfiguration {
                     "/configuration/security",
                     "/swagger-ui/**",
                     "/webjars/**",
-                    "/swagger-ui.html"
+                    "/swagger-ui.html",
+                    "/externe/**"
             )
             .permitAll()
             // Toutes les autres demandes nécessitent une authentification.

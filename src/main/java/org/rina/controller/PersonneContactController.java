@@ -1,6 +1,7 @@
 package org.rina.controller;
 
 import org.rina.dto.request.PersonneContactDto;
+import org.rina.dto.response.PersonneContactResponseDto;
 import org.rina.model.PersonneContact;
 import org.rina.model.Resident;
 import org.rina.model.User;
@@ -31,16 +32,17 @@ public class PersonneContactController {
     /**
 	 * Récupérer un personne contact par son ID.
 	 */
-	@GetMapping("/{id}")
-	public ResponseEntity<PersonneContact> getPersonneContactById(@PathVariable Long id) {
-		Optional<PersonneContact> personC = personneConService.findById(id);
-		
-		if (personC.isPresent()) {
-			return ResponseEntity.ok(personC.get());
-		}
+    @GetMapping("/{id}")
+    public ResponseEntity<PersonneContactResponseDto> getPersonneContactById(@PathVariable Long id) {
+        Optional<PersonneContact> personC = personneConService.findById(id);
 
-		else return ResponseEntity.notFound().build();
-	}
+        if (personC.isPresent()) {
+            PersonneContactResponseDto responseDto = new PersonneContactResponseDto(personC.get());
+            return ResponseEntity.ok(responseDto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
     /**
 	 * Créer une nouvelle personne contact.
@@ -65,21 +67,17 @@ public class PersonneContactController {
 		    	PersonneContact newPersonneC = personDto.toPersonneContact(user);
 				personneConService.insert(newPersonneC);
 				
-				if (newPersonneC != null) {
-					//Lie la personne de contact au résident 
-			    	residentService.addPersonneContactToResident(id, newPersonneC.getId());
-				}
+				//Lie la personne de contact au résident 
+		    	residentService.addPersonneContactToResident(id, newPersonneC.getId());
 	    	}
 	    	else {
 	    		// Crée et insère la personne de contact sans son compte 
 		    	PersonneContact newPersonneC = personDto.toPersonneContact();
 				personneConService.insert(newPersonneC);
 				
-				if (newPersonneC != null) {
 				//Lie la personne de contact au résident 
-					log.info("id pc: " +  newPersonneC.getId());
+				log.info("id pc: " +  newPersonneC.getId());
 		    	residentService.addPersonneContactToResident(id, newPersonneC.getId());
-				}
 	    	}
 	    	
 			// Renvoie la réponse ok
@@ -93,7 +91,7 @@ public class PersonneContactController {
 	 * Mettre à jour une personne contact existante.
 	 */
     @PutMapping("/{id}")
-    public ResponseEntity<PersonneContact> updatePersonneContact(@PathVariable Long id, @Valid @RequestBody PersonneContactDto personDto) {
+    public ResponseEntity<PersonneContactResponseDto>  updatePersonneContact(@PathVariable Long id, @Valid @RequestBody PersonneContactDto personDto) {
     	// Vérifie d'abord si la personne existe en fonction de l'ID
     	Optional<PersonneContact> existingPersonneC = personneConService.findById(id);
 
@@ -107,13 +105,15 @@ public class PersonneContactController {
 	    		//Mise à jour de la personne existante avec les nouvelles valeurs
 	    		PersonneContact updatePersonC = personneConService.updatePersonneContact(id, personDto.toPersonneContact(user));
 	    		// Renvoie la réponse avec le résident mis à jour
-				return ResponseEntity.ok(updatePersonC);
+	    		PersonneContactResponseDto responseDto = new PersonneContactResponseDto(updatePersonC);
+	            return ResponseEntity.ok(responseDto);
 	    	}
 	    	else {
 		    	//Mise à jour de la personne existante avec les nouvelles valeurs
 	    		PersonneContact updatePersonC = personneConService.updatePersonneContact(id, personDto.toPersonneContact());
 	    		// Renvoie la réponse avec le résident mis à jour
-	    		return ResponseEntity.ok(updatePersonC);
+	    		PersonneContactResponseDto responseDto = new PersonneContactResponseDto(updatePersonC);
+	            return ResponseEntity.ok(responseDto);
 	    	}
         }
         return ResponseEntity.notFound().build();
