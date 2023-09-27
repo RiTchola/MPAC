@@ -20,21 +20,39 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class AuthenticationController {
 
-	private final AuthenticationService service;
+    private final AuthenticationService authService;
 
-	@PostMapping("/register")
-	public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {
-		return ResponseEntity.ok(service.register(request));
-	}
+    /**
+     * Endpoint pour l'enregistrement d'un nouvel utilisateur.
+     *
+     * @param request Les informations d'enregistrement de l'utilisateur.
+     * @return Une réponse HTTP contenant le résultat de l'enregistrement.
+     */
+    @PostMapping("/register")
+    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {
+        return ResponseEntity.ok(authService.register(request));
+    }
 
-	@PostMapping("/authenticate")
-	public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
-		return ResponseEntity.ok(service.authenticate(request));
-	}
+    /**
+     * Endpoint pour l'authentification d'un utilisateur.
+     *
+     * @param request Les informations d'authentification de l'utilisateur.
+     * @return Une réponse HTTP contenant le résultat de l'authentification.
+     */
+    @PostMapping("/authenticate")
+    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
+        return ResponseEntity.ok(authService.authenticate(request));
+    }
 
-	@PostMapping("/refresh-token")
-	public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		service.refreshToken(request, response);
-	}
-
+    /**
+     * Endpoint pour rafraîchir le jeton d'authentification.
+     *
+     * @param request  La requête HTTP.
+     * @param response La réponse HTTP dans laquelle le nouveau jeton sera renvoyé.
+     * @throws IOException En cas d'erreur lors de la gestion de la réponse HTTP.
+     */
+    @PostMapping("/refresh-token")
+    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        authService.refreshToken(request, response);
+    }
 }

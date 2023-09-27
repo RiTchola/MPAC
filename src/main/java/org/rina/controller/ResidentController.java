@@ -3,6 +3,7 @@ package org.rina.controller;
 import org.rina.controller.exceptions.NotExistException;
 
 import org.rina.dto.request.ResidentDto;
+import org.rina.dto.response.PersonneContactResponseDto;
 import org.rina.dto.response.ResidentResponseDto;
 import org.rina.enums.Roles;
 import org.rina.model.Etablissement;
@@ -50,12 +51,14 @@ public class ResidentController {
         Optional<User> existingUser = userService.findByUsername(username);
         if (existingUser.isPresent()) {
             User user = existingUser.get();
+            
             // Vérifier le rôle de l'utilisateur
             if (user.getRole() == Roles.PERSONNECONTACT) {
                 // Si l'utilisateur est une personne de contact, Vérifier si la personne existe
                 Optional<PersonneContact> existingPersonC = persCService.findByUsername(username);
                 if (existingPersonC.isPresent()) {
-                    // Retourner la liste des résidents associés à la personne de contact
+                    
+                	// Retourner la liste des résidents associés à la personne de contact
                     PersonneContact persC = existingPersonC.get();
                     List<Resident> residsPersonC = residentService.findAllResidToPersonContact(
                             persC.getNom(), persC.getPrenom(), persC.getDateNaissance());
@@ -66,7 +69,8 @@ public class ResidentController {
 
                     return ResponseEntity.ok(responseDtos);
                 }
-            } else if (user.getRole() == Roles.ETABLISSEMENT || user.getRole() == Roles.ADMIN) {
+            } 
+            else if (user.getRole() == Roles.ETABLISSEMENT || user.getRole() == Roles.ADMIN) {
                 // Si l'utilisateur est un établissement ou un administrateur
                 List<Resident> residents = residentService.findAllResidentOrderByDateDesc();
                 List<ResidentResponseDto> responseDtos = residents.stream()
@@ -84,9 +88,17 @@ public class ResidentController {
      * Récupérer tous les personnes de contacts d'un résident.
      */
     @GetMapping("/listePersonneContact/{idResid}")
-    public ResponseEntity<List<PersonneContact>> getAllPersonContactsById(@PathVariable Long idResid) {
+    public ResponseEntity<List<PersonneContactResponseDto>> getAllPersonContactsById(@PathVariable Long idResid) {
+        // Récupérer la liste des personnes de contact pour le résident
         List<PersonneContact> persCs = persCService.findAllPersonContactToResid(idResid);
-        return ResponseEntity.ok(persCs);
+
+        // Mapper la liste d'entités en une liste de DTO de réponse
+        List<PersonneContactResponseDto> responseDtos = persCs.stream()
+                .map(PersonneContactResponseDto::new)
+                .collect(Collectors.toList());
+
+        // Retourner la liste de DTOs de réponse
+        return ResponseEntity.ok(responseDtos);
     }
 
     /**
@@ -99,7 +111,8 @@ public class ResidentController {
         if (resident.isPresent()) {
             // Renvoyer le résident en réponse
             return ResponseEntity.ok(resident.get());
-        } else {
+        } 
+        else {
             // Renvoyer une réponse 404 si le résident n'existe pas
             return ResponseEntity.notFound().build();
         }
@@ -179,7 +192,8 @@ public class ResidentController {
             ResidentResponseDto responseDto = new ResidentResponseDto(updateResident);
 
             return ResponseEntity.ok(responseDto);
-        } else {
+        } 
+        else {
             return ResponseEntity.notFound().build();
         }
     }
@@ -205,7 +219,8 @@ public class ResidentController {
             // Ensuite, sauvegarder les modifications du résident
             residentService.insert(outResident);
             return ResponseEntity.status(HttpStatus.OK).body("Le compte du résident " + outResident.getNom() + " a été désactivé");
-        } else {
+        } 
+        else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Le compte n'existe pas.");
         }
     }
@@ -218,7 +233,6 @@ public class ResidentController {
         if (input == null || input.isEmpty()) {
             return input; // Rien à faire si la chaîne est nulle ou vide
         }
-
         // Remplacer les séparateurs spécifiques (par exemple, ; ! : | / .) par des virgules
         String result = input.replaceAll("[;!:|/.?]+", ",");
 

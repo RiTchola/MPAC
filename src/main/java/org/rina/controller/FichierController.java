@@ -59,16 +59,19 @@ public class FichierController {
 		Optional<User> existingUser = userService.findByUsername(username);
 		if (existingUser.isPresent()) {
 			User user = existingUser.get();
+			
 			// Vérifier le rôle de l'utilisateur
 			if (user.getRole() == Roles.PERSONNECONTACT) {
 				// Si l'utilisateur est une personne de contact, Vérifier si la personne existe
 				Optional<PersonneContact> existingPersonC = persCService.findByUsername(username);
 				if (existingPersonC.isPresent()) {
+					
 					// Retourner la liste des fichiers de la personne
 					PersonneContact personC = existingPersonC.get();
 					List<Fichier> filesId = fichierService.findAllByPersonneContactOrderByDateDesc(personC.getId());
 					// Mapper les fichiers en DTO
-					List<FichierResponseDto> fileDtos = filesId.stream().map(FichierResponseDto::new)
+					List<FichierResponseDto> fileDtos = filesId.stream()
+							.map(FichierResponseDto::new)
 							.collect(Collectors.toList());
 					return ResponseEntity.ok(fileDtos);
 				}
@@ -78,7 +81,8 @@ public class FichierController {
 				// Récupérer la liste de tous les fichiers triés par date décroissante
 				List<Fichier> files = fichierService.findAllOrderByDateDesc();
 				// Mapper les fichiers en DTO
-				List<FichierResponseDto> fileDtos = files.stream().map(FichierResponseDto::new)
+				List<FichierResponseDto> fileDtos = files.stream()
+						.map(FichierResponseDto::new)
 						.collect(Collectors.toList());
 				return ResponseEntity.ok(fileDtos);
 			}
@@ -94,12 +98,14 @@ public class FichierController {
 	public ResponseEntity<FichierResponseDto> getFileById(@PathVariable Long id) {
 		Optional<Fichier> existingFichier = fichierService.findById(id);
 		if (existingFichier.isPresent()) {
+			
 			// Récupérer le fichier correspondant à l'ID
 			Fichier fichier = existingFichier.get();
 			// Mapper le fichier en DTO
 			FichierResponseDto fileResponseDto = new FichierResponseDto(fichier);
 			return ResponseEntity.ok(fileResponseDto);
-		} else {
+		} 
+		else {
 			// Renvoyer une réponse 404 si le fichier n'existe pas
 			return ResponseEntity.notFound().build();
 		}
@@ -113,6 +119,7 @@ public class FichierController {
 		Optional<User> existingUser = userService.findByUsername(username);
 		if (existingUser.isPresent()) {
 			User user = existingUser.get();
+			
 			// Vérifier si l'utilisateur est une personne de contact
 			if (user.getRole() == Roles.PERSONNECONTACT) {
 				// Récupérer la personne de contact correspondante
@@ -124,8 +131,7 @@ public class FichierController {
 					byte[] contenu = fichierDto.getFichierIn().getBytes();
 
 					// Générer un nom de fichier unique
-					String extensionUnique = fichierService
-							.getExtension(fichierDto.getFichierIn().getOriginalFilename());
+					String extensionUnique = fichierService.getExtension(fichierDto.getFichierIn().getOriginalFilename());
 					String nomFichierUnique = fichierService.generateUniqueFileName(extensionUnique);
 
 					// Définir le chemin de stockage complet sur le serveur
@@ -142,7 +148,7 @@ public class FichierController {
 					fichierService.insert(file);
 
 					// Renvoyer une réponse 200 si la création du fichier est réussie
-					return ResponseEntity.ok().build();
+					return ResponseEntity.status(HttpStatus.OK).body("Fichier téléversé avec succès");
 				} catch (IOException e) {
 					e.printStackTrace();
 					// Renvoyer une réponse d'erreur interne du serveur en cas d'échec de création
@@ -152,8 +158,7 @@ public class FichierController {
 			}
 		}
 
-		// Renvoyer une réponse 400 si l'utilisateur n'est pas une personne de contact
-		// ou si le fichier existe déjà
+		// Renvoyer une réponse 400 si l'utilisateur n'est pas une personne de contact ou si le fichier existe déjà
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 				.body("Le fichier existe déjà ou l'utilisateur n'est pas une personne de contact.");
 	}
@@ -164,33 +169,36 @@ public class FichierController {
 	@GetMapping("/download/{fileName}")
 	public ResponseEntity<Resource> downloadFile(@PathVariable String fileName) {
 		if (fileName.isEmpty()) {
-			// Renvoyer une réponse d'erreur interne du serveur si le nom de fichier est
-			// vide
+			// Renvoyer une réponse d'erreur interne du serveur si le nom de fichier est vide
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 		}
 		try {
-			// Créez un chemin complet vers le fichier à partir du nom de fichier
+			// Créer un chemin complet vers le fichier à partir du nom de fichier
 			String filePath = uploadDirectory + File.separator + fileName;
 
-			// Chargez le fichier en tant que ressource
+			// Charger le fichier en tant que ressource
 			Resource resource = new UrlResource(Paths.get(filePath).toUri());
 
 			if (resource.exists() && resource.isReadable()) {
 				// Renvoyer le fichier en tant que téléchargement
 				return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
 						"attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
-			} else {
+			} 
+			else {
 				// Renvoyer une réponse 404 si le fichier n'existe pas ou n'est pas lisible
 				return ResponseEntity.notFound().build();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			// Renvoyer une réponse d'erreur interne du serveur en cas d'échec du
-			// téléchargement
+			// Renvoyer une réponse d'erreur interne du serveur en cas d'échec du téléchargement
 			return ResponseEntity.internalServerError().build();
 		}
 	}
 
+	
+	/**
+	 * Methode privée.
+	 */
 	private void saveFileToServer(byte[] contenu, String cheminStockage) {
 		try {
 			// Écrire le contenu du fichier sur le serveur

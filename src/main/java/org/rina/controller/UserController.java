@@ -43,7 +43,6 @@ public class UserController {
     @Autowired
     private PersonneContactServices personService;
     
-
     /**
      * Récupérer un username.
      */
@@ -55,6 +54,7 @@ public class UserController {
             // Renvoyer une réponse 403 si le token est manquant ou invalide
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
+        
         // Extraire le nom d'utilisateur à partir du token JWT
         String utilToken = token.substring(7);
         String currentUsername = jwtService.extractUsername(utilToken);
@@ -78,7 +78,8 @@ public class UserController {
         if (user.isPresent()) {
             // Renvoyer l'utilisateur en réponse
             return ResponseEntity.ok(user.get());
-        } else {
+        } 
+        else {
             // Renvoyer une réponse 404 si l'utilisateur n'existe pas
             return ResponseEntity.notFound().build();
         }
@@ -97,22 +98,26 @@ public class UserController {
 			    // Vérifier si la personne de contact correspondante existe
 			    Optional<PersonneContact> existingPersC = personService.findByUsername(userDto.getUsername());
 			    if (existingPersC.isPresent()) {
-			        // Associer la personne de contact au nouvel utilisateur
+			        
+			    	// Associer la personne de contact au nouvel utilisateur
 			        PersonneContact persC = existingPersC.get();
 			        User newUser = userSrv.insert(userDto.toUser(encodeur));
 			        persC.setUser(newUser);
 			        // Renvoyer une réponse 200 si la création de l'utilisateur est réussie
 			        ResponseEntity.status(HttpStatus.OK).body(newUser.getUsername());
-			    } else {
+			    } 
+			    else {
 			        // Renvoyer une réponse 400 si la personne de contact n'existe pas encore
 			        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("La personne n'existe pas encore.");
 			    }
 			}
 			// Créer un nouvel utilisateur dans le cas général
-			User newUser = userSrv.insert(userDto.toUser(encodeur));
+			
+        	User newUser = userSrv.insert(userDto.toUser(encodeur));
 			// Renvoyer une réponse 200 si la création de l'utilisateur est réussie
 			return ResponseEntity.status(HttpStatus.OK).body(newUser.getUsername()); 
-        } else {
+        } 
+        else {
             // Renvoyer une réponse 400 si l'utilisateur existe déjà
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("L'utilisateur existe déjà.");
         }
@@ -131,7 +136,8 @@ public class UserController {
             User user = existingUser.get();
             // Renvoyer la réponse avec l'utilisateur
             return ResponseEntity.status(HttpStatus.OK).body("Un nouveau mot de passe a été envoyée à l'adresse "+ user.getUsername());
-        } else {
+        } 
+        else {
             // Renvoyer une réponse 404 si l'utilisateur n'existe pas
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Le compte n'existe pas");
         }
@@ -153,15 +159,14 @@ public class UserController {
                 userSrv.changePassword(user, userCPwDto.getOldPassword(), userCPwDto.getPassword());
                 // Renvoyer une réponse 202 si le mot de passe est changé avec succès
                 return ResponseEntity.status(HttpStatus.OK).body("Mot de passe changé avec succès");
-            } catch (CredentialException e) {
+            } 
+            catch (CredentialException e) {
             	// Récupérer le message d'erreur de l'exception
                 String errorMessage = e.getMessage();
-
                 // Renvoyer une réponse 400 avec le message d'erreur
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
             }
         }
-
      // Renvoyer une réponse 404 si l'utilisateur n'existe pas
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Le compte n'existe pas");
     }

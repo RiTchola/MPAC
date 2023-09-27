@@ -20,7 +20,6 @@ public class EtablissementController {
 
     @Autowired
     private EtablissementServices etablissementService;
-
     @Autowired
     private UserService userService;
 
@@ -29,15 +28,17 @@ public class EtablissementController {
      */
     @GetMapping
     public ResponseEntity<EtablissementResponseDto> getEstablishment() {
-        // Récupère un établissement par ID (dans cet exemple, ID 1 est utilisé comme exemple)
+        // Récupèrer un établissement par ID (dans cet application, ID 1 est toujours seul et unique)
         Long idEtab = Long.valueOf(1);
         Optional<Etablissement> etablissement = etablissementService.findById(idEtab);
         if (etablissement.isPresent()) {
-            // Convertit l'établissement en DTO et renvoie une réponse OK
+            
+        	// Convertir l'établissement en DTO et renvoie une réponse OK
             EtablissementResponseDto etabResponseDto = new EtablissementResponseDto(etablissement.get());
             return ResponseEntity.ok(etabResponseDto);
-        } else {
-            // Renvoie une réponse "non trouvé" si l'établissement n'existe pas
+        } 
+        else {
+            // // Renvoyer une réponse 404 si l'établissement n'existe pas
             return ResponseEntity.notFound().build();
         }
     }
@@ -47,18 +48,20 @@ public class EtablissementController {
      */
     @PostMapping
     public ResponseEntity<String> createEstablishment(@Valid @RequestBody EtablissementDto etabDto) {
-        // Vérifie s'il n'existe pas déjà d'établissement
+        // Vérifier s'il n'existe pas déjà d'établissement
         if (etablissementService.count() == 0) {
             User user = userService.findByUsername(etabDto.getEtabUsername())
                     .orElseThrow(() -> new NotExistException(etabDto.getEtabUsername().toString()));
 
-            // Crée et insère le nouvel établissement
+            // Créer et insèrer le nouvel établissement
             Etablissement newEtab = etabDto.toEtablissement(user);
             etablissementService.insert(newEtab);
 
-            return ResponseEntity.ok().build();
-        } else {
-            // Renvoie une réponse "interdit" si un établissement existe déjà
+            // Renvoyer une réponse HTTP indiquant le succès de l'opération
+            return ResponseEntity.status(HttpStatus.OK).body("Établissement crée");
+        } 
+        else {
+        	// Renvoyer une réponse 404  si un établissement existe déjà
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("L'établissement existe déjà.");
         }
     }
@@ -68,22 +71,23 @@ public class EtablissementController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<EtablissementResponseDto> updateEstablishment(@PathVariable Long id, @Valid @RequestBody EtablissementDto etabDto) {
-        // Vérifie d'abord si l'établissement existe en fonction de l'ID
+        // Vérifier d'abord si l'établissement existe en fonction de l'ID
         Optional<Etablissement> existingEtablissement = etablissementService.findById(id);
 
         if (existingEtablissement.isPresent()) {
             User user = userService.findByUsername(etabDto.getEtabUsername())
                     .orElseThrow(() -> new NotExistException(etabDto.getEtabUsername().toString()));
 
-            // Met à jour l'établissement existant avec les nouvelles valeurs
+            // Mettre à jour l'établissement existant avec les nouvelles valeurs
             etabDto.setId(id);
             Etablissement updateEtab = etablissementService.updateEtablissement(id, etabDto.toEtablissement(user));
 
-            // Renvoie la réponse avec l'établissement mis à jour sous forme de DTO
+            // Renvoyer la réponse avec l'établissement mis à jour sous forme de DTO
             EtablissementResponseDto etabResponseDto = new EtablissementResponseDto(updateEtab);
             return ResponseEntity.ok(etabResponseDto);
-        } else {
-            // Renvoie une réponse "non trouvé" si l'établissement n'existe pas
+        } 
+        else {
+        	// Renvoyer une réponse 404 si l'établissement n'existe pas
             return ResponseEntity.notFound().build();
         }
     }

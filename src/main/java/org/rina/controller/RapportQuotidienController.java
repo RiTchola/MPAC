@@ -29,8 +29,10 @@ public class RapportQuotidienController {
 	@Autowired
 	private ResidentServices residentService;
 	
-	private static final String DATE_FORMAT = "yyyyMMddHHmmss"; // Format d'horodatage
-    private static final AtomicLong counter = new AtomicLong(0); // Compteur auto-incrémenté
+	// Format d'horodatage
+	private static final String DATE_FORMAT = "yyyyMMddHHmmss"; 
+	// Compteur auto-incrémenté
+	private static final AtomicLong counter = new AtomicLong(0); 
 
 	 /**
      * Récupérer tous les rapports quotidiens.
@@ -59,7 +61,8 @@ public class RapportQuotidienController {
             // Mapper le rapport quotidien en un DTO et le renvoyer en réponse
             RapportQuotidienResponseDto rapQuotResponseDto = new RapportQuotidienResponseDto(rapportQuotidien.get());
             return ResponseEntity.ok(rapQuotResponseDto);
-        } else {
+        } 
+        else {
             // Renvoyer une réponse 404 si le rapport quotidien n'existe pas
             return ResponseEntity.notFound().build();
         }
@@ -77,14 +80,13 @@ public class RapportQuotidienController {
             Resident resid = existingResid.get();
             // Créer et insérer le rapport quotidien dans la base de données
             rapportQuotDto.setNumeroR(generateNumeroR());
-            
-            RapportQuotidien newRapportQ = rapportQuotDto.toRapportQuotidien(resid);
-            rapportQuotService.insert(newRapportQ);
+            RapportQuotidien newRapportQ = rapportQuotService.insert(rapportQuotDto.toRapportQuotidien(resid));
 
             // Mapper le rapport créé en un DTO et le renvoyer en réponse avec l'ID généré
             RapportQuotidienResponseDto rapQuotResponseDto = new RapportQuotidienResponseDto(newRapportQ);
             return ResponseEntity.ok(rapQuotResponseDto);
-        } else {
+        } 
+        else {
             // Renvoyer une réponse 404 si le résident n'existe pas
             return ResponseEntity.notFound().build();
         }
@@ -113,7 +115,8 @@ public class RapportQuotidienController {
             // Mapper le rapport mis à jour en un DTO et le renvoyer en réponse
             RapportQuotidienResponseDto rapQuotResponseDto = new RapportQuotidienResponseDto(updateRapportQuot);
             return ResponseEntity.ok(rapQuotResponseDto);
-        } else {
+        } 
+        else {
             // Renvoyer une réponse 404 si le rapport quotidien n'existe pas
             return ResponseEntity.notFound().build();
         }
@@ -127,7 +130,6 @@ public class RapportQuotidienController {
 
         // Obtenir la valeur du compteur auto-incrémenté
         long count = counter.incrementAndGet();
-
         // Concaténer l'horodatage et la valeur du compteur pour créer le code unique
         String uniqueCode = timestamp + "-" + count;
 

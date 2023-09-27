@@ -52,12 +52,13 @@ public class RapportVisiteController {
         // Vérifier si un rapport de visite existe pour l'ID spécifié
         Optional<RapportVisite> rapVisite = rapportVService.findById(id);
         if (rapVisite.isPresent()) {
-            // Mapper le rapport de visite en DTO
-            RapportVisitResponseDto rapVisiteDto = new RapportVisitResponseDto(rapVisite.get());
             
+        	// Mapper le rapport de visite en DTO
+            RapportVisitResponseDto rapVisiteDto = new RapportVisitResponseDto(rapVisite.get());
             // Renvoyer le DTO de rapport de visite en réponse
             return ResponseEntity.ok(rapVisiteDto);
-        } else {
+        } 
+        else {
             // Renvoyer une réponse 404 si le rapport de visite n'existe pas
             return ResponseEntity.notFound().build();
         }
@@ -78,7 +79,7 @@ public class RapportVisiteController {
         rapportVService.insert(newRapVisite);
 
         // Renvoyer une réponse 200 avec un message de confirmation
-        return ResponseEntity.status(HttpStatus.OK).body("Merci pour votre commentaire.");
+        return ResponseEntity.status(HttpStatus.OK).body("Merci pour votre Commentaire.");
     }
 
 }

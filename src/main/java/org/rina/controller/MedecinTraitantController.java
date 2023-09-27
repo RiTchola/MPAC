@@ -24,14 +24,15 @@ public class MedecinTraitantController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<MedecinTraitantResponseDto> getmedecinTById(@PathVariable Long id) {
-        // Cherche un médecin traitant par ID
+        // Chercher un médecin traitant par ID
         Optional<MedecinTraitant> medecinT = medecinService.findById(id);
         if (medecinT.isPresent()) {
-            // Convertit le médecin traitant en DTO de réponse
+            // Convertir le médecin traitant en DTO de réponse
             MedecinTraitantResponseDto medecinResponseDto = new MedecinTraitantResponseDto(medecinT.get());
             return ResponseEntity.ok(medecinResponseDto);
-        } else {
-            // Renvoie une réponse 404 si le médecin traitant n'existe pas
+        } 
+        else {
+            // Renvoyer une réponse 404 si le médecin traitant n'existe pas
             return ResponseEntity.notFound().build();
         }
     }
@@ -41,15 +42,15 @@ public class MedecinTraitantController {
      */
     @PostMapping
     public ResponseEntity<MedecinTraitantResponseDto> createmedecinT(@Valid @RequestBody MedecinTraitantDto medecinDto) {
-        // Crée un médecin traitant à partir des données fournies
+        // Créer un médecin traitant à partir des données fournies
         MedecinTraitant newMedecinT = medecinDto.toMedecinTraitant();
-        // Insère le médecin traitant dans la base de données
+        // Insèrer le médecin traitant dans la base de données
         medecinService.insert(newMedecinT);
 
-        // Crée un DTO de réponse avec les données du médecin traitant créé
+        // Créer un DTO de réponse avec les données du médecin traitant
         MedecinTraitantResponseDto medecinResponseDto = new MedecinTraitantResponseDto(newMedecinT);
 
-        // Renvoie la réponse avec le DTO de réponse
+        // Renvoyer la réponse avec le DTO de réponse
         return ResponseEntity.ok(medecinResponseDto);
     }
 
@@ -71,7 +72,8 @@ public class MedecinTraitantController {
 
             // Renvoie la réponse avec le DTO de réponse
             return ResponseEntity.ok(medecinResponseDto);
-        } else {
+        } 
+        else {
             // Renvoie une réponse 404 si le médecin traitant n'existe pas
             return ResponseEntity.notFound().build();
         }

@@ -73,8 +73,7 @@ public class MenuController {
         menuDto.setMenuDimanche(checkAndReplaceSeparators(menuDto.getMenuDimanche()));
 
         // Créer et insérer le menu dans la base de données
-        Menu newMenu = menuDto.toMenu(etab);
-        menuService.insert(newMenu);
+        Menu newMenu = menuService.insert(menuDto.toMenu(etab));
 
         // Mapper le menu créé en un objet RESPONSEDTO et le renvoyer en réponse avec l'ID généré
         return ResponseEntity.ok(new MenuResponseDto(newMenu));
