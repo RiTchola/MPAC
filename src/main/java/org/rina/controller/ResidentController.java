@@ -194,7 +194,9 @@ public class ResidentController {
 
         if (resident.isPresent()) {
             Resident outResident = resident.get();
-
+            outResident.setActif(false);
+            residentService.insert(outResident);
+            
             // Désactiver le compte utilisateur associé au résident
             User user = outResident.getUser();
             user.setEnabled(false);
@@ -218,7 +220,7 @@ public class ResidentController {
         }
 
         // Remplacer les séparateurs spécifiques (par exemple, ; ! : | / .) par des virgules
-        String result = input.replaceAll("[;!:|/.]+", ",");
+        String result = input.replaceAll("[;!:|/.?]+", ",");
 
         return result;
     }

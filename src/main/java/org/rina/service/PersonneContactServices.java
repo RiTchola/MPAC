@@ -15,96 +15,115 @@ public class PersonneContactServices {
 	
 	private IPersonneContactJpaDao personneContactdao;
 	
-	public PersonneContactServices (IPersonneContactJpaDao personneContactdao) {
+	public PersonneContactServices(IPersonneContactJpaDao personneContactdao) {
 		this.personneContactdao = personneContactdao;
 	}
 
 	/**
-	 * @param username
-	 * @return
+	 * Recherche une personne de contact par son nom d'utilisateur.
+	 * 
+	 * @param username  Le nom d'utilisateur de la personne de contact à rechercher.
+	 * @return          La personne de contact correspondant au nom d'utilisateur, si elle existe.
 	 */
 	public Optional<PersonneContact> findByUsername(String username) {
 		return personneContactdao.findByUsername(username);
 	}
 
 	/**
-	 * @param username
-	 * @return
+	 * Vérifie l'existence d'une personne de contact par son nom d'utilisateur.
+	 * 
+	 * @param username  Le nom d'utilisateur à vérifier.
+	 * @return          true si la personne de contact existe, sinon false.
 	 */
 	public boolean existByUserName(String username) {
 		return personneContactdao.existByUserName(username);
 	}
 
 	/**
-	 * @param nom
-	 * @param prenom
-	 * @return
+	 * Recherche une personne de contact par son nom.
+	 * 
+	 * @param nom  Le nom de la personne de contact à rechercher.
+	 * @return     La personne de contact correspondant au nom, si elle existe.
 	 */
 	public Optional<PersonneContact> findByName(String nom) {
 		return personneContactdao.findByName(nom);
 	}
 
 	/**
-	 * @param nom
-	 * @param prenom
-	 * @return
+	 * Vérifie l'existence d'une personne de contact par son nom et prénom.
+	 * 
+	 * @param nom     Le nom de la personne de contact à vérifier.
+	 * @param prenom  Le prénom de la personne de contact à vérifier.
+	 * @return        true si la personne de contact existe, sinon false.
 	 */
 	public boolean existByName(String nom, String prenom) {
 		return personneContactdao.existByName(nom, prenom);
 	}
 
 	/**
-	 * @param idResid
-	 * @return
+	 * Récupère la liste de toutes les personnes de contact liées à un résident par l'ID du résident.
+	 * 
+	 * @param idResid  L'ID du résident.
+	 * @return         La liste des personnes de contact liées au résident.
 	 */
 	public List<PersonneContact> findAllPersonContactToResid(Long idResid) {
 		return personneContactdao.findAllPersonContactToResid(idResid);
 	}
 
 	/**
-	 * @param id
-	 * @return
+	 * Recherche une personne de contact par son ID.
+	 * 
+	 * @param id  L'ID de la personne de contact à rechercher.
+	 * @return    La personne de contact correspondant à l'ID, si elle existe.
 	 */
 	public Optional<PersonneContact> findById(Long id) {
 		return personneContactdao.findById(id);
 	}
 
 	/**
-	 * @param id
-	 * @return
+	 * Vérifie l'existence d'une personne de contact par son ID.
+	 * 
+	 * @param id  L'ID de la personne de contact à vérifier.
+	 * @return    true si la personne de contact existe, sinon false.
 	 */
 	public boolean existsById(Long id) {
 		return personneContactdao.existsById(id);
 	}
 
 	/**
-	 * @return
+	 * Compte le nombre total de personnes de contact.
+	 * 
+	 * @return  Le nombre total de personnes de contact.
 	 */
 	public long count() {
 		return personneContactdao.count();
 	}
 
 	/**
-	 * @param id
+	 * Supprime une personne de contact par son ID.
+	 * 
+	 * @param id  L'ID de la personne de contact à supprimer.
 	 */
 	public void deleteById(Long id) {
 		personneContactdao.deleteById(id);
 	}
 	
 	/**
-	 * Ajout d'un nouveau PersonneContact
+	 * Ajout d'une nouvelle personne de contact.
 	 * 
-	 * @param pc1
-	 * @return
+	 * @param pc1  La personne de contact à ajouter.
+	 * @return     La personne de contact ajoutée.
 	 */
 	public PersonneContact insert(PersonneContact pc1) {
 		return personneContactdao.save(pc1);
 	}
 
 	/**
-	 * @param id
-	 * @param personC
-	 * @see 
+	 * Met à jour une personne de contact existante.
+	 * 
+	 * @param id    L'ID de la personne de contact à mettre à jour.
+	 * @param pc1   La personne de contact mise à jour.
+	 * @return      La personne de contact mise à jour.
 	 */
 	public PersonneContact updatePersonneContact(Long id, PersonneContact pc1) {
 		return personneContactdao.save(pc1);

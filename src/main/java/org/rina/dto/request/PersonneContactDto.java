@@ -38,7 +38,6 @@ public class PersonneContactDto {
 	@NotBlank
 	private String tel1;
 
-	@NotBlank
 	private String tel2;
 
 	@NotBlank
