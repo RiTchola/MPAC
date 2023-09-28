@@ -7,7 +7,6 @@ import org.rina.model.User;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -22,6 +21,7 @@ public class EtablissementDto {
 	@NotBlank
 	private String nom;
     
+	@NotNull
 	@Email(message = "{email.nonValide}")
 	private String email1;
     
@@ -44,7 +44,8 @@ public class EtablissementDto {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dateCreation;
 	
-	@Valid 
+	@NotNull
+	@Email(message = "{email.nonValide}")
 	private String etabUsername;
 	
 	public EtablissementDto() {

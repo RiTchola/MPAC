@@ -23,10 +23,10 @@ public class MeetUp {
     @GeneratedValue(strategy = GenerationType.IDENTITY) 
     private Long id;
 
-    @Column(length = 100, nullable = false) 
+    @Column(nullable = false) 
     private TypeMeetUp typeM;
 
-    @Column(length = 200, nullable = false) 
+    @Column(nullable = false) 
     private String motifDemande;
 
     @Column(nullable = false) 
@@ -49,7 +49,7 @@ public class MeetUp {
     @Column(nullable = false) 
     private Etat etat;
 
-    @Column(length = 200, nullable = true)
+    @Column(nullable = true)
     private String motifRefus;
 
     /**

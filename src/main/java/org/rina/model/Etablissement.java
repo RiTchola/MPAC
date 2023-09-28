@@ -36,28 +36,26 @@ public class Etablissement {
     @Column(length = 50, nullable = false) // Spécifie les propriétés de la colonne nom
     private String nom;
 
-    @Email(message = "{email.nonValide}")
-    @Column(length = 40, nullable = false)
-    @Size(min = 4, max = 40)
+    @Email
+    @Column(nullable = false)
     private String email1;
 
-    @Email(message = "{email.nonValide}")
-    @Column(length = 40, nullable = false)
-    @Size(min = 4, max = 40)
+    @Email
+    @Column(nullable = true)
     private String email2;
 
     @NumberFormat
-    @Column(length = 50, nullable = false)
-    @Size(min = 4, max = 30, message = "{tel.nonValide}")
+    @Column(length = 20, nullable = false)
+    @Size(min = 4, max = 20)
     private String tel1;
 
     @NumberFormat
-    @Column(length = 50, nullable = false)
-    @Size(min = 4, max = 30, message = "{tel.nonValide}")
+    @Column(length = 20, nullable = true)
+    @Size(min = 5, max = 20)
     private String tel2;
 
     @Column(nullable = false, updatable = true)
-    @Size(min = 10, max = 125, message = "{}")
+    @Size(min = 10, max = 200)
     private String adresse;
 
     @Column(nullable = false)

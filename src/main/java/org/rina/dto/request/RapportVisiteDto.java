@@ -37,7 +37,6 @@ public class RapportVisiteDto {
     @NotBlank
     private String nomVisiteur;
     
-    @NotNull
     private TypePersonne typePersonne;
     
     @NotBlank

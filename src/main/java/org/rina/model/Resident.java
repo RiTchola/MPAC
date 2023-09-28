@@ -41,29 +41,26 @@ public class Resident {
     @GeneratedValue(strategy = GenerationType.IDENTITY) 
     private Long id;
 
-    @Size(min = 1, max = 50, message = "{elem.nom}") 
-    @Column(length = 50, nullable = false) 
+    @Column(nullable = false) 
     private String nom;
-
-    @Size(min = 1, max = 50, message = "{elem.prenom}") 
+ 
     @Column(length = 50, nullable = false) 
     private String prenom;
 
     @Column(nullable = false) 
     private LocalDate dateNaissance;
 
-    @Email(message = "{email.nonValide}")
-    @Column(length = 60, nullable = false) 
-    @Size(min = 4, max = 60, message = "{elem.prenom}")
+    @Email
+    @Column(nullable = false)
     private String email;
 
     @NumberFormat
-    @Column(length = 50, nullable = false) 
-    @Size(min = 4, max = 30, message = "{tel.nonValide}") 
+    @Column(length = 20, nullable = false) 
+    @Size(min = 4, max = 20) 
     private String tel;
 
     @Column(nullable = false) 
-    @Size(min = 10, max = 125, message = "{}") 
+    @Size(min = 10, max = 125) 
     private String adresse;
 
     @Column(nullable = false) 
@@ -72,22 +69,22 @@ public class Resident {
     @Column(nullable = false) 
     private LocalDate dateEntree;
 
-    @Size(min = 5, max = 400, message = "{}") 
+    @Size(min = 5, max = 400) 
     @Column(nullable = false) 
     private String motifEntree;
 
     @Column(nullable = true) 
     private LocalDate dateSortie;
 
-    @Size(min = 5, max = 400, message = "{}") 
+    @Size(min = 5, max = 400) 
     @Column(nullable = true) 
     private String motifSortie;
 
-    @Size(min = 5, max = 800, message = "{}") 
+    @Size(min = 5, max = 800) 
     @Column(nullable = false) 
     private String antMedical;
 
-    @Size(min = 5, max = 800, message = "{}")
+    @Size(min = 5, max = 800)
     @Column(nullable = true) 
     private String antChirugical;
 
@@ -97,7 +94,7 @@ public class Resident {
     @Column(nullable = false, updatable = true) 
     private String chambre;
 
-    @Size(min = 5, max = 400, message = "{}") 
+    @Size(min = 5, max = 400) 
     @Column(nullable = false)
     private String etatSante;
 

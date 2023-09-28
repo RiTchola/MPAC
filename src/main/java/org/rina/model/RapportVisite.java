@@ -35,13 +35,13 @@ public class RapportVisite {
     @Column(nullable = false) 
     private LocalDate dateBirthResid;
 
-    @Column(nullable = true) 
+    @Column(nullable = false) 
     private String nomVisiteur;
 
     @Column(nullable = true) 
     private TypePersonne typePersonne;
 
-    @Column(length = 800, nullable = true) 
+    @Column(length = 800, nullable = false) 
     private String commentaire;
 
     /**

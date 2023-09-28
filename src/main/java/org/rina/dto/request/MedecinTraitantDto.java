@@ -31,6 +31,7 @@ public class MedecinTraitantDto {
 	@Size(min = 1, max = 40, message = "{elem.prenom}")
 	private String prenom;
 
+	@NotNull
 	@Email(message = "{email.nonValide}")
 	private String email;
 

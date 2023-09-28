@@ -29,35 +29,32 @@ public class PersonneContact {
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY) 
     private Long id;
-
-    @Size(min = 1, max = 40, message = "{elem.nom}") 
-    @Column(length = 40, nullable = false) 
+ 
+    @Column(nullable = false) 
     private String nom;
 
-    @Size(min = 1, max = 40, message = "{elem.prenom}")
-    @Column(length = 40, nullable = false) 
+    @Column(nullable = false) 
     private String prenom;
 
     @Column(nullable = false) 
     private LocalDate dateNaissance;
 
-    @Email(message = "{email.nonValide}") 
-    @Column(length = 40, nullable = false) 
-    @Size(min = 4, max = 40, message = "{elem.prenom}") 
+    @Email
+    @Column(nullable = false)
     private String email;
 
     @NumberFormat
-    @Column(length = 50, nullable = false) 
-    @Size(min = 4, max = 30, message = "{tel.nonValide}") 
+    @Column(length = 20, nullable = false)
+    @Size(min = 4, max = 20)
     private String tel1;
 
     @NumberFormat
     @Column(length = 50, nullable = true) 
-    @Size(min = 4, max = 30, message = "{tel.nonValide}") 
+    @Size(min = 4, max = 30) 
     private String tel2;
 
     @Column(nullable = false) 
-    @Size(min = 10, max = 125, message = "{}")
+    @Size(min = 10, max = 125)
     private String adresse;
 
     @Column(nullable = true) 

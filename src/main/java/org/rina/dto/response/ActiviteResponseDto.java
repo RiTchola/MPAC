@@ -20,6 +20,6 @@ public class ActiviteResponseDto {
     public ActiviteResponseDto(Activite activite) {
         this.id = activite.getId();
         this.nom = activite.getNom();
-        this.date = activite.getDate();
+        this.date = activite.getDateA();
     }
 }

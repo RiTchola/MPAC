@@ -23,31 +23,30 @@ public class MedecinTraitant {
     @Column(length = 50, nullable = false) 
     private String numInami;
 
-    @Size(min = 1, max = 40, message = "{elem.nom}") 
+    @Size(min = 1, max = 40) 
     @Column(length = 40, nullable = false) 
     private String nom;
 
-    @Size(min = 1, max = 40, message = "{elem.prenom}") 
+    @Size(min = 1, max = 40) 
     @Column(length = 40, nullable = false) 
     private String prenom;
 
-    @Email(message = "{email.nonValide}") 
-    @Column(length = 40, nullable = false) 
-    @Size(min = 4, max = 40, message = "{}") 
+    @Email
+    @Column(nullable = false)
     private String email;
 
-    @NumberFormat 
-    @Column(length = 50, nullable = false) 
-    @Size(min = 4, max = 30, message = "{tel.nonValide}") 
+    @NumberFormat
+    @Column(length = 20, nullable = false)
+    @Size(min = 4, max = 20) 
     private String tel1;
 
     @NumberFormat 
-    @Column(length = 50, nullable = true) 
-    @Size(min = 4, max = 30, message = "{tel.nonValide}") 
+    @Column(length = 20, nullable = true)
+    @Size(min = 4, max = 20)
     private String tel2;
 
     @Column(nullable = false) 
-    @Size(min = 10, max = 200, message = "{}") 
+    @Size(min = 10, max = 200) 
     private String adresse;
 
     /**

@@ -30,7 +30,7 @@ public class Fichier {
     @GeneratedValue(strategy = GenerationType.IDENTITY) 
     private Long id;
 
-    @Column(length = 50, nullable = false) 
+    @Column(nullable = false) 
     private TypeFichier typeF;
 
     @Column(nullable = false) 

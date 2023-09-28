@@ -32,6 +32,7 @@ public class PersonneContactDto {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dateNaissance;
 
+	@NotNull
 	@Email(message = "{email.nonValide}")
 	private String email;
 
@@ -43,7 +44,6 @@ public class PersonneContactDto {
 	@NotBlank
 	private String adresse;
 
-	@NotNull
 	private StatutM statut;
 
 	@NotNull

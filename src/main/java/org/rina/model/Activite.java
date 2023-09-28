@@ -19,31 +19,31 @@ public class Activite {
     @GeneratedValue(strategy = GenerationType.IDENTITY) 
     private Long id;
     
-    @Column(length = 50, nullable = false) // Spécifie les propriétés de la colonne nom
+    @Column(nullable = false) 
     private String nom;
 
-    @Column(nullable = false) // Spécifie les propriétés de la colonne date
-    private Date date;
+    @Column(nullable = false) 
+    private Date dateA;
 
     /**
      * jointure à d'autres classes
      */
-    @ManyToOne // Indique qu'il s'agit d'une relation Many-to-One
+    @ManyToOne 
     @JoinColumn(name = "FKETABLISSEMENT", nullable = false) 
     private Etablissement etablissement;
 
     /**
      * Constructeur avec des arguments 
-     * @param id L'identifiant de l'activité
-     * @param nom Le nom de l'activité 
+     * @param id   L'identifiant de l'activité
+     * @param nom  Le nom de l'activité 
      * @param date La date de l'activité 
      * @param etablissement L'établissement lié à cette activité 
      */
-    public Activite(Long id, String nom, Date date, Etablissement etablissement) {
+    public Activite(Long id, String nom, Date dateA, Etablissement etablissement) {
 
         this.id = id;
         this.nom = nom;
-        this.date = date;
+        this.dateA = dateA;
         this.etablissement = etablissement;
     }
 }

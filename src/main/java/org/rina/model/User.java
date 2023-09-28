@@ -29,8 +29,8 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY) 
     private Long id;
 
-    @Email(message = "{email.nonValide}") 
-    @Column(length = 60, nullable = false) 
+    @Email 
+    @Column(nullable = false) 
     private String username;
 
     private String password;

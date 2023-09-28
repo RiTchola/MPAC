@@ -82,7 +82,7 @@ public class RapportQuotidien {
      * jointure à d'autres classes
      */
     @ManyToOne 
-    @JoinColumn(name = "FRESIDENT", updatable = false)
+    @JoinColumn(name = "FKRESIDENT", updatable = false)
     private Resident resident;
 
    
