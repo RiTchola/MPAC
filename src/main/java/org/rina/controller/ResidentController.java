@@ -1,8 +1,12 @@
 package org.rina.controller;
 
-import org.rina.controller.exceptions.NotExistException;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
+import org.rina.controller.exceptions.NotExistException;
 import org.rina.dto.request.ResidentDto;
+import org.rina.dto.response.MessageResponseDto;
 import org.rina.dto.response.PersonneContactResponseDto;
 import org.rina.dto.response.ResidentResponseDto;
 import org.rina.enums.Roles;
@@ -17,15 +21,17 @@ import org.rina.service.PersonneContactServices;
 import org.rina.service.ResidentServices;
 import org.rina.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/resident")
@@ -80,8 +86,8 @@ public class ResidentController {
                 return ResponseEntity.ok(responseDtos);
             }
         }
-        // Renvoyer une réponse 404 si l'utilisateur ou la personne de contact n'existe pas
-        return ResponseEntity.notFound().build();
+        // Renvoyer une réponse 200 si l'utilisateur ou la personne de contact n'existe pas
+        return ResponseEntity.ok().build();
     }
 
     /**
@@ -113,8 +119,8 @@ public class ResidentController {
             return ResponseEntity.ok(resident.get());
         } 
         else {
-            // Renvoyer une réponse 404 si le résident n'existe pas
-            return ResponseEntity.notFound().build();
+            // Renvoyer une réponse 200 si le résident n'existe pas
+            return ResponseEntity.ok().build();
         }
     }
 
@@ -124,7 +130,7 @@ public class ResidentController {
     @PostMapping("/{idMedecin}/{idUser}")
     public ResponseEntity<ResidentResponseDto> createResident(@PathVariable("idMedecin") Long idMedecin, @PathVariable("idUser") Long idUser,
             @Valid @RequestBody ResidentDto residDto) {
-        Long idEtab = Long.valueOf(1);
+        Long idEtab = etablissementService.getEtablissementId();
         // Récupérer l'établissement associé au résident
         Etablissement etab = etablissementService.findById(idEtab)
                 .orElseThrow(() -> new NotExistException(idEtab.toString()));
@@ -166,11 +172,11 @@ public class ResidentController {
                 !resident.getPrenom().equals(residDto.getPrenom()) &&
                 !resident.getDateNaissance().equals(residDto.getDateNaissance())) {
                 // Les nouvelles valeurs entraîneraient une violation de l'unicité.
-            	return ResponseEntity.notFound().build();
+            	return ResponseEntity.ok().build();
             }
        
             // Récupérer l'établissement associé au résident
-            Long idEtab = Long.valueOf(1);
+            Long idEtab = etablissementService.getEtablissementId();
             Etablissement etab = etablissementService.findById(idEtab)
                     .orElseThrow(() -> new NotExistException(idEtab.toString()));
             // Récupérer le médecin traitant associé au résident
@@ -190,11 +196,12 @@ public class ResidentController {
             Resident updateResident = residentService.updateResident(id, residDto.toResident(user, medecinT, etab));
             // Mapper le résident mis à jour en un objet DTO et le renvoyer en réponse
             ResidentResponseDto responseDto = new ResidentResponseDto(updateResident);
-
+         // Retourner une réponse 200 OK avec le ResidentResponseDto
             return ResponseEntity.ok(responseDto);
         } 
         else {
-            return ResponseEntity.notFound().build();
+        	// Retourner une réponse 200 OK avec un corps vide si le menu n'existe pas
+            return ResponseEntity.ok().build();
         }
     }
 
@@ -202,7 +209,7 @@ public class ResidentController {
      * Désactiver un résident par son ID.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> disableResidentById(@PathVariable Long id) {
+    public ResponseEntity<MessageResponseDto> disableResidentById(@PathVariable Long id) {
         // Vérifier d'abord si le résident existe en fonction de l'ID
         Optional<Resident> resident = residentService.findById(id);
 
@@ -216,12 +223,16 @@ public class ResidentController {
             user.setEnabled(false);
             userService.insert(user);
 
-            // Ensuite, sauvegarder les modifications du résident
+            // Insèrer le résident dans la base de données
             residentService.insert(outResident);
-            return ResponseEntity.status(HttpStatus.OK).body("Le compte du résident " + outResident.getNom() + " a été désactivé");
+            // Retourner une réponse 200 OK avec un message indiquant que le compte du résident a été désactivé
+            String msg = "Le compte du résident " + outResident.getNom() + " a été désactivé" ;
+            return ResponseEntity.ok(new MessageResponseDto(msg));
         } 
         else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Le compte n'existe pas.");
+        	// Retourner une réponse 200 OK avec un message indiquant que Le compte n'existe pas
+        	String msg = "Le compte n'existe pas";
+            return ResponseEntity.ok(new MessageResponseDto(msg));
         }
     }
     
@@ -233,9 +244,9 @@ public class ResidentController {
         if (input == null || input.isEmpty()) {
             return input; // Rien à faire si la chaîne est nulle ou vide
         }
+        
         // Remplacer les séparateurs spécifiques (par exemple, ; ! : | / .) par des virgules
         String result = input.replaceAll("[;!:|/.?]+", ",");
-
         return result;
     }
 }

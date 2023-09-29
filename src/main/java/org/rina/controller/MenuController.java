@@ -5,12 +5,12 @@ import java.time.LocalDate;
 import org.rina.controller.exceptions.NotExistException;
 import org.rina.dto.request.MenuDto;
 import org.rina.dto.response.MenuResponseDto;
+import org.rina.dto.response.MessageResponseDto;
 import org.rina.model.Etablissement;
 import org.rina.model.Menu;
 import org.rina.service.EtablissementServices;
 import org.rina.service.MenuServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,8 +48,8 @@ public class MenuController {
             // Renvoyer la liste des menus en réponse
             return ResponseEntity.ok(new MenuResponseDto(menu));
         } else {
-            // Renvoyer une réponse 404 si le menu de la date n'existe pas
-            return ResponseEntity.notFound().build();
+            // Renvoyer une réponse 200 si le menu de la date n'existe pas
+            return ResponseEntity.ok().build();
         }
     }
 
@@ -58,7 +58,7 @@ public class MenuController {
      */
     @PostMapping
     public ResponseEntity<MenuResponseDto> createMenu(@Valid @RequestBody MenuDto menuDto) {
-        Long idEtab = Long.valueOf(1);
+        Long idEtab = etablissementService.getEtablissementId();
         // Récupérer l'établissement associé au menu
         Etablissement etab = etablissementService.findById(idEtab)
                 .orElseThrow(() -> new NotExistException(idEtab.toString()));
@@ -83,13 +83,13 @@ public class MenuController {
      * Mettre à jour un menu existant.
      */
     @PutMapping("/{dateDebutSemaine}")
-    public ResponseEntity<String> updateMenu(@PathVariable LocalDate dateDebutSemaine, @Valid @RequestBody MenuDto menuDto) {
+    public ResponseEntity<MessageResponseDto> updateMenu(@PathVariable LocalDate dateDebutSemaine, @Valid @RequestBody MenuDto menuDto) {
         // Vérifier si un menu existe pour la date de début de semaine spécifiée
         Boolean date = menuService.existsByDateDebutSemaine(dateDebutSemaine);
 
         if (date) {
             Long id = menuService.findIdByDateDebutSemaine(dateDebutSemaine);
-            Long idEtab = Long.valueOf(1);
+            Long idEtab = etablissementService.getEtablissementId();
             // Récupérer l'établissement associé au menu
             Etablissement etab = etablissementService.findById(idEtab)
                     .orElseThrow(() -> new NotExistException(idEtab.toString()));
@@ -109,10 +109,13 @@ public class MenuController {
             menuService.updateMenu(id, menuDto.toMenu(etab));
 
             // Mapper le menu mis à jour en un objet DTO et le renvoyer en réponse
-            return ResponseEntity.ok("Le menu a été mis à jour.");
-        } else {
-            // Renvoyer une réponse 400 si le menu n'existe pas
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Le menu n'existe pas.");
+            String msg = "Le menu a été mis à jour";
+            return ResponseEntity.ok(new MessageResponseDto(msg));
+        } 
+        else {
+        	// Renvoyer une réponse HTTP indiquant le défaut de l'opération
+        	String msg = "Le menu n'existe pas";
+            return ResponseEntity.ok(new MessageResponseDto(msg));
         }
     }
     
@@ -127,7 +130,7 @@ public class MenuController {
 
         // Remplacer les séparateurs spécifiques (par exemple, ; ! : | / .) par des virgules
         String result = input.replaceAll("[;!:|/.]+", ",");
-
         return result;
     }
+
 }

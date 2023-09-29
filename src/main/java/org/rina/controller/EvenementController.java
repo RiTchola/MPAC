@@ -1,20 +1,29 @@
 package org.rina.controller;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.rina.controller.exceptions.NotExistException;
 import org.rina.dto.request.EvenementDto;
 import org.rina.dto.response.EvenementResponseDto;
+import org.rina.dto.response.MessageResponseDto;
 import org.rina.model.Etablissement;
 import org.rina.model.Evenement;
 import org.rina.service.EtablissementServices;
 import org.rina.service.EvenementServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import jakarta.validation.Valid;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/evenement")
@@ -56,8 +65,8 @@ public class EvenementController {
 			return ResponseEntity.ok(eventResponseDto);
 		}
 
-		// Si l'événement n'est pas trouvé, renvoyer une réponse 404 (non trouvée)
-		return ResponseEntity.notFound().build();
+		// Renvoyer une réponse 200 si l'événement n'est pas trouvé
+		return ResponseEntity.ok().build();
 	}
 
 	/**
@@ -66,7 +75,7 @@ public class EvenementController {
 	@PostMapping
 	public ResponseEntity<EvenementResponseDto> createEvent(@Valid @RequestBody EvenementDto evenementDto) {
 		// Obtenir l'ID de l'établissement associé à l'événement
-		Long idEtab = Long.valueOf(1);
+		Long idEtab = etablissementService.getEtablissementId();
 
 		// Recherche l'établissement par son ID
 		Etablissement etab = etablissementService.findById(idEtab)
@@ -90,11 +99,8 @@ public class EvenementController {
 		Optional<Evenement> existingEvenement = evenementService.findById(id);
 
 		if (existingEvenement.isPresent()) {
-			// Obtenir l'ID de l'établissement associé à l'événement (dans cet exemple, l'ID
-			// est 1)
-			Long idEtab = Long.valueOf(1);
-
-			// Rechercher l'établissement par son ID
+			// Obtenir l'établissement associé à l'évènement
+			Long idEtab = etablissementService.getEtablissementId();
 			Etablissement etab = etablissementService.findById(idEtab)
 					.orElseThrow(() -> new NotExistException(idEtab.toString()));
 
@@ -105,9 +111,10 @@ public class EvenementController {
 			// Créer un DTO de réponse pour l'événement mis à jour
 			EvenementResponseDto eventResponseDto = new EvenementResponseDto(updatedEvenement);
 			return ResponseEntity.ok(eventResponseDto);
-		} else {
-			// Si l'événement n'est pas trouvé, renvoyer une réponse 404 (non trouvée)
-			return ResponseEntity.notFound().build();
+		} 
+		else {
+			// Renvoyer une réponse 200 si l'événement n'est pas trouvé
+			return ResponseEntity.ok().build();
 		}
 	}
 
@@ -115,17 +122,20 @@ public class EvenementController {
 	 * Supprimer un événement par son ID.
 	 */
 	@DeleteMapping("/{id}")
-	public ResponseEntity<String> deleteEvent(@PathVariable Long id) {
+	public ResponseEntity<MessageResponseDto> deleteEvent(@PathVariable Long id) {
 		// Vérifie si l'évenement existe en fonction de l'ID
 		if (evenementService.existsById(id)) {
 			// Si l'événement existe, le supprime
 			evenementService.deleteById(id);
 
 			// Renvoie une réponse HTTP indiquant le succès de l'opération
-			return ResponseEntity.status(HttpStatus.OK).body("Évenement supprimée avec succès");
-		} else {
-			// Renvoyer une réponse 404 si la personne de contact n'existe pas
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("L'évenement n'existe pas");
+			String msg = "Évenement supprimée avec succès";
+			return ResponseEntity.ok(new MessageResponseDto(msg));
+		}
+		else {
+			// Renvoyer une réponse HTTP indiquant le défaut de l'opération
+			String msg = "L'évenement n'existe pas";
+			return ResponseEntity.ok(new MessageResponseDto(msg));
 		}
 	}
 

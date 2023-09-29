@@ -27,13 +27,14 @@ public class MedecinTraitantController {
         // Chercher un médecin traitant par ID
         Optional<MedecinTraitant> medecinT = medecinService.findById(id);
         if (medecinT.isPresent()) {
-            // Convertir le médecin traitant en DTO de réponse
+            
+        	// Convertir le médecin traitant en DTO de réponse
             MedecinTraitantResponseDto medecinResponseDto = new MedecinTraitantResponseDto(medecinT.get());
             return ResponseEntity.ok(medecinResponseDto);
         } 
         else {
-            // Renvoyer une réponse 404 si le médecin traitant n'existe pas
-            return ResponseEntity.notFound().build();
+            // Renvoyer une réponse 200 si le médecin traitant n'existe pas
+            return ResponseEntity.ok().build();
         }
     }
 
@@ -74,8 +75,8 @@ public class MedecinTraitantController {
             return ResponseEntity.ok(medecinResponseDto);
         } 
         else {
-            // Renvoie une réponse 404 si le médecin traitant n'existe pas
-            return ResponseEntity.notFound().build();
+            // Renvoie une réponse 200 si le médecin traitant n'existe pas
+            return ResponseEntity.ok().build();
         }
     }
 }

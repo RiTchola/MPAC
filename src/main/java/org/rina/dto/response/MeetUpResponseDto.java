@@ -1,7 +1,6 @@
 package org.rina.dto.response;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 import org.rina.enums.Etat;
 import org.rina.enums.TypeMeetUp;
@@ -20,7 +19,7 @@ public class MeetUpResponseDto {
     
     private String motifDemande;
     
-    private Date date;
+    private String date;
     
     private String nomResid;
     
@@ -38,7 +37,7 @@ public class MeetUpResponseDto {
         this.id = meetUp.getId();
         this.typeM = meetUp.getTypeM();
         this.motifDemande = meetUp.getMotifDemande();
-        this.date = meetUp.getDate();
+        this.date = meetUp.getDate().toString();
         this.nomResid = meetUp.getNomResid();
         this.prenomResid = meetUp.getPrenomResid();
         this.dateBirthresid = meetUp.getDateBirthresid();

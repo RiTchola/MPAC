@@ -1,7 +1,5 @@
 package org.rina.dto.response;
 
-import java.time.LocalDate;
-
 import org.rina.model.Etablissement;
 
 import lombok.Data;
@@ -15,7 +13,7 @@ public class EtablissementResponseDto {
     private String tel1;
     private String tel2;
     private String adresse;
-    private LocalDate dateCreation;
+    private String dateCreation;
     private String etabUsername;
 
     public EtablissementResponseDto(Etablissement etab) {
@@ -27,7 +25,7 @@ public class EtablissementResponseDto {
         this.tel1 = etab.getTel1();
         this.tel2 = etab.getTel2();
         this.adresse = etab.getAdresse();
-        this.dateCreation = etab.getDateCreation();
+        this.dateCreation = etab.getDateCreation().toString();
         this.etabUsername = etab.getUser().getUsername();
     }
 }

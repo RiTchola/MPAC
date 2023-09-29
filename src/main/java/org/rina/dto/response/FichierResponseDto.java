@@ -1,7 +1,5 @@
 package org.rina.dto.response;
 
-import java.time.LocalDate;
-
 import org.rina.enums.TypeFichier;
 import org.rina.model.Fichier;
 
@@ -16,7 +14,7 @@ public class FichierResponseDto {
     
     private TypeFichier typeF;
     
-    private LocalDate date;
+    private String date;
     
     private String fileUrl;
 
@@ -24,7 +22,7 @@ public class FichierResponseDto {
     public FichierResponseDto(Fichier fichier) {
         this.id = fichier.getId();
         this.typeF = fichier.getTypeF();
-        this.date = fichier.getDate();
+        this.date = fichier.getDate().toString();
         this.fileUrl = fichier.getFileURL();
     }
     

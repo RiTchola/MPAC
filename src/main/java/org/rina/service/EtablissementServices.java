@@ -21,6 +21,15 @@ public class EtablissementServices {
 	}
 
 	/**
+	 *	Récupère la l'identifiant de l'établissement.
+	 * 
+	 * @return l'identifiant.
+	 */
+	public Long getEtablissementId() {
+		return etablissementdao.getEtablissementId();
+	}
+
+	/**
 	 * Récupère la liste de tous les résidents de l'établissement.
 	 * 
 	 * @return Une liste de résidents.

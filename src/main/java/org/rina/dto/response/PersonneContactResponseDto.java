@@ -1,7 +1,5 @@
 package org.rina.dto.response;
 
-import java.time.LocalDate;
-
 import org.rina.enums.StatutM;
 import org.rina.enums.TypePersonne;
 import org.rina.model.PersonneContact;
@@ -19,7 +17,7 @@ public class PersonneContactResponseDto {
     
     private String prenom;
     
-    private LocalDate dateNaissance;
+    private String dateNaissance;
     
     private String email;
     
@@ -38,7 +36,7 @@ public class PersonneContactResponseDto {
         this.id = personneContact.getId();
         this.nom = personneContact.getNom();
         this.prenom = personneContact.getPrenom();
-        this.dateNaissance = personneContact.getDateNaissance();
+        this.dateNaissance = personneContact.getDateNaissance().toString();
         this.email = personneContact.getEmail();
         this.tel1 = personneContact.getTel1();
         this.tel2 = personneContact.getTel2();

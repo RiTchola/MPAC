@@ -3,6 +3,7 @@ package org.rina.controller;
 import org.rina.controller.exceptions.NotExistException;
 import org.rina.dto.request.EtablissementDto;
 import org.rina.dto.response.EtablissementResponseDto;
+import org.rina.dto.response.MessageResponseDto;
 import org.rina.model.Etablissement;
 import org.rina.model.User;
 import org.rina.service.EtablissementServices;
@@ -28,8 +29,8 @@ public class EtablissementController {
      */
     @GetMapping
     public ResponseEntity<EtablissementResponseDto> getEstablishment() {
-        // Récupèrer un établissement par ID (dans cet application, ID 1 est toujours seul et unique)
-        Long idEtab = Long.valueOf(1);
+        // Récupèrer un établissement par ID (dans cet application, ID est censé etre toujours 1)
+        Long idEtab = etablissementService.getEtablissementId();
         Optional<Etablissement> etablissement = etablissementService.findById(idEtab);
         if (etablissement.isPresent()) {
             
@@ -38,8 +39,8 @@ public class EtablissementController {
             return ResponseEntity.ok(etabResponseDto);
         } 
         else {
-            // // Renvoyer une réponse 404 si l'établissement n'existe pas
-            return ResponseEntity.notFound().build();
+            // Renvoyer une réponse 200 si l'établissement n'existe pas
+            return ResponseEntity.ok().build();
         }
     }
 
@@ -47,7 +48,7 @@ public class EtablissementController {
      * Crée un nouvel établissement.
      */
     @PostMapping
-    public ResponseEntity<String> createEstablishment(@Valid @RequestBody EtablissementDto etabDto) {
+    public ResponseEntity<MessageResponseDto> createEstablishment(@Valid @RequestBody EtablissementDto etabDto) {
         // Vérifier s'il n'existe pas déjà d'établissement
         if (etablissementService.count() == 0) {
             User user = userService.findByUsername(etabDto.getEtabUsername())
@@ -57,12 +58,14 @@ public class EtablissementController {
             Etablissement newEtab = etabDto.toEtablissement(user);
             etablissementService.insert(newEtab);
 
-            // Renvoyer une réponse HTTP indiquant le succès de l'opération
-            return ResponseEntity.status(HttpStatus.OK).body("Établissement crée");
+            // Renvoyer un message indiquant le succès de l'opération
+            String msg = "Établissement crée";
+            return ResponseEntity.ok(new MessageResponseDto(msg));
         } 
         else {
-        	// Renvoyer une réponse 404  si un établissement existe déjà
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("L'établissement existe déjà.");
+        	// Renvoyer message et une réponse 404  si un établissement existe déjà
+        	 String msg = "FORBIDDEN: L'établissement existe déjà";
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new MessageResponseDto(msg));
         }
     }
 
@@ -87,8 +90,8 @@ public class EtablissementController {
             return ResponseEntity.ok(etabResponseDto);
         } 
         else {
-        	// Renvoyer une réponse 404 si l'établissement n'existe pas
-            return ResponseEntity.notFound().build();
+        	// Renvoyer une réponse 200 si l'établissement n'existe pas
+            return ResponseEntity.ok().build();
         }
     }
 }

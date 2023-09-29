@@ -1,29 +1,18 @@
 package org.rina.controller;
 
 import org.rina.controller.exceptions.NotExistException;
-
-
-
 import org.rina.dto.request.RapportVisiteDto;
+import org.rina.dto.response.MessageResponseDto;
 import org.rina.model.Etablissement;
 import org.rina.model.RapportVisite;
 import org.rina.service.EtablissementServices;
 import org.rina.service.RapportVisiteServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.CrossOrigin;
-//import net.glxn.qrgen.QRCode;
-//import net.glxn.qrgen.image.ImageType;
-import org.springframework.web.bind.annotation.GetMapping;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
 
 import jakarta.validation.Valid;
 
@@ -40,9 +29,9 @@ public class ExterneController {
      * Créer un nouveau rapport de visite.
      */
     @PostMapping("/rapport-visite")
-    @CrossOrigin(origins = "http://localhost:4200") // Spécifiez ici les origines autorisées pour cette méthode
-    public ResponseEntity<String> createRapportVisite(@Valid @RequestBody RapportVisiteDto rapVisiteDto) {
-        Long idEtab = Long.valueOf(1);
+    //@CrossOrigin(origins = "http://localhost:4200") // Spécifiez ici les origines autorisées pour cette méthode
+    public ResponseEntity<MessageResponseDto> createRapportVisite(@Valid @RequestBody RapportVisiteDto rapVisiteDto) {
+        Long idEtab = etablissementService.getEtablissementId();
         // Récupérer l'établissement associé au rapport de visite
         Etablissement etab = etablissementService.findById(idEtab)
                 .orElseThrow(() -> new NotExistException(idEtab.toString()));
@@ -51,8 +40,9 @@ public class ExterneController {
         RapportVisite newRapVisite = rapVisiteDto.toRapportVisite(etab);
         rapportVService.insert(newRapVisite);
 
-        // Renvoyer une réponse 200 avec un message de confirmation
-        return ResponseEntity.status(HttpStatus.OK).body("Merci pour votre Commentaire.");
+        // Renvoyer une réponse HTTP indiquant le succès de l'opération
+     	String msg = "Merci pour votre Commentaire";
+     	return ResponseEntity.ok(new MessageResponseDto(msg));
     }
     
 //    /**

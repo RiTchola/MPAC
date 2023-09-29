@@ -1,7 +1,6 @@
 package org.rina.controller;
 
 import java.io.File;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,6 +12,7 @@ import java.util.stream.Collectors;
 import org.rina.controller.exceptions.NotExistException;
 import org.rina.dto.request.FichierDto;
 import org.rina.dto.response.FichierResponseDto;
+import org.rina.dto.response.MessageResponseDto;
 import org.rina.enums.Roles;
 import org.rina.model.Fichier;
 import org.rina.model.PersonneContact;
@@ -87,8 +87,8 @@ public class FichierController {
 				return ResponseEntity.ok(fileDtos);
 			}
 		}
-		// Renvoyer une réponse 404 si l'utilisateur ou la personne de contact n'existe  pas
-		return ResponseEntity.notFound().build();
+		// Renvoyer une réponse 200 si l'utilisateur ou la personne de contact n'existe  pas
+		return ResponseEntity.ok().build();
 	}
 
 	/**
@@ -106,8 +106,8 @@ public class FichierController {
 			return ResponseEntity.ok(fileResponseDto);
 		} 
 		else {
-			// Renvoyer une réponse 404 si le fichier n'existe pas
-			return ResponseEntity.notFound().build();
+			// Renvoyer une réponse 200 si le fichier n'existe pas
+			return ResponseEntity.ok().build();
 		}
 	}
 
@@ -115,7 +115,7 @@ public class FichierController {
 	 * Créer ou Téléverser un fichier.
 	 */
 	@PostMapping("/{username}")
-	public ResponseEntity<String> createFile(@Valid @RequestBody FichierDto fichierDto, @PathVariable String username) {
+	public ResponseEntity<MessageResponseDto> createFile(@Valid @RequestBody FichierDto fichierDto, @PathVariable String username) {
 		Optional<User> existingUser = userService.findByUsername(username);
 		if (existingUser.isPresent()) {
 			User user = existingUser.get();
@@ -148,19 +148,21 @@ public class FichierController {
 					fichierService.insert(file);
 
 					// Renvoyer une réponse 200 si la création du fichier est réussie
-					return ResponseEntity.status(HttpStatus.OK).body("Fichier téléversé avec succès");
-				} catch (IOException e) {
-					e.printStackTrace();
+					String msg = "Fichier téléversé avec succès";
+					return ResponseEntity.ok(new MessageResponseDto(msg));
+				} 
+				catch (IOException e) {
+					String msg = e.getMessage();
 					// Renvoyer une réponse d'erreur interne du serveur en cas d'échec de création
 					return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-							.body("Erreur lors du traitement du fichier.");
+							.body(new MessageResponseDto(msg));
 				}
 			}
 		}
 
-		// Renvoyer une réponse 400 si l'utilisateur n'est pas une personne de contact ou si le fichier existe déjà
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-				.body("Le fichier existe déjà ou l'utilisateur n'est pas une personne de contact.");
+		// Renvoyer une réponse HTTP indiquant le défaut de l'opération
+		String msg = "Le fichier existe déjà ou l'utilisateur n'est pas une personne de contact.";
+		return ResponseEntity.ok(new MessageResponseDto(msg));
 	}
 
 	/**
@@ -185,10 +187,11 @@ public class FichierController {
 						"attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
 			} 
 			else {
-				// Renvoyer une réponse 404 si le fichier n'existe pas ou n'est pas lisible
-				return ResponseEntity.notFound().build();
+				// Renvoyer une réponse 200 si le fichier n'existe pas ou n'est pas lisible
+				return ResponseEntity.ok().build();
 			}
-		} catch (IOException e) {
+		} 
+		catch (IOException e) {
 			e.printStackTrace();
 			// Renvoyer une réponse d'erreur interne du serveur en cas d'échec du téléchargement
 			return ResponseEntity.internalServerError().build();
@@ -204,7 +207,8 @@ public class FichierController {
 			// Écrire le contenu du fichier sur le serveur
 			Path filePath = Paths.get(cheminStockage);
 			Files.write(filePath, contenu);
-		} catch (Exception e) {
+		} 
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

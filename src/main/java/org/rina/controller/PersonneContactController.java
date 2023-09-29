@@ -1,6 +1,9 @@
 package org.rina.controller;
 
+import java.util.Optional;
+
 import org.rina.dto.request.PersonneContactDto;
+import org.rina.dto.response.MessageResponseDto;
 import org.rina.dto.response.PersonneContactResponseDto;
 import org.rina.model.PersonneContact;
 import org.rina.model.Resident;
@@ -9,13 +12,17 @@ import org.rina.service.PersonneContactServices;
 import org.rina.service.ResidentServices;
 import org.rina.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/personne-contact")
@@ -43,8 +50,8 @@ public class PersonneContactController {
             return ResponseEntity.ok(responseDto);
         } 
         else {
-            // Renvoyer une réponse 404 si la personne de contact n'existe pas
-            return ResponseEntity.notFound().build();
+            // Renvoyer une réponse 200 si la personne de contact n'existe pas
+            return ResponseEntity.ok().build();
         }
     }
 
@@ -52,7 +59,7 @@ public class PersonneContactController {
      * Créer une nouvelle personne contact.
      */
     @PostMapping("/{idResid}")
-    public ResponseEntity<String> createPersonneContact(@PathVariable Long idResid, @Valid @RequestBody PersonneContactDto personDto) {
+    public ResponseEntity<MessageResponseDto> createPersonneContact(@PathVariable Long idResid, @Valid @RequestBody PersonneContactDto personDto) {
         // Vérifier d'abord si le résident existe en fonction de l'ID
         Optional<Resident> resid = residentService.findById(idResid);
         if (resid.isPresent()) {
@@ -60,7 +67,8 @@ public class PersonneContactController {
         	// Vérifier si le résident à lier a déjà atteint le nombre maximal de personnes de contact (5)
             int nbPersonneContact = residentService.countPersonContactByResid(idResid);
             if (nbPersonneContact == 5) {
-                return ResponseEntity.badRequest().body("Le résident a déjà atteint le nombre maximal de personnes de contact.");
+            	String msg = "Le résident a déjà atteint le nombre maximal de personnes de contact";
+            	return ResponseEntity.ok(new MessageResponseDto(msg));
             }
 
             // Vérifier si la personne a un compte utilisateur existant
@@ -79,11 +87,13 @@ public class PersonneContactController {
                 residentService.addPersonneContactToResident(idResid, newPersonneC.getId());
             }
             // Renvoie la réponse HTTP indiquant le succès de l'opération
-        	return ResponseEntity.status(HttpStatus.OK).body("Personne de contact ajoutée avec succès");
+            String msg = "Personne de contact ajoutée avec succès";
+        	return ResponseEntity.ok(new MessageResponseDto(msg));
         }
         else {
-            // Renvoyer une réponse 404 si le résident n'existe pas
-        	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Activité supprimée avec succès");
+            // Renvoyer une réponse 200 si le résident n'existe pas
+        	String msg = "Le résident n'existe pas";
+        	return ResponseEntity.ok(new MessageResponseDto(msg));
         }
     }
 
@@ -116,15 +126,15 @@ public class PersonneContactController {
                 return ResponseEntity.ok(responseDto);
             }
         }
-        // Renvoyer une réponse 404 si la personne de contact n'existe pas
-        return ResponseEntity.notFound().build();
+        // Renvoyer une réponse 200 si la personne de contact n'existe pas
+        return ResponseEntity.ok().build();
     }
 
     /**
      * Supprimer une personne contact par son ID.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletePersonneContact(@PathVariable Long id) {
+    public ResponseEntity<MessageResponseDto> deletePersonneContact(@PathVariable Long id) {
         if (personneConService.existsById(id)) {
             // Utilisez cette méthode pour supprimer le lien avec les résidents dans la table de liaison
             residentService.removePersonneContactFromResident(id);
@@ -132,11 +142,13 @@ public class PersonneContactController {
             // Supprime ensuite la personne de contact elle-même
             personneConService.deleteById(id);
             // Renvoie une réponse HTTP indiquant le succès de l'opération
-            return ResponseEntity.status(HttpStatus.OK).body("Personne de contact supprimée avec succès");
+            String msg = "Personne de contact supprimée avec succès"; 
+            return ResponseEntity.ok(new MessageResponseDto(msg));
         } 
         else {
-            // Renvoyer une réponse 404 si la personne de contact n'existe pas
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("La personne de contact n'existe pas");
+            // Renvoyer une réponse 200 si la personne de contact n'existe pas
+        	 String msg = "La personne de contact n'existe pas"; 
+             return ResponseEntity.ok(new MessageResponseDto(msg));
         }
     }
 }

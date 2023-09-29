@@ -1,7 +1,5 @@
 package org.rina.dto.response;
 
-import java.util.Date;
-
 import org.rina.model.Activite;
 
 import lombok.Data;
@@ -15,11 +13,11 @@ public class ActiviteResponseDto {
     
     private String nom;
   
-    private Date date;
+    private String date;
 
     public ActiviteResponseDto(Activite activite) {
         this.id = activite.getId();
         this.nom = activite.getNom();
-        this.date = activite.getDateA();
+        this.date = activite.getDateA().toString();
     }
 }

@@ -11,6 +11,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IEtablissementJpaDao extends JpaRepository<Etablissement, Long> {
+	
+	// Requête personnalisée pour retourner l'identifiant de l'établissement
+    @Query(value = "select id from TETABLISSEMENT LIMIT 1", nativeQuery = true)
+	Long getEtablissementId();
 
     // Requête personnalisée pour mettre à jour un établissement
     @Modifying

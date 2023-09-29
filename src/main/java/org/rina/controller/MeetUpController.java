@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.rina.controller.exceptions.NotExistException;
 import org.rina.dto.request.MeetUpDto;
 import org.rina.dto.response.MeetUpResponseDto;
+import org.rina.dto.response.MessageResponseDto;
 import org.rina.enums.Roles;
 import org.rina.model.Etablissement;
 import org.rina.model.MeetUp;
@@ -17,7 +18,6 @@ import org.rina.service.MeetUpServices;
 import org.rina.service.PersonneContactServices;
 import org.rina.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -79,8 +79,8 @@ public class MeetUpController {
 				return ResponseEntity.ok(meetUpResponseDtos);
 			}
 		}
-		// Renvoyer une réponse 404 si l'utilisateur n'existe pas ou ne correspond pas à un rôle valide
-		return ResponseEntity.notFound().build();
+		// Renvoyer une réponse 200 si l'utilisateur n'existe pas ou ne correspond pas à un rôle valide
+		return ResponseEntity.ok().build();
 	}
 
 	/**
@@ -95,8 +95,8 @@ public class MeetUpController {
 			// Renvoyer le meetUp en réponse
 			return ResponseEntity.ok(meetUp.get());
 		} else {
-			// Renvoyer une réponse 404 si le meetUp n'existe pas
-			return ResponseEntity.notFound().build();
+			// Renvoyer une réponse 200 si le meetUp n'existe pas
+			return ResponseEntity.ok().build();
 		}
 	}
 
@@ -104,7 +104,7 @@ public class MeetUpController {
 	 * Créer un nouveau meetUp.
 	 */
 	@PostMapping("/{username}")
-	public ResponseEntity<String> createMeetUp(@PathVariable String username, @Valid @RequestBody MeetUpDto meetUpDto) {
+	public ResponseEntity<MessageResponseDto> createMeetUp(@PathVariable String username, @Valid @RequestBody MeetUpDto meetUpDto) {
 		// Vérifier si l'utilisateur existe
 		Optional<User> existingUser = userService.findByUsername(username);
 		if (existingUser.isPresent()) {
@@ -115,7 +115,7 @@ public class MeetUpController {
 				// Récupérer la personne de contact correspondante
 				PersonneContact persC = persCService.findByUsername(username)
 						.orElseThrow(() -> new NotExistException(username));
-				Long idEtab = Long.valueOf(1);
+				Long idEtab = etablissementService.getEtablissementId();
 				// Récupérer l'établissement associé au meetUp
 				Etablissement etab = etablissementService.findById(idEtab)
 						.orElseThrow(() -> new NotExistException(idEtab.toString()));
@@ -124,17 +124,19 @@ public class MeetUpController {
 				@SuppressWarnings("unused")
 				MeetUp meetUp = meetUpService.insert(meetUpDto.toMeetUp(etab, persC));
 				// Renvoyer une réponse 200 si la création du meetUp est réussie
-				return ResponseEntity.status(HttpStatus.OK).body("Demande soumise avec succès.");
+				String msg = "Demande soumise avec succès";
+				return ResponseEntity.ok(new MessageResponseDto(msg));
 			} 
 			else {
 				// Renvoyer une réponse 400 si la création du meetUp n'est pas autorisée pour ce rôle
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Demande impossible.");
+				String msg = "Demande non autorisée";
+				return ResponseEntity.ok(new MessageResponseDto(msg));
 			}
 		} 
-		
 		else {
 			// Renvoyer une réponse 400 si l'utilisateur n'existe pas
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("L'utilisateur n'existe pas.");
+			String msg = "L'utilisateur n'existe pas";
+			return ResponseEntity.ok(new MessageResponseDto(msg));
 		}
 	}
 
@@ -157,7 +159,7 @@ public class MeetUpController {
 				if (user.getRole() == Roles.ETABLISSEMENT || user.getRole() == Roles.ADMIN) {
 					// Récupérer la personne de contact correspondante
 					PersonneContact persC = meetUp.getPersonneContact();
-					Long idEtab = Long.valueOf(1);
+					Long idEtab = etablissementService.getEtablissementId();
 					// Récupérer l'établissement associé au meetUp
 					Etablissement etab = etablissementService.findById(idEtab)
 							.orElseThrow(() -> new NotExistException(idEtab.toString()));
@@ -169,12 +171,13 @@ public class MeetUpController {
 					return ResponseEntity.ok(new MeetUpResponseDto(updateMeetUp));
 				}
 				else {
-					// Renvoyer une réponse 404 si le role de l'utilisateur n'est pas celui souhaité
-					return ResponseEntity.notFound().build();
+					// Renvoyer une réponse 200 si le role de l'utilisateur n'est pas celui souhaité
+					return ResponseEntity.ok().build();
 				}
 			}
 		}
-		// Renvoyer une réponse 404 si le meetUp n'existe pas 
-		return ResponseEntity.notFound().build();
+		// Renvoyer une réponse 200 si le meetUp n'existe pas 
+		return ResponseEntity.ok().build();
 	}
+
 }

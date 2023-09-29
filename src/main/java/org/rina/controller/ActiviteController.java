@@ -1,19 +1,18 @@
 package org.rina.controller;
 
 import java.util.List;
-
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.rina.controller.exceptions.NotExistException;
 import org.rina.dto.request.ActiviteDto;
 import org.rina.dto.response.ActiviteResponseDto;
+import org.rina.dto.response.MessageResponseDto;
 import org.rina.model.Activite;
 import org.rina.model.Etablissement;
 import org.rina.service.ActiviteServices;
 import org.rina.service.EtablissementServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -67,8 +66,8 @@ public class ActiviteController {
 			return ResponseEntity.ok(actDto);
 		}
 
-		// Si l'activité n'est pas trouvée, renvoyer une réponse 404 (non trouvée)
-		return ResponseEntity.notFound().build();
+		// Renvoyer une réponse 200 si l'activité n'est pas trouvée
+		return ResponseEntity.ok().build();
 	}
 
 	/**
@@ -77,7 +76,7 @@ public class ActiviteController {
 	@PostMapping
 	public ResponseEntity<ActiviteResponseDto> createActivity(@Valid @RequestBody ActiviteDto actDto) {
 		// Obtenir l'établissement associé à l'activité
-		Long idEtab = Long.valueOf(1);
+		Long idEtab = etablissementService.getEtablissementId();
 		Etablissement etab = etablissementService.findById(idEtab)
 				.orElseThrow(() -> new NotExistException(idEtab.toString()));
 
@@ -99,7 +98,7 @@ public class ActiviteController {
 
 		if (existingActivite.isPresent()) {
 			// Obtenir l'établissement associé à l'activité
-			Long idEtab = Long.valueOf(1);
+			Long idEtab = etablissementService.getEtablissementId();
 			Etablissement etab = etablissementService.findById(idEtab)
 					.orElseThrow(() -> new NotExistException(idEtab.toString()));
 
@@ -109,9 +108,10 @@ public class ActiviteController {
 
 			// Renvoyer une réponse avec l'activité mise à jour
 			return ResponseEntity.ok(updateActivite);
-		} else {
-			// Si l'activité n'existe pas, renvoyer une réponse 404 (non trouvée)
-			return ResponseEntity.notFound().build();
+		} 
+		else {
+			// Renvoyer une réponse 200 si l'activité n'est pas trouvée
+			return ResponseEntity.ok().build();
 		}
 	}
 
@@ -119,17 +119,20 @@ public class ActiviteController {
 	 * Supprimer une activité par son ID.
 	 */
 	@DeleteMapping("/{id}")
-	public ResponseEntity<String> deleteActivity(@PathVariable Long id) {
+	public ResponseEntity<MessageResponseDto> deleteActivity(@PathVariable Long id) {
 		// Vérifier si l'activité existe en fonction de l'ID
 		if (activiteService.existsById(id)) {
 			// Supprimer l'activité si elle existe
 			activiteService.deleteById(id);
 
 			// Renvoyer une réponse HTTP indiquant le succès de l'opération
-			return ResponseEntity.status(HttpStatus.OK).body("Activité supprimée avec succès");
-		} else {
-			// Renvoyer une réponse 404 si la personne de contact n'existe pas
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Activité supprimée avec succès");
+			String msg = "Activité supprimée avec succès";
+			return ResponseEntity.ok(new MessageResponseDto(msg));
+		} 
+		else {
+			// Renvoyer une réponse HTTP indiquant le défaut de l'opération
+			String msg = "L'activité n'existe pas";
+			return ResponseEntity.ok(new MessageResponseDto(msg));
 		}
 	}
 }

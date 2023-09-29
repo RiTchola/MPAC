@@ -20,8 +20,6 @@ public class RapportVisiteController {
 
     @Autowired
     private RapportVisiteServices rapportVService;
-//    @Autowired
-//    private EtablissementServices etablissementService;
 
     /**
      * Récupérer tous les rapports de visites.
@@ -55,8 +53,8 @@ public class RapportVisiteController {
             return ResponseEntity.ok(rapVisiteDto);
         } 
         else {
-            // Renvoyer une réponse 404 si le rapport de visite n'existe pas
-            return ResponseEntity.notFound().build();
+            // Renvoyer une réponse 200 si le rapport de visite n'existe pas
+            return ResponseEntity.ok().build();
         }
     }
 

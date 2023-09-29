@@ -1,20 +1,29 @@
 package org.rina.controller;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.rina.controller.exceptions.NotExistException;
 import org.rina.dto.request.CommuniqueDto;
 import org.rina.dto.response.CommuniqueResponseDto;
+import org.rina.dto.response.MessageResponseDto;
 import org.rina.model.Communique;
 import org.rina.model.Etablissement;
 import org.rina.service.CommuniqueServices;
 import org.rina.service.EtablissementServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import jakarta.validation.Valid;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/communique")
@@ -57,8 +66,8 @@ public class CommuniqueController {
             return ResponseEntity.ok(comResponse);
         } 
         else {
-            // Renvoyer une réponse 404 si le communiqué n'existe pas
-            return ResponseEntity.notFound().build();
+            // Renvoyer une réponse 200 si le communiqué n'existe pas
+            return ResponseEntity.ok().build();
         }
     }
 
@@ -68,7 +77,7 @@ public class CommuniqueController {
 	@PostMapping
 	public ResponseEntity<CommuniqueResponseDto> createCommunique(@Valid @RequestBody CommuniqueDto comDto) {
 		// Obtient l'établissement associé au communiqué
-		Long idEtab = Long.valueOf(1);
+		Long idEtab = etablissementService.getEtablissementId();
 		Etablissement etab = etablissementService.findById(idEtab)
 				.orElseThrow(() -> new NotExistException(idEtab.toString()));
 
@@ -93,7 +102,7 @@ public class CommuniqueController {
 
 		if (existingCommunique.isPresent()) {
 			// Obtient l'établissement associé au communiqué
-			Long idEtab = Long.valueOf(1);
+			Long idEtab = etablissementService.getEtablissementId();
 			Etablissement etab = etablissementService.findById(idEtab)
 					.orElseThrow(() -> new NotExistException(idEtab.toString()));
 
@@ -108,8 +117,8 @@ public class CommuniqueController {
 			return ResponseEntity.ok(comResponse);
 		} 
 		else {
-			// Si le communiqué n'existe pas, renvoie une réponse 404 (non trouvé)
-			return ResponseEntity.notFound().build();
+			// Renvoyer une réponse 200 si le communiqué n'existe pas
+            return ResponseEntity.ok().build();
 		}
 	}
 
@@ -117,18 +126,20 @@ public class CommuniqueController {
 	 * Supprimer un communiqué par son ID.
 	 */
 	@DeleteMapping("/{id}")
-	public ResponseEntity<String> deleteCommunique(@PathVariable Long id) {
+	public ResponseEntity<MessageResponseDto> deleteCommunique(@PathVariable Long id) {
 		// Vérifie si le communiqué existe en fonction de l'ID
 		if (communiqueService.existsById(id)) {
 			// Supprime le communiqué s'il existe
 			communiqueService.deleteById(id);
 			
 			// Renvoyer une réponse HTTP indiquant le succès de l'opération
-			return ResponseEntity.status(HttpStatus.OK).body("Communiqué supprimée avec succès");
+			String msg = "Communiqué supprimée avec succès";
+			return ResponseEntity.ok(new MessageResponseDto(msg));
 		} 
 		else {
-			// Renvoyer une réponse 404 si le communiqué n'existe pas
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Le communique n'existe pas");
+			// Renvoyer une réponse HTTP indiquant le défaut de l'opération
+			String msg = "Le communique n'existe pas";
+			return ResponseEntity.ok(new MessageResponseDto(msg));
 		}
 	}
 }

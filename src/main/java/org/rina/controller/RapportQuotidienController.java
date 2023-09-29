@@ -63,8 +63,8 @@ public class RapportQuotidienController {
             return ResponseEntity.ok(rapQuotResponseDto);
         } 
         else {
-            // Renvoyer une réponse 404 si le rapport quotidien n'existe pas
-            return ResponseEntity.notFound().build();
+            // Renvoyer une réponse 200 si le rapport quotidien n'existe pas
+            return ResponseEntity.ok().build();
         }
     }
 
@@ -87,8 +87,8 @@ public class RapportQuotidienController {
             return ResponseEntity.ok(rapQuotResponseDto);
         } 
         else {
-            // Renvoyer une réponse 404 si le résident n'existe pas
-            return ResponseEntity.notFound().build();
+            // Renvoyer une réponse 200 si le résident n'existe pas
+            return ResponseEntity.ok().build();
         }
     }
 
@@ -117,8 +117,8 @@ public class RapportQuotidienController {
             return ResponseEntity.ok(rapQuotResponseDto);
         } 
         else {
-            // Renvoyer une réponse 404 si le rapport quotidien n'existe pas
-            return ResponseEntity.notFound().build();
+            // Renvoyer une réponse 200 si le rapport quotidien n'existe pas
+            return ResponseEntity.ok().build();
         }
     }
     
