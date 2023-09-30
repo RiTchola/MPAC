@@ -26,7 +26,7 @@ public class RapportVisiteServices {
 	 * @return  Une liste de rapports de visite triés par date décroissante.
 	 */
 	public List<RapportVisite> findAllRapportVisiteOrderByDateDesc() {
-		return rapportVisitedao.findRapportVisiteOrderByDateDesc();
+		return rapportVisitedao.findAllByEtablissement_IdOrderByDateVisiteDesc(1L);
 	}
 
 	/**
