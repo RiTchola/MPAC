@@ -2,6 +2,7 @@ package org.rina.controller;
 
 import org.rina.controller.exceptions.NotExistException;
 import org.rina.dto.request.RapportVisiteDto;
+import org.rina.dto.response.Response;
 import org.rina.model.Etablissement;
 import org.rina.model.RapportVisite;
 import org.rina.service.EtablissementServices;
@@ -28,8 +29,8 @@ public class ExterneController {
 	/**
      * Créer un nouveau rapport de visite.
      */
-    @PostMapping
-    public ResponseEntity<String> createRapportVisite(@Valid @RequestBody RapportVisiteDto rapVisiteDto) {
+    @PostMapping("/rapport-visite")
+    public ResponseEntity<Response> createRapportVisite(@Valid @RequestBody RapportVisiteDto rapVisiteDto) {
         Long idEtab = Long.valueOf(1);
         // Récupérer l'établissement associé au rapport de visite
         Etablissement etab = etablissementService.findById(idEtab)
@@ -40,7 +41,7 @@ public class ExterneController {
         rapportVService.insert(newRapVisite);
 
         // Renvoyer une réponse 200 avec un message de confirmation
-        return ResponseEntity.status(HttpStatus.OK).body("Merci pour votre Commentaire.");
+        return ResponseEntity.status(HttpStatus.OK).body(Response.builder().message("Merci pour votre Commentaire.").build());
     }
 
 }

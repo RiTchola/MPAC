@@ -57,7 +57,7 @@ public class RapportVisite {
      * @param dateVisite La date de la visite
      * @param nomResid Le nom du résident
      * @param prenomResid Le prénom du résident
-     * @param dateBirthresid La date de naissance du résident
+     * @param dateBirthResid La date de naissance du résident
      * @param nomVisiteur Le nom du visiteur
      * @param typePersonne Le type de personne du visiteur
      * @param commentaire Les commentaires du rapport de visite
