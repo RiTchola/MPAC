@@ -1,16 +1,15 @@
 package org.rina.dto.request;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
-
-import jakarta.persistence.ElementCollection;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 import org.rina.model.Communique;
 import org.rina.model.Etablissement;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import jakarta.persistence.ElementCollection;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -21,8 +20,8 @@ public class CommuniqueDto {
 	private Long id;
 	
 	@NotNull
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate date;
+	@DateTimeFormat
+    private Date date;
 	
 	@NotBlank
     private String titre;
@@ -42,7 +41,7 @@ public class CommuniqueDto {
 	 * @param contenu Le contenu du communiqué
 	 * @param fileURL La liste des chemins de fichiers liés au communiqué
 	 */
-	public CommuniqueDto(Long id, LocalDate date, String titre, String contenu, List<String> fileURL) {
+	public CommuniqueDto(Long id, Date date, String titre, String contenu, List<String> fileURL) {
 		
 		this.id = id;
 		this.date = date;

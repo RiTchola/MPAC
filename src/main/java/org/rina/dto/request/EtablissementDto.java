@@ -10,7 +10,6 @@ import org.springframework.format.annotation.NumberFormat;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
@@ -22,30 +21,29 @@ public class EtablissementDto {
 	private String nom;
     
 	@NotNull
-	@Email(message = "{email.nonValide}")
+	@Email
 	private String email1;
     
-	@Email(message = "{email.nonValide}")
+	@Email
 	private String email2;
     
-	@NumberFormat
 	@NotNull
-	@Size(min = 4, max = 30, message = "{tel.nonValide}")
+	@NumberFormat
 	private String tel1;
     
+	@NotNull
 	@NumberFormat
-	@Size(min = 4, max = 30, message = "{tel.nonValide}")
 	private String tel2;
     
 	@NotBlank
 	private String adresse;
     
 	@NotNull
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat
 	private LocalDate dateCreation;
 	
 	@NotNull
-	@Email(message = "{email.nonValide}")
+	@Email
 	private String etabUsername;
 	
 	public EtablissementDto() {

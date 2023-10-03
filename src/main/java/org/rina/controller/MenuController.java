@@ -1,6 +1,6 @@
 package org.rina.controller;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import org.rina.controller.exceptions.NotExistException;
 import org.rina.dto.request.MenuDto;
@@ -35,7 +35,7 @@ public class MenuController {
      * Récupère tous les menus en fonction de la date de début de semaine.
      */
     @GetMapping("/{dateDebutSemaine}")
-    public ResponseEntity<MenuResponseDto> getAllMenuByDate(@PathVariable LocalDate dateDebutSemaine) {
+    public ResponseEntity<MenuResponseDto> getAllMenuByDate(@PathVariable Date dateDebutSemaine) {
         // Vérifier si un menu existe pour la date de début de semaine spécifiée
         Boolean date = menuService.existsByDateDebutSemaine(dateDebutSemaine);
 
@@ -83,7 +83,7 @@ public class MenuController {
      * Mettre à jour un menu existant.
      */
     @PutMapping("/{dateDebutSemaine}")
-    public ResponseEntity<MessageResponseDto> updateMenu(@PathVariable LocalDate dateDebutSemaine, @Valid @RequestBody MenuDto menuDto) {
+    public ResponseEntity<MessageResponseDto> updateMenu(@PathVariable Date dateDebutSemaine, @Valid @RequestBody MenuDto menuDto) {
         // Vérifier si un menu existe pour la date de début de semaine spécifiée
         Boolean date = menuService.existsByDateDebutSemaine(dateDebutSemaine);
 

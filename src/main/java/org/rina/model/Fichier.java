@@ -1,6 +1,6 @@
 package org.rina.model;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import org.rina.enums.TypeFichier;
 
@@ -34,7 +34,7 @@ public class Fichier {
     private TypeFichier typeF;
 
     @Column(nullable = false) 
-    private LocalDate date;
+    private Date date;
 
     // Chemin vers le fichier sur le serveur
     @Column(nullable = false) 
@@ -60,7 +60,7 @@ public class Fichier {
      * @param contenu Le contenu du fichier
      * @param personneContact La personne de contact liée à ce fichier 
      */
-    public Fichier(Long id, TypeFichier typeF, LocalDate date, String fileURL, byte[] contenu,
+    public Fichier(Long id, TypeFichier typeF, Date date, String fileURL, byte[] contenu,
             PersonneContact personneContact) {
 
         this.id = id;

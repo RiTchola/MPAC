@@ -122,6 +122,10 @@ public class RapportQuotidienController {
         }
     }
     
+    
+    /**
+     * Méthode privée au controller.
+     */
     public static String generateNumeroR() {
         // Obtenir l'horodatage actuel
         Date now = new Date();

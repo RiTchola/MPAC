@@ -1,5 +1,7 @@
 package org.rina.dto.response;
 
+import java.util.Date;
+
 import org.rina.model.Menu;
 
 import lombok.Data;
@@ -11,7 +13,7 @@ public class MenuResponseDto {
 
     private Long id;
     
-    private String dateDebutSemaine;
+    private Date dateDebutSemaine;
     
     private String menuLundi;
     
@@ -30,7 +32,7 @@ public class MenuResponseDto {
     public MenuResponseDto(Menu menu) {
     	
         this.id = menu.getId();
-        this.dateDebutSemaine = menu.getDateDebutSemaine().toString();
+        this.dateDebutSemaine = menu.getDateDebutSemaine();
         this.menuLundi = menu.getMenuLundi();
         this.menuMardi = menu.getMenuMardi();
         this.menuMercredi = menu.getMenuMercredi();

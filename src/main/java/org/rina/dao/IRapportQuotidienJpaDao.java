@@ -18,20 +18,20 @@ public interface IRapportQuotidienJpaDao extends JpaRepository<RapportQuotidien,
     List<RapportQuotidien> findByResident(Resident resident);
 
     // Requête personnalisée pour obtenir la liste des rapports classés par date décroissante
-    @Query(value = "SELECT * FROM TRAPPORTQUOTIDIEN q ORDER BY q.DATE DESC", nativeQuery = true)
+    @Query(value = "SELECT * FROM trapportquotidien q ORDER BY q.DATE DESC", nativeQuery = true)
     List<RapportQuotidien> findAllRapportQuotidienOrderByDateDesc();
 
     // Requête personnalisée pour obtenir les informations d'un rapport quotidien grâce à une date
-    @Query(value = "SELECT * FROM TRAPPORTQUOTIDIEN q WHERE q.DATE = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM trapportquotidien q WHERE q.DATE = ?1", nativeQuery = true)
     Optional<RapportQuotidien> findRapportQuotidienByDate(Date date);
 
     // Requête personnalisée pour mettre à jour un rapport quotidien
     @Modifying
-    @Query(value = "UPDATE TRAPPORTQUOTIDIEN r SET r =?2 WHERE r.id =?1", nativeQuery = true)
+    @Query(value = "UPDATE trapportquotidien r SET r =?2 WHERE r.id =?1", nativeQuery = true)
     void updateRapportQuotidien(Long id, RapportQuotidien rapportQuot);
 
     // Requête personnalisée pour obtenir le dernier numéro de rapport quotidien
-    @Query(value = "SELECT r.numeroR FROM TRAPPORTQUOTIDIEN r WHERE r.numeroR LIKE :?1 ORDER BY r.numeroR DESC LIMIT 1", nativeQuery = true)
+    @Query(value = "SELECT r.numeroR FROM trapportquotidien r WHERE r.numeroR LIKE :?1 ORDER BY r.numeroR DESC LIMIT 1", nativeQuery = true)
     String findLastNumeroR(String string);
 
 }

@@ -1,6 +1,6 @@
 package org.rina.model;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,7 +29,7 @@ public class Evenement {
     private String nom;
 
     @Column(nullable = false) 
-    private LocalDate dateEvent;
+    private Date dateEvent;
 
     /**
      * jointure à d'autres classes
@@ -45,7 +45,7 @@ public class Evenement {
      * @param dateEvent La date de l'événement 
      * @param etablissement L'établissement lié à cet événement 
      */
-    public Evenement(Long id, String nom, LocalDate dateEvent, Etablissement etablissement) {
+    public Evenement(Long id, String nom, Date dateEvent, Etablissement etablissement) {
 
         this.id = id;
         this.nom = nom;

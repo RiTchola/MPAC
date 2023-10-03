@@ -1,6 +1,6 @@
 package org.rina.dto.request;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import org.rina.model.Etablissement;
 import org.rina.model.Menu;
@@ -14,7 +14,7 @@ public class MenuDto {
 	private Long id;
 
 	@NotNull
-	private LocalDate dateDebutSemaine ;
+	private Date dateDebutSemaine ;
 	
 	@NotNull
 	private String menuLundi;
@@ -54,7 +54,7 @@ public class MenuDto {
 	 * @param menuSamedi       Le menu du samedi
 	 * @param menuDimanche     Le menu du dimanche
 	 */
-	public MenuDto(Long id,  LocalDate dateDebutSemaine,  String menuLundi,  String menuMardi,
+	public MenuDto(Long id,  Date dateDebutSemaine,  String menuLundi,  String menuMardi,
 			 String menuMercredi,  String menuJeudi,  String menuVendredi,
 			String menuSamedi, String menuDimanche) {
 		

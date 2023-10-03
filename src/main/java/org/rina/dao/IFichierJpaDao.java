@@ -10,10 +10,10 @@ import org.springframework.stereotype.Repository;
 public interface IFichierJpaDao extends JpaRepository<Fichier, Long> {
 
     // Requête personnalisée pour afficher les fichiers d'une personne selon la date de manière décroissante
-    @Query(value = "SELECT * FROM TFICHIER f WHERE f.fkpersonnecontact=?1 ORDER BY f.DATE DESC ", nativeQuery = true)
+    @Query(value = "SELECT * FROM tfichier f WHERE f.fkpersonnecontact=?1 ORDER BY f.DATE DESC ", nativeQuery = true)
     List<Fichier> findAllByPersonneContactOrderByDateDesc(Long idPersC);
 
     // Requête personnalisée pour afficher tous les fichiers par ordre décroissant de date
-    @Query(value = "SELECT * FROM TFICHIER f ORDER BY f.DATE DESC", nativeQuery = true)
+    @Query(value = "SELECT * FROM tfichier f ORDER BY f.DATE DESC", nativeQuery = true)
     List<Fichier> findAllOrderByDateDesc();
 }

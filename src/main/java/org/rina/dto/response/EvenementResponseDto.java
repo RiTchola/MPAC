@@ -1,6 +1,7 @@
 package org.rina.dto.response;
 
 import org.rina.model.Evenement;
+import java.util.Date;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,12 +14,12 @@ public class EvenementResponseDto {
     
     private String nom;
     
-    private String dateEvent;
+    private Date dateEvent;
 
     public EvenementResponseDto(Evenement evenement) {
         this.id = evenement.getId();
         this.nom = evenement.getNom();
-        this.dateEvent = evenement.getDateEvent().toString();
+        this.dateEvent = evenement.getDateEvent();
     }
 
 }

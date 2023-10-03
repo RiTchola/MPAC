@@ -14,7 +14,7 @@ import org.rina.enums.StatutM;
 import org.rina.enums.TypePersonne;
 import org.springframework.format.annotation.NumberFormat;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,7 +37,7 @@ public class PersonneContact {
     private String prenom;
 
     @Column(nullable = false) 
-    private LocalDate dateNaissance;
+    private Date dateNaissance;
 
     @Email
     @Column(nullable = false)
@@ -53,8 +53,8 @@ public class PersonneContact {
     @Size(min = 4, max = 30) 
     private String tel2;
 
-    @Column(nullable = false) 
-    @Size(min = 10, max = 125)
+    @Column(nullable = false, updatable = true)
+    @Size(min = 10, max = 200)
     private String adresse;
 
     @Column(nullable = true) 
@@ -72,6 +72,7 @@ public class PersonneContact {
     private User user;
 
     @ManyToMany(mappedBy = "personneContacts") 
+    @Builder.Default
     private Set<Resident> residents = new HashSet<Resident>();
 
     public Set<Resident> getResidents() {
@@ -92,7 +93,7 @@ public class PersonneContact {
      * @param choix 	Le type de personne (choix)
      * @param user 		L'utilisateur associé à la personne de contact
      */
-    public PersonneContact(Long id, String nom, String prenom, LocalDate dateNaissance, String email, String tel1,
+    public PersonneContact(Long id, String nom, String prenom, Date dateNaissance, String email, String tel1,
                            String tel2, String adresse, StatutM statut, TypePersonne choix, User user) {
         this.id = id;
         this.nom = nom;

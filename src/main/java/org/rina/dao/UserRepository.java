@@ -16,7 +16,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     // Requête personnalisée en utilisant un Query natif pour mettre à jour un utilisateur
     @Modifying
-    @Query(value = "UPDATE TUSER u SET u =?2 WHERE u.username =?1", nativeQuery = true)
+    @Query(value = "UPDATE tuser u SET u =?2 WHERE u.username =?1", nativeQuery = true)
     void updateUser(String username, User user);
 
     // Requête personnalisée pour vérifier si un utilisateur existe par son nom d'utilisateur

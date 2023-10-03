@@ -1,6 +1,6 @@
 package org.rina.service;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,7 +41,7 @@ public class MenuServices {
 	 * @param dateDebutSemaine La date de début de semaine pour laquelle rechercher l'identifiant du menu.
 	 * @return L'identifiant du menu correspondant à la date de début de semaine, ou null si aucun menu correspondant n'est trouvé.
 	 */
-	public Long findIdByDateDebutSemaine(LocalDate dateDebutSemaine) {
+	public Long findIdByDateDebutSemaine(Date dateDebutSemaine) {
 	    return menudao.findIdByDateDebutSemaine(dateDebutSemaine);
 	}
 
@@ -51,7 +51,7 @@ public class MenuServices {
 	 * @param dateDebutSemaine La date de début de semaine à vérifier.
 	 * @return true si un menu existe pour la date de début de semaine spécifiée, sinon false.
 	 */
-	public boolean existsByDateDebutSemaine(LocalDate dateDebutSemaine) {
+	public boolean existsByDateDebutSemaine(Date dateDebutSemaine) {
 	    return menudao.existsByDateDebutSemaine(dateDebutSemaine);
 	}
 
@@ -61,7 +61,7 @@ public class MenuServices {
 	 * @param dateDebutSemaine  La date de début de semaine pour laquelle on recherche les menus.
 	 * @return                  Une liste de menus correspondant à la date de début de semaine.
 	 */
-	public List<Menu> findByDateDebutSemaine(LocalDate dateDebutSemaine) {
+	public List<Menu> findByDateDebutSemaine(Date dateDebutSemaine) {
 		return menudao.findByDateDebutSemaine(dateDebutSemaine);
 	}
 
@@ -71,7 +71,7 @@ public class MenuServices {
 	 * @param dateDebutSemaine  La date de début de semaine pour laquelle on recherche le menu du lundi.
 	 * @return                  Une liste de plats du menu du lundi.
 	 */
-	public String findMenuForMonday(LocalDate dateDebutSemaine) {
+	public String findMenuForMonday(Date dateDebutSemaine) {
 		return menudao.findMenuForMonday(dateDebutSemaine);
 	}
 
@@ -81,7 +81,7 @@ public class MenuServices {
 	 * @param dateDebutSemaine  La date de début de semaine pour laquelle on recherche le menu du mardi.
 	 * @return                  Une liste de plats du menu du mardi.
 	 */
-	public String findMenuForTuesday(LocalDate dateDebutSemaine) {
+	public String findMenuForTuesday(Date dateDebutSemaine) {
 		return menudao.findMenuForTuesday(dateDebutSemaine);
 	}
 
@@ -91,7 +91,7 @@ public class MenuServices {
 	 * @param dateDebutSemaine  La date de début de semaine pour laquelle on recherche le menu du mercredi.
 	 * @return                  Une liste de plats du menu du mercredi.
 	 */
-	public String findMenuForWednesday(LocalDate dateDebutSemaine) {
+	public String findMenuForWednesday(Date dateDebutSemaine) {
 		return menudao.findMenuForWednesday(dateDebutSemaine);
 	}
 
@@ -101,7 +101,7 @@ public class MenuServices {
 	 * @param dateDebutSemaine  La date de début de semaine pour laquelle on recherche le menu du jeudi.
 	 * @return                  Une liste de plats du menu du jeudi.
 	 */
-	public String findMenuForThursday(LocalDate dateDebutSemaine) {
+	public String findMenuForThursday(Date dateDebutSemaine) {
 		return menudao.findMenuForThursday(dateDebutSemaine);
 	}
 
@@ -111,7 +111,7 @@ public class MenuServices {
 	 * @param dateDebutSemaine  La date de début de semaine pour laquelle on recherche le menu du vendredi.
 	 * @return                  Une liste de plats du menu du vendredi.
 	 */
-	public String findMenuForFriday(LocalDate dateDebutSemaine) {
+	public String findMenuForFriday(Date dateDebutSemaine) {
 		return menudao.findMenuForFriday(dateDebutSemaine);
 	}
 
@@ -121,7 +121,7 @@ public class MenuServices {
 	 * @param dateDebutSemaine  La date de début de semaine pour laquelle on recherche le menu du samedi.
 	 * @return                  Une liste de plats du menu du samedi.
 	 */
-	public String findMenuForSaturday(LocalDate dateDebutSemaine) {
+	public String findMenuForSaturday(Date dateDebutSemaine) {
 		return menudao.findMenuForSaturday(dateDebutSemaine);
 	}
 
@@ -131,7 +131,7 @@ public class MenuServices {
 	 * @param dateDebutSemaine  La date de début de semaine pour laquelle on recherche le menu du dimanche.
 	 * @return                  Une liste de plats du menu du dimanche.
 	 */
-	public String findMenuForSunday(LocalDate dateDebutSemaine) {
+	public String findMenuForSunday(Date dateDebutSemaine) {
 		return menudao.findMenuForSunday(dateDebutSemaine);
 	}
 

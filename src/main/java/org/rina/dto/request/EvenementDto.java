@@ -1,6 +1,6 @@
 package org.rina.dto.request;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import org.rina.model.Etablissement;
 import org.rina.model.Evenement;
@@ -21,8 +21,8 @@ public class EvenementDto {
 	private String nom;
 	
 	@NotNull
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate dateEvent;
+	@DateTimeFormat
+    private Date dateEvent;
 
 	/**
 	 * Constructeur avec des arguments pour initialiser les champs
@@ -30,7 +30,7 @@ public class EvenementDto {
 	 * @param nom Le nom de l'événement
 	 * @param dateEvent La date de l'événement
 	 */
-	public EvenementDto(Long id, String nom, LocalDate dateEvent) {
+	public EvenementDto(Long id, String nom, Date dateEvent) {
 		this.id = id;
 		this.nom = nom;
 		this.dateEvent = dateEvent;

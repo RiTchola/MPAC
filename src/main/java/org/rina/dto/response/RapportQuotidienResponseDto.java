@@ -1,5 +1,7 @@
 package org.rina.dto.response;
 
+import java.util.Date;
+
 import org.rina.enums.Humeur;
 import org.rina.model.RapportQuotidien;
 
@@ -14,7 +16,7 @@ public class RapportQuotidienResponseDto {
 
 	private String numeroR;
 
-	private String date;
+	private Date date;
 
 	private String freqCardiaque;
 
@@ -50,7 +52,7 @@ public class RapportQuotidienResponseDto {
 		
 		this.id = rapportQuotidien.getId();
 		this.numeroR = rapportQuotidien.getNumeroR();
-		this.date = rapportQuotidien.getDate().toString();
+		this.date = rapportQuotidien.getDate();
 		this.freqCardiaque = rapportQuotidien.getFreqCardiaque();
 		this.freqRespiratoire = rapportQuotidien.getFreqRespiratoire();
 		this.presArterielle = rapportQuotidien.getPresArterielle();

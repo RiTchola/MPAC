@@ -20,15 +20,13 @@ public class MedecinTraitant {
     @GeneratedValue(strategy = GenerationType.IDENTITY) 
     private Long id;
 
-    @Column(length = 50, nullable = false) 
+    @Column(nullable = false) 
     private String numInami;
 
-    @Size(min = 1, max = 40) 
-    @Column(length = 40, nullable = false) 
+    @Column(length = 50, nullable = false) 
     private String nom;
 
-    @Size(min = 1, max = 40) 
-    @Column(length = 40, nullable = false) 
+    @Column(length = 50, nullable = false)  
     private String prenom;
 
     @Email
@@ -45,8 +43,8 @@ public class MedecinTraitant {
     @Size(min = 4, max = 20)
     private String tel2;
 
-    @Column(nullable = false) 
-    @Size(min = 10, max = 200) 
+    @Column(nullable = false, updatable = true)
+    @Size(min = 10, max = 200)
     private String adresse;
 
     /**

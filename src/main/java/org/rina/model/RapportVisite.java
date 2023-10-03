@@ -1,16 +1,20 @@
 package org.rina.model;
 
-import jakarta.persistence.*;
-
-
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
 import java.util.Date;
 
 import org.rina.enums.TypePersonne;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
@@ -33,7 +37,7 @@ public class RapportVisite {
     private String prenomResid;
 
     @Column(nullable = false) 
-    private LocalDate dateBirthResid;
+    private Date dateBirthResid;
 
     @Column(nullable = false) 
     private String nomVisiteur;
@@ -41,7 +45,7 @@ public class RapportVisite {
     @Column(nullable = true) 
     private TypePersonne typePersonne;
 
-    @Column(length = 800, nullable = false) 
+    @Column(length = 1000, nullable = false) 
     private String commentaire;
 
     /**
@@ -63,7 +67,7 @@ public class RapportVisite {
      * @param commentaire Les commentaires du rapport de visite
      * @param etablissement L'établissement lié à ce rapport de visite
      */
-    public RapportVisite(Long id, Date dateVisite, String nomResid, String prenomResid, LocalDate dateBirthResid,
+    public RapportVisite(Long id, Date dateVisite, String nomResid, String prenomResid, Date dateBirthResid,
             String nomVisiteur, TypePersonne typePersonne, String commentaire, Etablissement etablissement) {
 
         this.id = id;

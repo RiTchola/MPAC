@@ -75,7 +75,7 @@ public class RapportQuotidien {
     @Column(nullable = false) 
     private Humeur humeur;
 
-    @Column(nullable = false) 
+    @Column(length = 200, nullable = true)  
     private String commentaire;
 
     /**

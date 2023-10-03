@@ -1,6 +1,6 @@
 package org.rina.service;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,7 +68,7 @@ public class ResidentServices {
 	 * @param date   La date.
 	 * @return       La liste des résidents liés à la personne de contact.
 	 */
-	public List<Resident> findAllResidToPersonContact(String nom, String prenom, LocalDate date) {
+	public List<Resident> findAllResidToPersonContact(String nom, String prenom, Date date) {
 		return residentdao.findAllResidToPersonContact(nom, prenom, date);
 	}
 

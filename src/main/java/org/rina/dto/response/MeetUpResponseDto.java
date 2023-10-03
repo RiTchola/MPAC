@@ -1,6 +1,6 @@
 package org.rina.dto.response;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import org.rina.enums.Etat;
 import org.rina.enums.TypeMeetUp;
@@ -25,7 +25,7 @@ public class MeetUpResponseDto {
     
     private String prenomResid;
     
-    private LocalDate dateBirthresid;
+    private Date dateBirthresid;
     
     private int nbParticipants;
     

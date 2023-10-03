@@ -1,6 +1,5 @@
 package org.rina.dto.request;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 import jakarta.validation.constraints.NotBlank;
@@ -21,7 +20,7 @@ public class RapportVisiteDto {
     private Long id;
     
     @NotNull
-	@DateTimeFormat(pattern = "yyyy-MM-ddThh:mm:ss.mmmZ")
+	@DateTimeFormat
     private Date dateVisite;
     
     @NotBlank
@@ -31,12 +30,13 @@ public class RapportVisiteDto {
     private String prenomResid;
 
     @NotNull
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate dateBirthResid;
+    @DateTimeFormat
+    private Date dateBirthResid;
 
     @NotBlank
     private String nomVisiteur;
     
+    @NotNull
     private TypePersonne typePersonne;
     
     @NotBlank
@@ -55,7 +55,7 @@ public class RapportVisiteDto {
 	 * @param commentaire    Le commentaire du rapport de visite
 	 */
 	public RapportVisiteDto(Long id, Date dateVisite, String nomResid, String prenomResid,
-			LocalDate dateBirthResid, String nomVisiteur, TypePersonne typePersonne, String commentaire) {
+			Date dateBirthResid, String nomVisiteur, TypePersonne typePersonne, String commentaire) {
 		
 		this.id = id;
 		this.dateVisite = dateVisite;

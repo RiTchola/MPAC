@@ -1,6 +1,6 @@
 package org.rina.model;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,7 +27,7 @@ public class Menu {
 	private Long id;
 
 	@Column(nullable = false)
-	private LocalDate dateDebutSemaine;
+	private Date dateDebutSemaine;
 
 	@Column(nullable = false)
 	private String menuLundi;
@@ -71,7 +71,7 @@ public class Menu {
 	 * @param menuDimanche     Le menu du dimanche
 	 * @param etablissement    L'établissement lié à ce menu
 	 */
-	public Menu(Long id, LocalDate dateDebutSemaine, String menuLundi, String menuMardi,
+	public Menu(Long id, Date dateDebutSemaine, String menuLundi, String menuMardi,
 			String menuMercredi, String menuJeudi, String menuVendredi, String menuSamedi,
 			String menuDimanche, Etablissement etablissement) {
 

@@ -1,6 +1,6 @@
 package org.rina.dto.request;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,11 +29,11 @@ public class PersonneContactDto {
 	private String prenom;
 
 	@NotNull
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private LocalDate dateNaissance;
+	@DateTimeFormat
+	private Date dateNaissance;
 
 	@NotNull
-	@Email(message = "{email.nonValide}")
+	@Email
 	private String email;
 
 	@NotBlank
@@ -67,7 +67,7 @@ public class PersonneContactDto {
 	 * @param statut        Le statut de la personne de contact
 	 * @param choix         Le type de personne (choix) de la personne de contact
 	 */
-	public PersonneContactDto(Long id, String nom, String prenom, LocalDate dateNaissance, String email, 
+	public PersonneContactDto(Long id, String nom, String prenom, Date dateNaissance, String email, 
 			String tel1, String tel2, String adresse, StatutM statut, TypePersonne choix) {
 
 		this.id = id;

@@ -1,6 +1,7 @@
 package org.rina.dto.response;
 
 import java.util.List;
+import java.util.Date;
 
 import org.rina.model.Communique;
 
@@ -13,7 +14,7 @@ public class CommuniqueResponseDto {
 
     private Long id;
     
-    private String date;
+    private Date date;
     
     private String titre;
     
@@ -23,7 +24,7 @@ public class CommuniqueResponseDto {
 
     public CommuniqueResponseDto(Communique communique) {
         this.id = communique.getId();
-        this.date = communique.getDate().toString();
+        this.date = communique.getDate();
         this.titre = communique.getTitre();
         this.contenu = communique.getContenu();
         this.fileURL = communique.getFileURL();

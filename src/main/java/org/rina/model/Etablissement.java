@@ -33,7 +33,7 @@ public class Etablissement {
     @GeneratedValue(strategy = GenerationType.IDENTITY) 
     private Long id;
 
-    @Column(length = 50, nullable = false) // Spécifie les propriétés de la colonne nom
+    @Column(nullable = false) 
     private String nom;
 
     @Email

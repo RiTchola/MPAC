@@ -1,6 +1,6 @@
 package org.rina.model;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -44,37 +44,37 @@ public class Resident {
     @Column(nullable = false) 
     private String nom;
  
-    @Column(length = 50, nullable = false) 
+    @Column(nullable = false) 
     private String prenom;
 
     @Column(nullable = false) 
-    private LocalDate dateNaissance;
+    private Date dateNaissance;
 
     @Email
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String email;
 
     @NumberFormat
-    @Column(length = 20, nullable = false) 
+    @Column(length = 20, nullable = true) 
     @Size(min = 4, max = 20) 
     private String tel;
 
-    @Column(nullable = false) 
-    @Size(min = 10, max = 125) 
+    @Column(nullable = false, updatable = true)
+    @Size(min = 10, max = 200) 
     private String adresse;
 
     @Column(nullable = false) 
     private StatutM statut;
 
     @Column(nullable = false) 
-    private LocalDate dateEntree;
+    private Date dateEntree;
 
     @Size(min = 5, max = 400) 
     @Column(nullable = false) 
     private String motifEntree;
 
     @Column(nullable = true) 
-    private LocalDate dateSortie;
+    private Date dateSortie;
 
     @Size(min = 5, max = 400) 
     @Column(nullable = true) 
@@ -94,7 +94,7 @@ public class Resident {
     @Column(nullable = false, updatable = true) 
     private String chambre;
 
-    @Size(min = 5, max = 400) 
+    @Size(min = 5, max = 600) 
     @Column(nullable = false)
     private String etatSante;
 
@@ -119,6 +119,7 @@ public class Resident {
 
     @ManyToMany(cascade = CascadeType.PERSIST) 
     @JoinTable(name = "TLIAISON", joinColumns = @JoinColumn(name = "FKRESIDENT"), inverseJoinColumns = @JoinColumn(name = "FKPERSONNECONTACT"))
+    @Builder.Default
     protected Set<PersonneContact> personneContacts = new HashSet<PersonneContact>();
 
     public Set<PersonneContact> getPersonneContacts() {
@@ -149,8 +150,8 @@ public class Resident {
      * @param medecinTraitant Le médecin traitant du résident
      * @param etablissement L'établissement du résident
      */
-    public Resident(Long id, String nom, String prenom, LocalDate dateNaissance, String email, String tel,
-                    String adresse, StatutM statut, LocalDate dateEntree, String motifEntree, LocalDate dateSortie,
+    public Resident(Long id, String nom, String prenom, Date dateNaissance, String email, String tel,
+                    String adresse, StatutM statut, Date dateEntree, String motifEntree, Date dateSortie,
                     String motifSortie, String antMedical, String antChirugical, int nbEnfant, String chambre,
                     String etatSante, Boolean actif, User user, MedecinTraitant medecinTraitant, Etablissement etablissement) {
         

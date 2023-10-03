@@ -1,12 +1,18 @@
 package org.rina.model;
 
-import jakarta.persistence.*;
+import java.util.Date;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Date;
 
 @Data 
 @Builder // Génère un constructeur de type Builder
@@ -19,11 +25,11 @@ public class Activite {
     @GeneratedValue(strategy = GenerationType.IDENTITY) 
     private Long id;
     
-    @Column(nullable = false) 
+    @Column(length = 100, nullable = false) 
     private String nom;
 
     @Column(nullable = false) 
-    private Date dateA;
+    private Date date;
 
     /**
      * jointure à d'autres classes
@@ -39,11 +45,11 @@ public class Activite {
      * @param date La date de l'activité 
      * @param etablissement L'établissement lié à cette activité 
      */
-    public Activite(Long id, String nom, Date dateA, Etablissement etablissement) {
+    public Activite(Long id, String nom, Date date, Etablissement etablissement) {
 
         this.id = id;
         this.nom = nom;
-        this.dateA = dateA;
+        this.date = date;
         this.etablissement = etablissement;
     }
 }

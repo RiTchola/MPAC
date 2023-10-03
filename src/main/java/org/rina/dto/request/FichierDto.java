@@ -1,11 +1,11 @@
 package org.rina.dto.request;
 
 import java.io.IOException;
-import java.time.LocalDate;
+import java.util.Date;
 
+import org.rina.enums.TypeFichier;
 import org.rina.model.Fichier;
 import org.rina.model.PersonneContact;
-import org.rina.enums.TypeFichier;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,8 +24,8 @@ public class FichierDto {
     private TypeFichier typeF;
 	
 	@NotNull
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate date;
+	@DateTimeFormat
+    private Date date;
 	
 	@NotNull
 	private String fileUrl;
@@ -43,7 +43,7 @@ public class FichierDto {
 	 * @param fileUrl  L'URL du fichier
 	 * @param fichierIn Le fichier téléchargé
 	 */
-	public FichierDto(Long id, TypeFichier typeF, LocalDate date, String fileUrl, MultipartFile fichierIn) {
+	public FichierDto(Long id, TypeFichier typeF, Date date, String fileUrl, MultipartFile fichierIn) {
 		this.id = id;
 		this.typeF = typeF;
 		this.date = date;

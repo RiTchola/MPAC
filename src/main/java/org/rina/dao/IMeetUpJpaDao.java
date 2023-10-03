@@ -11,15 +11,15 @@ import org.springframework.stereotype.Repository;
 public interface IMeetUpJpaDao extends JpaRepository<MeetUp, Long> {
 
     // Requête personnalisée pour afficher la liste des rencontres par date décroissante
-    @Query(value = "SELECT * FROM TMEETUP m ORDER BY m.DATE DESC", nativeQuery = true)
+    @Query(value = "SELECT * FROM tmeetup m ORDER BY m.DATE DESC", nativeQuery = true)
     List<MeetUp> findAllMeetOrderByDateDesc();
     
     // Requête personnalisée pour afficher la liste des rencontres d'un id spécifique par date décroissante
-    @Query(value = "SELECT * FROM TMEETUP m WHERE m.fkpersonnecontact=?1 ORDER BY m.DATE DESC", nativeQuery = true)
+    @Query(value = "SELECT * FROM tmeetup m WHERE m.fkpersonnecontact=?1 ORDER BY m.DATE DESC", nativeQuery = true)
     List<MeetUp> findAllMeetByIdOrderByDateDesc(Long idpc);
 
     // Requête personnalisée pour mettre à jour un meetUp
     @Modifying
-    @Query(value = "UPDATE TMEETUP m SET m =?2 WHERE m.id =?1", nativeQuery = true)
+    @Query(value = "UPDATE tmeetup m SET m =?2 WHERE m.id =?1", nativeQuery = true)
     void updateMeetUp(Long id, MeetUp meetUp);
 }

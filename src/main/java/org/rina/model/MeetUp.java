@@ -1,16 +1,23 @@
 package org.rina.model;
 
-import jakarta.persistence.*;
+import java.util.Date;
+
+import org.rina.enums.Etat;
+import org.rina.enums.TypeMeetUp;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.rina.enums.Etat;
-import org.rina.enums.TypeMeetUp;
-
-import java.time.LocalDate;
-import java.util.Date;
 
 @Data 
 @Builder 
@@ -26,20 +33,20 @@ public class MeetUp {
     @Column(nullable = false) 
     private TypeMeetUp typeM;
 
-    @Column(nullable = false) 
+    @Column(length = 400, nullable = false)  
     private String motifDemande;
 
     @Column(nullable = false) 
     private Date date;
 
-    @Column(nullable = true) 
+    @Column(length = 50, nullable = false) 
     private String nomResid;
 
-    @Column(nullable = true) 
+    @Column(length = 50, nullable = false)  
     private String prenomResid;
 
     @Column(nullable = false)
-    private LocalDate dateBirthresid;
+    private Date dateBirthresid;
 
     @Column(nullable = false)
     @Min(value = 1, message = "Le nombre de participants doit être au moins 1.")
@@ -49,7 +56,7 @@ public class MeetUp {
     @Column(nullable = false) 
     private Etat etat;
 
-    @Column(nullable = true)
+    @Column(length = 400, nullable = false) 
     private String motifRefus;
 
     /**
@@ -79,7 +86,7 @@ public class MeetUp {
      * @param etablissement L'établissement lié à ce meetup 
      */
     public MeetUp(Long id, TypeMeetUp typeM, String motifDemande, Date date, String nomResid, String prenomResid,
-    		LocalDate dateBirthresid, int nbParticipants, Etat etat, String motifRefus, PersonneContact personneContact,
+    		Date dateBirthresid, int nbParticipants, Etat etat, String motifRefus, PersonneContact personneContact,
             Etablissement etablissement) {
 
         this.id = id;

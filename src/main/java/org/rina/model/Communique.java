@@ -1,7 +1,6 @@
 package org.rina.model;
 
-import java.time.LocalDate;
-
+import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -29,7 +28,7 @@ public class Communique {
     private Long id;
     
     @Column(nullable = false)
-    private LocalDate date;
+    private Date date;
 
     @Column(nullable = false)
     private String titre;
@@ -57,7 +56,7 @@ public class Communique {
      * @param fileURL La liste des chemins de fichiers associés au communique 
      * @param etablissement L'établissement lié à ce communique 
      */
-    public Communique(Long id, LocalDate date, String titre, String contenu, List<String> fileURL,
+    public Communique(Long id, Date date, String titre, String contenu, List<String> fileURL,
         Etablissement etablissement) {
 
         this.id = id;

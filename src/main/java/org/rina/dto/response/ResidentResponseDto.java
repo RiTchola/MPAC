@@ -1,6 +1,6 @@
 package org.rina.dto.response;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import org.rina.enums.StatutM;
 import org.rina.model.Resident;
@@ -20,7 +20,7 @@ public class ResidentResponseDto {
     private String tel;
     private String adresse;
     private StatutM statut;
-    private LocalDate dateEntree;
+    private Date dateEntree;
     private String motifEntree;
     private String dateSortie;
     private String motifSortie;

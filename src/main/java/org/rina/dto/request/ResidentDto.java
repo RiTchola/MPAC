@@ -1,6 +1,6 @@
 package org.rina.dto.request;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import org.rina.enums.StatutM;
 import org.rina.model.Etablissement;
@@ -15,7 +15,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
@@ -31,15 +30,13 @@ public class ResidentDto {
     private String prenom;
     
     @NotNull
-	@DateTimeFormat( pattern = "yyyy-MM-dd")
-    private LocalDate dateNaissance;
+	@DateTimeFormat
+    private Date dateNaissance;
    
-    @Email(message = "{email.nonValide}")
+    @Email
     private String email;
     
     @NumberFormat
-	@NotNull
-	@Size(min = 4, max = 30, message = "{tel.nonValide}")
     private String tel;
    
     @NotBlank
@@ -49,14 +46,14 @@ public class ResidentDto {
     private StatutM statut;
    
     @NotNull
-	@DateTimeFormat( pattern = "yyyy-MM-dd")
-    private LocalDate dateEntree;
+	@DateTimeFormat
+    private Date dateEntree;
     
     @NotBlank
     private String motifEntree;
     
-	@DateTimeFormat( pattern = "yyyy-MM-dd")
-    private LocalDate dateSortie;
+	@DateTimeFormat
+    private Date dateSortie;
     
     private String motifSortie;
 
@@ -104,9 +101,9 @@ public class ResidentDto {
      * @param etatSante     L'état de santé du résident
      * @param actif         L'état d'activité du résident
      */
-    public ResidentDto(Long id, String nom, String prenom, LocalDate dateNaissance, String email,
-            String tel, String adresse, StatutM statut, LocalDate dateEntree, String motifEntree,
-            LocalDate dateSortie, String motifSortie, String antMedical,
+    public ResidentDto(Long id, String nom, String prenom, Date dateNaissance, String email,
+            String tel, String adresse, StatutM statut, Date dateEntree, String motifEntree,
+            Date dateSortie, String motifSortie, String antMedical,
             String antChirugical, Integer nbEnfant, String chambre,  String etatSante, Boolean actif) {
     	
         this.id = id;

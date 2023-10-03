@@ -1,15 +1,13 @@
 package org.rina.dto.request;
 
+import org.rina.model.MedecinTraitant;
+import org.springframework.format.annotation.NumberFormat;
+
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-
-import org.rina.model.MedecinTraitant;
-import org.springframework.format.annotation.NumberFormat;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -24,28 +22,23 @@ public class MedecinTraitantDto {
 	private String numInami;
 
 	@NotNull
-	@Size(min = 1, max = 40, message = "{elem.nom}")
 	private String nom;
 
 	@NotNull
-	@Size(min = 1, max = 40, message = "{elem.prenom}")
 	private String prenom;
 
 	@NotNull
-	@Email(message = "{email.nonValide}")
+	@Email
 	private String email;
 
 	@NumberFormat
 	@NotNull
-	@Size(min = 4, max = 30, message = "{tel.nonValide}")
 	private String tel1;
 
 	@NumberFormat
-	@Size(min = 4, max = 30, message = "{tel.nonValide}")
 	private String tel2;
 
 	@NotNull
-	@Size(min = 10, max = 125, message = "{}")
 	private String adresse;
 
 	/**

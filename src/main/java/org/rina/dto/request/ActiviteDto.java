@@ -59,6 +59,6 @@ public class ActiviteDto {
 		return new ActiviteDto(
 				act.getId(),
 				act.getNom(), 
-				act.getDateA() );	
+				act.getDate() );	
 	}	
 }

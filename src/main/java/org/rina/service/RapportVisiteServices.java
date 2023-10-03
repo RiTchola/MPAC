@@ -57,4 +57,5 @@ public class RapportVisiteServices {
 	public RapportVisite insert(RapportVisite rapvi) {
 		return rapportVisitedao.save(rapvi);
 	}
+	
 }

@@ -26,7 +26,7 @@ public class RapportQuotidienDto {
 	private String numeroR; // Utilise une chaîne pour stocker le numéroR au format souhaité
 	
 	@NotNull
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat
 	private Date date;
 	
 	@NotBlank
@@ -71,7 +71,6 @@ public class RapportQuotidienDto {
 	@NotNull
 	private Humeur humeur;
 
-	@NotBlank
 	private String commentaire;
 	
 	

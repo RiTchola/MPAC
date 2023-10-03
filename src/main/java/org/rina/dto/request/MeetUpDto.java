@@ -1,6 +1,5 @@
 package org.rina.dto.request;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 import jakarta.validation.constraints.NotBlank;
@@ -37,7 +36,7 @@ public class MeetUpDto {
 	private String prenomResid;
 
 	@NotNull
-	private LocalDate dateBirthresid;
+	private Date dateBirthresid;
 
 	@NotNull
 	private int nbParticipants;
@@ -45,7 +44,6 @@ public class MeetUpDto {
 	@NotNull
 	private Etat etat;
 
-	@NotBlank
 	private String motifRefus;
 
 	/**
@@ -63,7 +61,7 @@ public class MeetUpDto {
 	 * @param motifRefus     Le motif de refus
 	 */
 	public MeetUpDto(Long id, TypeMeetUp typeM, String motifDemande, Date date, String nomResid, String prenomResid,
-			LocalDate dateBirthresid, int nbParticipants, Etat etat, String motifRefus) {
+			Date dateBirthresid, int nbParticipants, Etat etat, String motifRefus) {
 
 		this.id = id;
 		this.typeM = typeM;
