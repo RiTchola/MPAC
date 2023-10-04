@@ -22,7 +22,7 @@ public class ActiviteDto {
 	private Long id;
 	
 	@NotBlank 
-	private String nom;
+	private String title;
 	
 	@NotNull 
 	@DateTimeFormat(pattern = "yyyy-MM-ddThh:mm:ss.mmmZ") // Format de la date
@@ -32,12 +32,12 @@ public class ActiviteDto {
 	/**
 	 * Constructeur avec des arguments pour initialiser les champs
 	 * @param id L'identifiant de l'activité
-	 * @param nom Le nom de l'activité 
+	 * @param title Le title de l'activité 
 	 * @param date La date de l'activité
 	 */
-	public ActiviteDto(Long id, String nom, Date date) {
+	public ActiviteDto(Long id, String title, Date date) {
 		this.id = id;
-		this.nom = nom;
+		this.title = title;
 		this.date = date;
 	}
 	
@@ -47,7 +47,7 @@ public class ActiviteDto {
 	 * @return Une instance de la classe Activite
 	 */
 	public Activite toActivite(Etablissement etab) {
-		return new Activite(id, nom, date, etab);	
+		return new Activite(id, title, date, etab);	
 	}
 	
 	/**
@@ -58,7 +58,7 @@ public class ActiviteDto {
 	public static ActiviteDto toDto(Activite act) {
 		return new ActiviteDto(
 				act.getId(),
-				act.getNom(), 
+				act.getTitle(), 
 				act.getDate() );	
 	}	
 }

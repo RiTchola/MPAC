@@ -21,14 +21,14 @@ public class ActiviteServices {
 	}
 
 	/**
-	 * Recherche des activités par nom et date.
+	 * Recherche des activités par Title et date.
 	 * 
-	 * @param nom   Le nom de l'activité à rechercher.
+	 * @param Title   Le Title de l'activité à rechercher.
 	 * @param date  La date de l'activité à rechercher.
 	 * @return      Une liste d'activités correspondant aux critères de recherche.
 	 */
-	public List<Activite> findActivityByName(String nom, Date date ) {
-		return activitedao.findActivityByName(nom, date);
+	public List<Activite> findActivityByName(String Title, Date date ) {
+		return activitedao.findActivityByName(Title, date);
 	}
 
 	/**
@@ -62,9 +62,9 @@ public class ActiviteServices {
 	}
 
 	/**
-	 * Compte le nombre total d'activités.
+	 * Compte le Titlebre total d'activités.
 	 * 
-	 * @return  Le nombre total d'activités.
+	 * @return  Le Titlebre total d'activités.
 	 */
 	public long count() {
 		return activitedao.count();

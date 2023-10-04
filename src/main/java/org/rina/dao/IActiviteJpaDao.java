@@ -11,9 +11,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IActiviteJpaDao extends JpaRepository<Activite, Long> {
 
-    // Requête personnalisée pour rechercher des activités par nom et date
-    @Query(value = "select * from TACTIVITE a where a.nom=?1 and a.date=?2", nativeQuery = true)
-    List<Activite> findActivityByName(String nom, Date date);
+    // Requête personnalisée pour rechercher des activités par Title et date
+    @Query(value = "select * from TACTIVITE a where a.Title=?1 and a.date=?2", nativeQuery = true)
+    List<Activite> findActivityByName(String Title, Date date);
 
     // Requête personnalisée pour rechercher des activités par date
     @Query(value = "select * from TACTIVITE a where a.date=?1", nativeQuery = true)

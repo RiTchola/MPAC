@@ -12,13 +12,13 @@ public class ActiviteResponseDto {
     
     private Long id;
     
-    private String nom;
+    private String title;
   
     private Date date;
 
     public ActiviteResponseDto(Activite activite) {
         this.id = activite.getId();
-        this.nom = activite.getNom();
+        this.title = activite.getTitle();
         this.date = activite.getDate();
     }
 }
