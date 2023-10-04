@@ -8,6 +8,7 @@ import org.rina.config.JwtService;
 import org.rina.dto.request.ChangePasswordDto;
 import org.rina.dto.request.CredentialValidation;
 import org.rina.dto.request.UserDto;
+import org.rina.dto.response.MessageResponseDto;
 import org.rina.enums.Roles;
 import org.rina.model.PersonneContact;
 import org.rina.model.User;
@@ -81,7 +82,7 @@ public class UserController {
         } 
         else {
             // Renvoyer une réponse 404 si l'utilisateur n'existe pas
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.ok().build();
         }
     }
 
@@ -89,7 +90,7 @@ public class UserController {
      * Créer un nouveau user.
      */
 	@PostMapping
-    public ResponseEntity<String> createUser(@Validated(CredentialValidation.class) @RequestBody UserDto userDto) throws CredentialException {
+    public ResponseEntity<MessageResponseDto> createUser(@Validated(CredentialValidation.class) @RequestBody UserDto userDto) throws CredentialException {
         // Vérifier si l'utilisateur existe déjà en fonction du nom d'utilisateur
         Optional<User> exitingUser = userSrv.findByUsername(userDto.getUsername());
 
@@ -104,22 +105,22 @@ public class UserController {
 			        User newUser = userSrv.insert(userDto.toUser(encodeur));
 			        persC.setUser(newUser);
 			        // Renvoyer une réponse 200 si la création de l'utilisateur est réussie
-			        ResponseEntity.status(HttpStatus.OK).body(newUser.getUsername());
+			        ResponseEntity.ok(new MessageResponseDto(newUser.getId().toString()));
 			    } 
 			    else {
 			        // Renvoyer une réponse 400 si la personne de contact n'existe pas encore
-			        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("La personne n'existe pas encore.");
+			        return ResponseEntity.ok(new MessageResponseDto("La personne n'existe pas encore."));
 			    }
 			}
 			// Créer un nouvel utilisateur dans le cas général
 			
         	User newUser = userSrv.insert(userDto.toUser(encodeur));
 			// Renvoyer une réponse 200 si la création de l'utilisateur est réussie
-			return ResponseEntity.status(HttpStatus.OK).body(newUser.getUsername()); 
+			return ResponseEntity.ok(new MessageResponseDto(newUser.getId().toString())); 
         } 
         else {
-            // Renvoyer une réponse 400 si l'utilisateur existe déjà
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("L'utilisateur existe déjà.");
+            // Renvoyer une réponse  si l'utilisateur existe déjà
+            return ResponseEntity.ok(new MessageResponseDto("L'utilisateur existe déjà."));
         }
     }
 
@@ -127,7 +128,7 @@ public class UserController {
      * Demander un nouveau mot de passe.
      */
     @GetMapping("/{username}/newPassword")
-    public ResponseEntity<String> newPassword(@PathVariable String username) {
+    public ResponseEntity<MessageResponseDto> newPassword(@PathVariable String username) {
         // Vérifie d'abord si l'utilisateur existe en fonction du username
         Optional<User> existingUser = userSrv.findByUsername(username);
 
@@ -135,11 +136,11 @@ public class UserController {
             // Récupérer l'utilisateur existant
             User user = existingUser.get();
             // Renvoyer la réponse avec l'utilisateur
-            return ResponseEntity.status(HttpStatus.OK).body("Un nouveau mot de passe a été envoyée à l'adresse "+ user.getUsername());
+            return ResponseEntity.ok(new MessageResponseDto("Un nouveau mot de passe a été envoyée à l'adresse "+ user.getUsername()));
         } 
         else {
             // Renvoyer une réponse 404 si l'utilisateur n'existe pas
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Le compte n'existe pas");
+            return ResponseEntity.ok(new MessageResponseDto("Le compte n'existe pas"));
         }
     }
     
@@ -147,7 +148,7 @@ public class UserController {
      * Mettre à jour un mot de passe.
      */
     @PutMapping("/{username}/update")
-    public ResponseEntity<String> changePWPut(@PathVariable String username,
+    public ResponseEntity<MessageResponseDto> changePWPut(@PathVariable String username,
             @Validated(CredentialValidation.class) @RequestBody ChangePasswordDto userCPwDto, Authentication auth, Model model) {
         // Vérifier si l'utilisateur existe en fonction du nom d'utilisateur
         Optional<User> existingUser = userSrv.findByUsername(username);
@@ -158,17 +159,43 @@ public class UserController {
             try {
                 userSrv.changePassword(user, userCPwDto.getOldPassword(), userCPwDto.getPassword());
                 // Renvoyer une réponse 202 si le mot de passe est changé avec succès
-                return ResponseEntity.status(HttpStatus.OK).body("Mot de passe changé avec succès");
+                return ResponseEntity.ok(new MessageResponseDto("Mot de passe changé avec succès"));
             } 
             catch (CredentialException e) {
             	// Récupérer le message d'erreur de l'exception
                 String errorMessage = e.getMessage();
                 // Renvoyer une réponse 400 avec le message d'erreur
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponseDto(errorMessage));
             }
         }
      // Renvoyer une réponse 404 si l'utilisateur n'existe pas
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Le compte n'existe pas");
+        return ResponseEntity.ok(new MessageResponseDto("Le compte n'existe pas"));
+    }
+    
+    /**
+     * Mettre à jour un user.
+     */
+    @PutMapping("/{idUser}")
+    public ResponseEntity<MessageResponseDto> changeUser(@PathVariable("idUser") Long idUser, @RequestBody String newUsername) {
+        // Vérifier si l'utilisateur existe en fonction de l'identifinat
+        Optional<User> existingUser = userSrv.findById(idUser);
+        Optional<User> newUser = userSrv.findByUsername(newUsername);
+
+        if (existingUser.isPresent()) {
+            User user1 = existingUser.get();
+            if (newUser.isPresent()) {
+	            User user2= newUser.get();
+	            if (!(user1.getId().equals(user2.getId()))) {
+	            	// Renvoyer une réponse le nom d'utilisateur existe 
+	                return ResponseEntity.ok(new MessageResponseDto("Ce nom d'utilisateur existe déjà SVP"));
+	            }
+            }
+            user1.setUsername(newUsername);
+            userSrv.updateUser(newUsername , user1);
+            return ResponseEntity.ok(new MessageResponseDto(idUser.toString()));
+        }
+        // Renvoyer une réponse si l'utilisateur n'existe pas
+        return ResponseEntity.ok(new MessageResponseDto("Le compte n'existe pas"));
     }
 
 }

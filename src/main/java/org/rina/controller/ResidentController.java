@@ -127,8 +127,8 @@ public class ResidentController {
     /**
      * Créer un nouveau résident.
      */
-    @PostMapping("/{idMedecin}/{idUser}")
-    public ResponseEntity<ResidentResponseDto> createResident(@PathVariable("idMedecin") Long idMedecin, @PathVariable("idUser") Long idUser,
+    @PostMapping("/{idMedecin}/{usernameResid}")
+    public ResponseEntity<ResidentResponseDto> createResident(@PathVariable("idMedecin") Long idMedecin, @PathVariable("usernameResid") String usernameResid,
             @Valid @RequestBody ResidentDto residDto) {
         Long idEtab = etablissementService.getEtablissementId();
         // Récupérer l'établissement associé au résident
@@ -138,8 +138,8 @@ public class ResidentController {
         MedecinTraitant medecinT = medecinTService.findById(idMedecin)
                 .orElseThrow(() -> new NotExistException(idMedecin.toString()));
         // Récupérer l'utilisateur associé au résident
-        User user = userService.findById(idUser)
-                .orElseThrow(() -> new NotExistException(idUser.toString()));
+        User user = userService.findByUsername(usernameResid)
+                .orElseThrow(() -> new NotExistException(usernameResid));
 
         // Remplacer les séparateurs autres que la virgule par des virgules dans les menus
         residDto.setAntChirugical(checkAndReplaceSeparators(residDto.getAntChirugical()));
@@ -168,12 +168,13 @@ public class ResidentController {
         if (existingResident.isPresent()) {
             Resident resident = existingResident.get();
             // Comparez les nouvelles valeurs avec les anciennes.
-            if (!resident.getNom().equals(residDto.getNom()) &&
-                !resident.getPrenom().equals(residDto.getPrenom()) &&
-                !resident.getDateNaissance().equals(residDto.getDateNaissance())) {
-                // Les nouvelles valeurs entraîneraient une violation de l'unicité.
-            	return ResponseEntity.ok().build();
-            }
+			/*
+			 * if (!resident.getNom().equals(residDto.getNom()) &&
+			 * !resident.getPrenom().equals(residDto.getPrenom()) &&
+			 * !resident.getDateNaissance().equals(residDto.getDateNaissance())) { // Les
+			 * nouvelles valeurs entraîneraient une violation de l'unicité. return
+			 * ResponseEntity.ok().build(); }
+			 */
        
             // Récupérer l'établissement associé au résident
             Long idEtab = etablissementService.getEtablissementId();
@@ -238,7 +239,7 @@ public class ResidentController {
     
     /**
      * Remplace les séparateurs autres que la virgule par des virgules dans la chaîne de menu.
-     */
+     */ 
     private String checkAndReplaceSeparators(String input) {
         // Vérifier si la chaîne est nulle ou vide
         if (input == null || input.isEmpty()) {
