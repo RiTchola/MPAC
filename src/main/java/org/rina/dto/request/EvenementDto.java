@@ -18,22 +18,26 @@ public class EvenementDto {
 	private Long id;
 	 
 	@NotBlank
-	private String nom;
+	private String title;
 	
 	@NotNull
 	@DateTimeFormat
-    private Date dateEvent;
+    private Date date;
+	
+	@NotNull
+	private boolean allDay;
 
 	/**
 	 * Constructeur avec des arguments pour initialiser les champs
 	 * @param id L'identifiant de l'événement
-	 * @param nom Le nom de l'événement
-	 * @param dateEvent La date de l'événement
+	 * @param title Le title de l'événement
+	 * @param date La date de l'événement
 	 */
-	public EvenementDto(Long id, String nom, Date dateEvent) {
+	public EvenementDto(Long id, String title, Date date, boolean allDay) {
 		this.id = id;
-		this.nom = nom;
-		this.dateEvent = dateEvent;
+		this.title = title;
+		this.date = date;
+		this.allDay = allDay;
 	}
 	
 	/**
@@ -42,7 +46,7 @@ public class EvenementDto {
 	 * @return Une instance de la classe Evenement
 	 */
 	public Evenement toEvenement(Etablissement etab) {
-		return new Evenement(id, nom, dateEvent, etab);
+		return new Evenement(id, title, date, allDay, etab);
 	}
     
 }

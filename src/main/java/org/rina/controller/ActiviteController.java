@@ -46,7 +46,6 @@ public class ActiviteController {
 		List<ActiviteResponseDto> actDtoList = activities.stream()
 				.map(ActiviteResponseDto::new)
 				.collect(Collectors.toList());
-
 		// Renvoyer la liste des activités en réponse
 		return ResponseEntity.ok(actDtoList);
 	}

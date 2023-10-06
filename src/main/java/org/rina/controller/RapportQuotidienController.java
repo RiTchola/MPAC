@@ -5,6 +5,7 @@ import org.rina.model.Resident;
 import org.rina.service.RapportQuotidienServices;
 import org.rina.service.ResidentServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,10 +38,10 @@ public class RapportQuotidienController {
 	 /**
      * Récupérer tous les rapports quotidiens.
      */
-    @GetMapping
-    public ResponseEntity<List<RapportQuotidienResponseDto>> getAllRapportsQuotidiens() {
+    @GetMapping("/liste/{id}")
+    public ResponseEntity<List<RapportQuotidienResponseDto>> getAllRapportsQuotidiens(@PathVariable Long id) {
         // Récupérer la liste de tous les rapports quotidiens triés par date décroissante
-        List<RapportQuotidien> rapquotidiens = rapportQuotService.findAllRapportQuotidienOrderByDateDesc();
+        List<RapportQuotidien> rapquotidiens = rapportQuotService.findAllRapportQuotidienOrderByDateDesc(id);
 
         // Mapper les rapports quotidiens en DTOs
         List<RapportQuotidienResponseDto> rapQuotResponseDtos = rapquotidiens.stream()
@@ -88,7 +89,7 @@ public class RapportQuotidienController {
         } 
         else {
             // Renvoyer une réponse 200 si le résident n'existe pas
-            return ResponseEntity.ok().build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
 

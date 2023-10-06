@@ -11,13 +11,13 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IEvenementJpaDao extends JpaRepository<Evenement, Long> {
 
-    // Requête personnalisée pour obtenir les informations d'un évènement par son nom et date
-    @Query(value = "select * from tevenement e  where e.nom=?1 and e.date_Event=?2", nativeQuery = true)
-    List<Evenement> findEventByName(String nom, Date date);
+    // Requête personnalisée pour obtenir les informations d'un évènement par son title et date
+    @Query(value = "select * from tevenement e  where e.title=?1 and e.date_Event=?2", nativeQuery = true)
+    List<Evenement> findEventByName(String title, Date date);
 
     // Requête personnalisée pour obtenir la liste des évènements d'une date donnée
     @Query(value = "select * from tevenement e where e.date_Event=?1", nativeQuery = true)
-    List<Evenement> findEventByDate(Date dateEvent);
+    List<Evenement> findEventByDate(Date date);
 
     // Requête personnalisée pour mettre à jour un évènement
     @Modifying

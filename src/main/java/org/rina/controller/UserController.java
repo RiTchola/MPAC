@@ -123,6 +123,34 @@ public class UserController {
             return ResponseEntity.ok(new MessageResponseDto("L'utilisateur existe déjà."));
         }
     }
+	
+	/**
+     * Créer un nouveau user.
+     */
+	@PostMapping("/{idPersc}")
+    public ResponseEntity<MessageResponseDto> createUser(@PathVariable Long idPersc, @Validated(CredentialValidation.class) @RequestBody UserDto userDto) throws CredentialException {
+        // Vérifier si l'utilisateur existe déjà en fonction du nom d'utilisateur
+        Optional<PersonneContact> existingPersc = personService.findByUsername(userDto.getUsername());
+        if (existingPersc.isPresent()) {        
+	    	// Associer la personne de contact au nouvel utilisateur
+	        PersonneContact persC = existingPersc.get();
+	        boolean existingUser = userSrv.existsByUsername(persC.getUser().getUsername());
+	        
+	        if (!existingUser) {
+				// Créer un nouvel utilisateur dans le cas général
+				User newUser = userSrv.insert(userDto.toUser(encodeur));
+				persC.setUser(newUser);
+				// Renvoyer une réponse 200 si la création de l'utilisateur est réussie
+				return ResponseEntity.ok(new MessageResponseDto(newUser.getId().toString())); 
+		    } 
+		    else {
+		            // Renvoyer une réponse  si l'utilisateur existe déjà
+		    	return ResponseEntity.ok(new MessageResponseDto("L'utilisateur existe déjà."));
+		    }
+		} 
+	    // Renvoyer une réponse 400 si la personne de contact n'existe pas encore
+	    return ResponseEntity.ok(new MessageResponseDto("La personne n'existe pas encore."));		
+    }
 
     /**
      * Demander un nouveau mot de passe.
@@ -176,10 +204,10 @@ public class UserController {
      * Mettre à jour un user.
      */
     @PutMapping("/{idUser}")
-    public ResponseEntity<MessageResponseDto> changeUser(@PathVariable("idUser") Long idUser, @RequestBody String newUsername) {
+    public ResponseEntity<MessageResponseDto> changeUser(@PathVariable("idUser") Long idUser, @RequestBody UserDto userDto) {
         // Vérifier si l'utilisateur existe en fonction de l'identifinat
         Optional<User> existingUser = userSrv.findById(idUser);
-        Optional<User> newUser = userSrv.findByUsername(newUsername);
+        Optional<User> newUser = userSrv.findByUsername(userDto.getUsername());
 
         if (existingUser.isPresent()) {
             User user1 = existingUser.get();
@@ -190,8 +218,8 @@ public class UserController {
 	                return ResponseEntity.ok(new MessageResponseDto("Ce nom d'utilisateur existe déjà SVP"));
 	            }
             }
-            user1.setUsername(newUsername);
-            userSrv.updateUser(newUsername , user1);
+            user1.setUsername(userDto.getUsername());
+            userSrv.updateUser(userDto.getUsername() , user1);
             return ResponseEntity.ok(new MessageResponseDto(idUser.toString()));
         }
         // Renvoyer une réponse si l'utilisateur n'existe pas

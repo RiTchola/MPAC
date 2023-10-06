@@ -98,7 +98,7 @@ public class ExterneController {
 	@GetMapping("/qrcode")
 	public ResponseEntity<byte[]> generateQRCode() throws IOException {
         // Lien local à inclure dans le QR code
-        int uniqueCode = codeService.getAllCountId() + generateCode();
+        long uniqueCode = codeService.getAllCountId() + generateCode();
         String localLink = "http://localhost:4200/externe/rapport-visite?code=" + uniqueCode; 
 
         // Paramètres de génération du QR code
@@ -129,7 +129,7 @@ public class ExterneController {
 	 /**
      * Méthode privée au controller.
      */
-	public static int generateCode() {
+	public static long generateCode() {
 	    // Obtenir l'horodatage actuel
 	    Date now = new Date();
 	    SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
@@ -142,7 +142,7 @@ public class ExterneController {
 	    String concatenated = timestamp + count;
 	    
 	    // Convertir la chaîne concaténée en tant qu'entier (int)
-	    int uniqueCode = Integer.parseInt(concatenated);
+	    long uniqueCode = Long.parseLong(concatenated);
 
 	    return uniqueCode;
 	}

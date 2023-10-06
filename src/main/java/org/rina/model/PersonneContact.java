@@ -50,7 +50,7 @@ public class PersonneContact {
 
     @NumberFormat
     @Column(length = 50, nullable = true) 
-    @Size(min = 4, max = 30) 
+    @Size(max = 20)
     private String tel2;
 
     @Column(nullable = false, updatable = true)

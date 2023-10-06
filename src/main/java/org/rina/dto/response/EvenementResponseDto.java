@@ -12,14 +12,17 @@ public class EvenementResponseDto {
 	
     private Long id;
     
-    private String nom;
+    private String title;
     
-    private Date dateEvent;
+    private Date date;
+    
+    private boolean allDay;
 
     public EvenementResponseDto(Evenement evenement) {
         this.id = evenement.getId();
-        this.nom = evenement.getNom();
-        this.dateEvent = evenement.getDateEvent();
+        this.title = evenement.getTitle();
+        this.date = evenement.getDate();
+        this.allDay = true;
     }
 
 }

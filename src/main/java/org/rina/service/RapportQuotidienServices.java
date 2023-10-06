@@ -35,8 +35,8 @@ public class RapportQuotidienServices {
 	 * 
 	 * @return  Une liste de rapports quotidiens triés par date décroissante.
 	 */
-	public List<RapportQuotidien> findAllRapportQuotidienOrderByDateDesc() {
-		return rapportQuotidiendao.findAllRapportQuotidienOrderByDateDesc();
+	public List<RapportQuotidien> findAllRapportQuotidienOrderByDateDesc(Long id) {
+		return rapportQuotidiendao.findAllRapportQuotidienOrderByDateDesc(id);
 	}
 
 	/**

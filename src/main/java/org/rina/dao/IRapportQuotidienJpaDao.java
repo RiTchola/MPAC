@@ -18,8 +18,8 @@ public interface IRapportQuotidienJpaDao extends JpaRepository<RapportQuotidien,
     List<RapportQuotidien> findByResident(Resident resident);
 
     // Requête personnalisée pour obtenir la liste des rapports classés par date décroissante
-    @Query(value = "SELECT * FROM trapportquotidien q ORDER BY q.DATE DESC", nativeQuery = true)
-    List<RapportQuotidien> findAllRapportQuotidienOrderByDateDesc();
+    @Query(value = "SELECT * FROM trapportquotidien q WHERE q.FKRESIDENT =?1 ORDER BY q.DATE DESC", nativeQuery = true)
+    List<RapportQuotidien> findAllRapportQuotidienOrderByDateDesc(Long id);
 
     // Requête personnalisée pour obtenir les informations d'un rapport quotidien grâce à une date
     @Query(value = "SELECT * FROM trapportquotidien q WHERE q.DATE = ?1", nativeQuery = true)

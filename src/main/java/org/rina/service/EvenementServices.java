@@ -23,22 +23,22 @@ public class EvenementServices {
 	/**
 	 * Recherche des événements par date.
 	 * 
-	 * @param dateEvent  La date des événements à rechercher.
+	 * @param date  La date des événements à rechercher.
 	 * @return           Une liste d'événements correspondant à la date donnée.
 	 */
-	public List<Evenement> findEventByDate(Date dateEvent) {
-		return evenementdao.findEventByDate(dateEvent);
+	public List<Evenement> findEventByDate(Date date) {
+		return evenementdao.findEventByDate(date);
 	}
 
 	/**
-	 * Recherche des événements par nom et date.
+	 * Recherche des événements par title et date.
 	 * 
-	 * @param nom   Le nom de l'événement à rechercher.
+	 * @param title   Le title de l'événement à rechercher.
 	 * @param date  La date de l'événement à rechercher.
 	 * @return      Une liste d'événements correspondant aux critères de recherche.
 	 */
-	public List<Evenement> findEventByName(String nom, Date date) {
-		return evenementdao.findEventByName(nom, date);
+	public List<Evenement> findEventByName(String title, Date date) {
+		return evenementdao.findEventByName(title, date);
 	}
 
 	/**

@@ -46,7 +46,6 @@ public class EvenementController {
 		List<EvenementResponseDto> eventResponseDtoList = evenements.stream()
 				.map(EvenementResponseDto::new)
 				.collect(Collectors.toList());
-
 		return ResponseEntity.ok(eventResponseDtoList);
 	}
 

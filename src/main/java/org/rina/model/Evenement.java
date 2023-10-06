@@ -26,10 +26,13 @@ public class Evenement {
     private Long id;
     
     @Column(length = 50, nullable = false) 
-    private String nom;
+    private String title;
 
     @Column(nullable = false) 
-    private Date dateEvent;
+    private Date date;
+    
+    @Column(nullable = false)
+    private boolean allDay;
 
     /**
      * jointure à d'autres classes
@@ -41,15 +44,16 @@ public class Evenement {
     /**
      * Constructeur avec des arguments 
      * @param id L'identifiant de l'événement
-     * @param nom Le nom de l'événement 
-     * @param dateEvent La date de l'événement 
+     * @param title Le title de l'événement 
+     * @param date La date de l'événement 
      * @param etablissement L'établissement lié à cet événement 
      */
-    public Evenement(Long id, String nom, Date dateEvent, Etablissement etablissement) {
+    public Evenement(Long id, String title, Date date, boolean allDay ,Etablissement etablissement) {
 
         this.id = id;
-        this.nom = nom;
-        this.dateEvent = dateEvent;
+        this.title = title;
+        this.date = date;
+        this.allDay = allDay;
         this.etablissement = etablissement;
     }
 }
