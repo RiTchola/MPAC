@@ -1,38 +1,37 @@
 package org.rina.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import lombok.RequiredArgsConstructor;
 import org.rina.controller.exceptions.NotExistException;
 import org.rina.dto.request.CommuniqueDto;
 import org.rina.dto.response.CommuniqueResponseDto;
 import org.rina.dto.response.MessageResponseDto;
+import org.rina.files.FilesStorageService;
 import org.rina.model.Communique;
 import org.rina.model.Etablissement;
 import org.rina.service.CommuniqueServices;
 import org.rina.service.EtablissementServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/communique")
+@RequiredArgsConstructor
 public class CommuniqueController {
 
-	@Autowired
-	private CommuniqueServices communiqueService;
-	@Autowired
-	private EtablissementServices etablissementService;
+	private final CommuniqueServices communiqueService;
+	private final EtablissementServices etablissementService;
+	private final FilesStorageService filesStorageService;
 
 	/**
      * Récupérer tous les communiqués.
@@ -75,20 +74,43 @@ public class CommuniqueController {
 	 * Créer un nouveau communiqué.
 	 */
 	@PostMapping
-	public ResponseEntity<CommuniqueResponseDto> createCommunique(@Valid @RequestBody CommuniqueDto comDto) {
+	public ResponseEntity<Communique> createCommunique(
+			@RequestParam("contenu")String contenu,
+			@RequestParam("titre")String titre,
+		    @RequestParam("date")String date,
+			@RequestParam("file") MultipartFile...files) {
 		// Obtient l'établissement associé au communiqué
 		Long idEtab = etablissementService.getEtablissementId();
 		Etablissement etab = etablissementService.findById(idEtab)
 				.orElseThrow(() -> new NotExistException(idEtab.toString()));
 
+
+		try {
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+			Communique communique = Communique.builder()
+					.date(formatter.parse(date))
+					.titre(titre)
+					.contenu(contenu)
+					.etablissement(etab).build();
+			List<String> fileURL = new ArrayList<>();
+			for (MultipartFile file : files) {
+				String url = filesStorageService.saveFile(file);
+				fileURL.add(url);
+			}
+			communique.setFileURL(fileURL);
+			return  ResponseEntity.ok(communiqueService.insert(communique));
+		}catch (Exception e){
+			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
+		}
+
 		// Crée et insère le communiqué
-		Communique newCom = communiqueService.insert(comDto.toCommunique(etab));
+		//Communique newCom = communiqueService.insert(comDto.toCommunique(etab));
 
 		// Crée une CommuniqueResponseDto à partir du communiqué créé
-		CommuniqueResponseDto comResponse = new CommuniqueResponseDto(newCom);
+		//CommuniqueResponseDto comResponse = new CommuniqueResponseDto(newCom);
 
 		// Renvoie la réponse avec le communiqué créé au format CommuniqueResponseDto
-		return ResponseEntity.ok(comResponse);
+		//return ResponseEntity.ok(comResponse);
 	}
 
 	/**
