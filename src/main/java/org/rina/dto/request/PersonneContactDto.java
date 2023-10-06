@@ -48,6 +48,8 @@ public class PersonneContactDto {
 
 	@NotNull
 	private TypePersonne choix;
+	
+	private Long idUser;
 
 	public PersonneContactDto() {
 		
@@ -68,7 +70,7 @@ public class PersonneContactDto {
 	 * @param choix         Le type de personne (choix) de la personne de contact
 	 */
 	public PersonneContactDto(Long id, String nom, String prenom, Date dateNaissance, String email, 
-			String tel1, String tel2, String adresse, StatutM statut, TypePersonne choix) {
+			String tel1, String tel2, String adresse, StatutM statut, TypePersonne choix, Long idUser) {
 
 		this.id = id;
 		this.nom = nom;
@@ -80,6 +82,7 @@ public class PersonneContactDto {
 		this.adresse = adresse;
 		this.statut = statut;
 		this.choix = choix;
+		this.idUser = idUser;
 	}
 
 	/**

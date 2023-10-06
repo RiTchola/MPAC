@@ -38,10 +38,10 @@ public class RapportQuotidienController {
 	 /**
      * Récupérer tous les rapports quotidiens.
      */
-    @GetMapping("/liste/{id}")
-    public ResponseEntity<List<RapportQuotidienResponseDto>> getAllRapportsQuotidiens(@PathVariable Long id) {
+    @GetMapping("/liste/{idResid}")
+    public ResponseEntity<List<RapportQuotidienResponseDto>> getAllRapportsQuotidiens(@PathVariable Long idResid) {
         // Récupérer la liste de tous les rapports quotidiens triés par date décroissante
-        List<RapportQuotidien> rapquotidiens = rapportQuotService.findAllRapportQuotidienOrderByDateDesc(id);
+        List<RapportQuotidien> rapquotidiens = rapportQuotService.findAllRapportQuotidienOrderByDateDesc(idResid);
 
         // Mapper les rapports quotidiens en DTOs
         List<RapportQuotidienResponseDto> rapQuotResponseDtos = rapquotidiens.stream()

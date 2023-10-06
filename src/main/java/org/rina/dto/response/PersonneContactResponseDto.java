@@ -30,6 +30,8 @@ public class PersonneContactResponseDto {
     private StatutM statut;
     
     private TypePersonne choix;
+    
+    private Long idUser;
 
     public PersonneContactResponseDto(PersonneContact personneContact) {
     	
@@ -43,5 +45,6 @@ public class PersonneContactResponseDto {
         this.adresse = personneContact.getAdresse();
         this.statut = personneContact.getStatut();
         this.choix = personneContact.getChoix();
+        this.idUser = personneContact.getId();
     }
 }

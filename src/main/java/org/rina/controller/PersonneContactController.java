@@ -72,7 +72,7 @@ public class PersonneContactController {
             }
 
             // Vérifier si la personne a un compte utilisateur existant
-            Optional<User> checkUser = userService.findByUsername(personDto.getEmail());
+            Optional<User> checkUser = userService.findById(personDto.getIdUser());
             if (checkUser.isPresent()) {
                 User user = checkUser.get();
                 // Créer et insérer la personne de contact avec son compte lié
