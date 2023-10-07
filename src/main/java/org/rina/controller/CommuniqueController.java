@@ -78,7 +78,7 @@ public class CommuniqueController {
 			@RequestParam("contenu")String contenu,
 			@RequestParam("titre")String titre,
 		    @RequestParam("date")String date,
-			@RequestParam("file") MultipartFile...files) {
+			@RequestParam("files") MultipartFile...files) {
 		// Obtient l'établissement associé au communiqué
 		Long idEtab = etablissementService.getEtablissementId();
 		Etablissement etab = etablissementService.findById(idEtab)
