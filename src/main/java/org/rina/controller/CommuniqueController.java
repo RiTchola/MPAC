@@ -100,6 +100,7 @@ public class CommuniqueController {
 			communique.setFileURL(fileURL);
 			return  ResponseEntity.ok(communiqueService.insert(communique));
 		}catch (Exception e){
+			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
 		}
 

@@ -18,7 +18,7 @@ import java.util.Locale;
 @Service
 @RequiredArgsConstructor
 public class FilesStorageService {
-    private final Path root= Paths.get("assets/files");
+    private final Path root= Paths.get("TFEFrontEnd/src/assets/files");
 
     public String fileNameFormatter(String name,String extension) {
         String pattern = "yyyyMMddHHmmssSSS";
@@ -36,11 +36,12 @@ public class FilesStorageService {
 
     public String saveFile(MultipartFile file){
         try {
-            String filename = fileNameFormatter("geeksohn", getExtension(file.getOriginalFilename()));
+            String filename = fileNameFormatter("images", getExtension(file.getOriginalFilename()));
             String path = "assets/files/"+filename;
             Files.copy(file.getInputStream(), this.root.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
             return path;
         } catch (Exception e) {
+            e.printStackTrace();
             throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
         }
     }
