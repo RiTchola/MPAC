@@ -16,7 +16,6 @@ import org.rina.model.Communique;
 import org.rina.model.Etablissement;
 import org.rina.service.CommuniqueServices;
 import org.rina.service.EtablissementServices;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -94,7 +93,7 @@ public class CommuniqueController {
 					.etablissement(etab).build();
 			List<String> fileURL = new ArrayList<>();
 			for (MultipartFile file : files) {
-				String url = filesStorageService.saveFile(file);
+				String url = filesStorageService.saveFileForBlog(file);
 				fileURL.add(url);
 			}
 			communique.setFileURL(fileURL);
