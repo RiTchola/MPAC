@@ -59,7 +59,7 @@ public class FichierDto {
 	 * @throws IOException En cas d'erreur d'entrée/sortie lors de la lecture du fichier
 	 */
 	public Fichier toFichier(PersonneContact persC) throws IOException {
-		return new Fichier(id, typeF, date, fileUrl, fichierIn.getBytes(), persC);
+		return new Fichier(id, typeF, date, fileUrl, persC);
 	}
 	
 }

@@ -88,10 +88,11 @@ public class FichierController {
 			@RequestParam("username") String username,
 			@RequestParam("file") MultipartFile file
 	){
+
 		Optional<User> existingUser = userService.findByUsername(username);
 		if (existingUser.isPresent()) {
 			User user = existingUser.get();
-			if (user.getRole() == Roles.PERSONNECONTACT) {
+			if (user.getRole() == Roles.ADMIN) {
 				PersonneContact persC = persCService.findByUsername(username)
 						.orElseThrow(() -> new NotExistException(username));
 
@@ -109,10 +110,12 @@ public class FichierController {
 				}
 			}else{
 				//c est pas la personne de contact
+				System.out.println("No contact Personne");
 				return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
 			}
 
 		}else{
+			System.out.println("No username");
 			//le username n'existe pas
 			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
 		}

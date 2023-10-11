@@ -19,7 +19,7 @@ import java.util.Locale;
 @RequiredArgsConstructor
 public class FilesStorageService {
     private final Path rootBlog = Paths.get("TFEFrontEnd/src/assets/files");
-    private final Path root= Paths.get("assets/files");
+    private final Path root= Paths.get("fichier/files");
 
     public String fileNameFormatter(String name,String extension) {
         String pattern = "yyyyMMddHHmmssSSS";
@@ -37,7 +37,7 @@ public class FilesStorageService {
 
     public String saveFileForBlog(MultipartFile file){
         try {
-            String filename = fileNameFormatter("images", getExtension(file.getOriginalFilename()));
+            String filename = fileNameFormatter("image", getExtension(file.getOriginalFilename()));
             String path = "assets/files/"+filename;
             Files.copy(file.getInputStream(), this.rootBlog.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
             return path;
@@ -49,8 +49,8 @@ public class FilesStorageService {
 
     public String saveFile(MultipartFile file){
         try {
-            String filename = fileNameFormatter("images", getExtension(file.getOriginalFilename()));
-            String path = "assets/files/"+filename;
+            String filename = fileNameFormatter("file", getExtension(file.getOriginalFilename()));
+            String path = "fichier/files/"+filename;
             Files.copy(file.getInputStream(), this.root.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
             return path;
         } catch (Exception e) {
