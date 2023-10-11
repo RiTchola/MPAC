@@ -18,6 +18,7 @@ public class FichierResponseDto {
     private Date date;
     
     private String fileURL;
+    private String  personneContact;
 
 
     public FichierResponseDto(Fichier fichier) {

@@ -28,7 +28,7 @@ public class FichierDto {
     private Date date;
 	
 	@NotNull
-	private String fileURL;
+	private String fileUrl;
 	
 	@NotNull
 	// Représente le fichier téléchargé
@@ -40,14 +40,14 @@ public class FichierDto {
 	 * @param id       L'identifiant du fichier
 	 * @param typeF    Le type de fichier
 	 * @param date     La date du fichier
-	 * @param fileURL  L'URL du fichier
+	 * @param fileUrl  L'URL du fichier
 	 * @param fichierIn Le fichier téléchargé
 	 */
-	public FichierDto(Long id, TypeFichier typeF, Date date, String fileURL, MultipartFile fichierIn) {
+	public FichierDto(Long id, TypeFichier typeF, Date date, String fileUrl, MultipartFile fichierIn) {
 		this.id = id;
 		this.typeF = typeF;
 		this.date = date;
-		this.fileURL = fileURL;
+		this.fileUrl = fileUrl;
 		this.fichierIn = fichierIn;
 	}
 	
@@ -59,7 +59,7 @@ public class FichierDto {
 	 * @throws IOException En cas d'erreur d'entrée/sortie lors de la lecture du fichier
 	 */
 	public Fichier toFichier(PersonneContact persC) throws IOException {
-		return new Fichier(id, typeF, date, fileURL, fichierIn.getBytes(), persC);
+		return new Fichier(id, typeF, date, fileUrl, persC);
 	}
 	
 }

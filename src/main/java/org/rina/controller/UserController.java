@@ -176,7 +176,7 @@ public class UserController {
      */
     @PutMapping("/{username}/update")
     public ResponseEntity<MessageResponseDto> changePassword(@PathVariable String username,
-            @Validated(CredentialValidation.class) @RequestBody ChangePasswordDto userCPwDto) {
+            @RequestBody ChangePasswordDto changePwdDto) {
         // Vérifier si l'utilisateur existe en fonction du nom d'utilisateur
         Optional<User> existingUser = userSrv.findByUsername(username);
 
@@ -184,9 +184,10 @@ public class UserController {
             User user = existingUser.get();
             // Changer le mot de passe de l'utilisateur
             try {
-                userSrv.changePassword(user, userCPwDto.getOldPassword(), userCPwDto.getPassword());
+                userSrv.changePassword(user, changePwdDto.getOldPassword(), changePwdDto.getPassword());
                 // Renvoyer une réponse 202 si le mot de passe est changé avec succès
-                return ResponseEntity.ok(new MessageResponseDto("Mot de passe changé avec succès"));
+                String msg = "Mot de passe changé avec succès";
+                return ResponseEntity.ok(new MessageResponseDto(msg));
             } 
             catch (CredentialException e) {
             	// Récupérer le message d'erreur de l'exception
@@ -196,7 +197,8 @@ public class UserController {
             }
         }
      // Renvoyer une réponse 404 si l'utilisateur n'existe pas
-        return ResponseEntity.ok(new MessageResponseDto("Le compte n'existe pas"));
+        String msg ="Le compte n'existe pas";
+        return ResponseEntity.ok(new MessageResponseDto(msg));
     }
     
     /**

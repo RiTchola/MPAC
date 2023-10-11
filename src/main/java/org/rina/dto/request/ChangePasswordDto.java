@@ -1,44 +1,19 @@
 package org.rina.dto.request;
 
-import org.rina.model.User;
-import org.rina.util.validation.annotation.PasswordValueMatch;
-
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.NoArgsConstructor;
 
-@PasswordValueMatch.List({
-		@PasswordValueMatch(groups = CredentialValidation.class, field = "password", fieldMatch = "confirmPassword", message = "{PasswordMatchError}") })
 
 @Data
+@Builder
+@NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-public class ChangePasswordDto extends UserDto {
+public class ChangePasswordDto {
 	
-	//Pas besoin de valider le format de l'ancien PW
 	private String oldPassword;
+	private String password;
 
-	/**
-	 * Création d'un ChangePasswordDto avec les pw initialisés à une chaine vide
-	 */
-	public ChangePasswordDto() {
-		super();
-		this.oldPassword = "";
-	}
-
-	/**
-	 * Crée un ChangePasswordDto à partir d'un user
-	 * 
-	 * @param user
-	 * @return un Changepassword Dto avec les pw vides
-	 */
-	public static ChangePasswordDto createPwDto(User user) {
-		ChangePasswordDto cpd = new ChangePasswordDto();
-		cpd.setUsername(user.getUsername());
-		cpd.setRole(user.getRole());
-		return cpd;
-	}
 	
 }

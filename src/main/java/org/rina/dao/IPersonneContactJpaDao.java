@@ -1,5 +1,6 @@
 package org.rina.dao;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +35,6 @@ public interface IPersonneContactJpaDao extends JpaRepository<PersonneContact, L
     Optional<PersonneContact> findByName(String nom);
 
     // Requête personnalisée pour vérifier si une personne de contact existe par son nom et prénom
-    @Query(value = "SELECT COUNT(*)=1 FROM tpersonnecontact p WHERE p.nom=?1 AND p.prenom=?2", nativeQuery = true)
-    boolean existByName(String nom, String prenom);
+    @Query(value = "SELECT COUNT(*)=1 FROM tpersonnecontact p WHERE p.nom=?1 AND p.prenom=?2 AND p.date_naissance=?3", nativeQuery = true)
+    boolean existByNamesAndDate(String nom, String prenom, Date date);
 }

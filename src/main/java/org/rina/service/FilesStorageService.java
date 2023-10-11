@@ -18,7 +18,8 @@ import java.util.Locale;
 @Service
 @RequiredArgsConstructor
 public class FilesStorageService {
-    private final Path root= Paths.get("/git/TFEFrontEnd/src/assets/files");
+    private final Path rootBlog = Paths.get("MPAC/src/main/resources/static/TFEFrontEnd/src/assets/files");
+    private final Path root= Paths.get("fichier/files");
 
     public String fileNameFormatter(String name,String extension) {
         String pattern = "yyyyMMddHHmmssSSS";
@@ -34,10 +35,22 @@ public class FilesStorageService {
         return fileName.substring(lastIndexOfDot);
     }
 
+    public String saveFileForBlog(MultipartFile file){
+        try {
+            String filename = fileNameFormatter("image", getExtension(file.getOriginalFilename()));
+            String path = "assets/files/"+filename;
+            Files.copy(file.getInputStream(), this.rootBlog.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
+            return path;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
+        }
+    }
+
     public String saveFile(MultipartFile file){
         try {
-            String filename = fileNameFormatter("images", getExtension(file.getOriginalFilename()));
-            String path = "assets/files/"+filename;
+            String filename = fileNameFormatter("file", getExtension(file.getOriginalFilename()));
+            String path = "fichier/files/"+filename;
             Files.copy(file.getInputStream(), this.root.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
             return path;
         } catch (Exception e) {

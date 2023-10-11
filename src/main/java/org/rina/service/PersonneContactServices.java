@@ -1,5 +1,6 @@
 package org.rina.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,8 +57,8 @@ public class PersonneContactServices {
 	 * @param prenom  Le prénom de la personne de contact à vérifier.
 	 * @return        true si la personne de contact existe, sinon false.
 	 */
-	public boolean existByName(String nom, String prenom) {
-		return personneContactdao.existByName(nom, prenom);
+	public boolean existByNamesAndDate(String nom, String prenom, Date date) {
+		return personneContactdao.existByNamesAndDate(nom, prenom, date);
 	}
 
 	/**

@@ -71,14 +71,21 @@ public class PersonneContactController {
             	return ResponseEntity.ok(new MessageResponseDto(msg));
             }
 
-            // Vérifier si la personne a un compte utilisateur existant
+            // Vérifier si une personne a un compte utilisateur existant avec l'email
             Optional<User> checkUser = userService.findByUsername(personDto.getEmail());
             if (checkUser.isPresent()) {
-                User user = checkUser.get();
-                // Créer et insérer la personne de contact avec son compte lié
-                PersonneContact newPersonneC = personneConService.insert(personDto.toPersonneContact(user));
-                // Lier la personne de contact au résident
-                residentService.addPersonneContactToResident(idResid, newPersonneC.getId());
+            	if(personneConService.existByNamesAndDate(personDto.getNom(), personDto.getPrenom(), personDto.getDateNaissance())) {
+            		User user = checkUser.get();
+	                // Créer et insérer la personne de contact avec son compte lié
+	                PersonneContact newPersonneC = personneConService.insert(personDto.toPersonneContact(user));
+	                // Lier la personne de contact au résident
+	                residentService.addPersonneContactToResident(idResid, newPersonneC.getId());
+            	}
+            	else{
+                    // Renvoyer une réponse 200 si le résident n'existe pas
+                	String msg = "L'adresse email est deja utilisé par une autre personne";
+                	return ResponseEntity.ok(new MessageResponseDto(msg));
+            	}
             } 
             else {
                 // Créer et insérer la personne de contact sans son compte utilisateur

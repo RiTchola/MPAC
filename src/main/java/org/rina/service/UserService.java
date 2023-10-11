@@ -67,7 +67,6 @@ public class UserService {
 	 * @param newPassword  Le nouveau mot de passe (non crypté et supposé valide).
 	 * @throws CredentialException
 	 */
-	@PreAuthorize("hasRole('ADMIN') or #user.username eq authentication.name")
 	public void changePassword(User user, String oldPassword, String newPassword) throws CredentialException {
 		// Vérifie l'existence de l'utilisateur
 		// Récupère l'utilisateur dans la base de données pour vérifier s'il existe bien
