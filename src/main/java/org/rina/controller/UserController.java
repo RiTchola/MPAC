@@ -18,9 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -177,8 +175,8 @@ public class UserController {
      * Mettre à jour un mot de passe.
      */
     @PutMapping("/{username}/update")
-    public ResponseEntity<MessageResponseDto> changePWPut(@PathVariable String username,
-            @Validated(CredentialValidation.class) @RequestBody ChangePasswordDto userCPwDto, Authentication auth, Model model) {
+    public ResponseEntity<MessageResponseDto> changePassword(@PathVariable String username,
+            @Validated(CredentialValidation.class) @RequestBody ChangePasswordDto userCPwDto) {
         // Vérifier si l'utilisateur existe en fonction du nom d'utilisateur
         Optional<User> existingUser = userSrv.findByUsername(username);
 
