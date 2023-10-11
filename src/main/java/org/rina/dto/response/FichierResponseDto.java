@@ -17,14 +17,14 @@ public class FichierResponseDto {
     
     private Date date;
     
-    private String fileUrl;
+    private String fileURL;
 
 
     public FichierResponseDto(Fichier fichier) {
         this.id = fichier.getId();
         this.typeF = fichier.getTypeF();
         this.date = fichier.getDate();
-        this.fileUrl = fichier.getFileURL();
+        this.fileURL = fichier.getFileURL();
     }
     
 }

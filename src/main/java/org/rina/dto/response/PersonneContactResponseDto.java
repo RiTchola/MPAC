@@ -1,5 +1,6 @@
 package org.rina.dto.response;
 
+import org.rina.enums.Sexe;
 import org.rina.enums.StatutM;
 import org.rina.enums.TypePersonne;
 import org.rina.model.PersonneContact;
@@ -27,6 +28,8 @@ public class PersonneContactResponseDto {
     
     private String adresse;
     
+    private Sexe sexe;
+    
     private StatutM statut;
     
     private TypePersonne choix;
@@ -43,8 +46,12 @@ public class PersonneContactResponseDto {
         this.tel1 = personneContact.getTel1();
         this.tel2 = personneContact.getTel2();
         this.adresse = personneContact.getAdresse();
+        this.sexe = personneContact.getSexe();
         this.statut = personneContact.getStatut();
         this.choix = personneContact.getChoix();
-        this.idUser = personneContact.getId();
+        this.idUser = Long.parseLong("0");
+        if(personneContact.getUser() != null) {
+        	this.idUser = personneContact.getUser().getId();
+        }
     }
 }

@@ -134,12 +134,13 @@ public class UserController {
         if (existingPersc.isPresent()) {        
 	    	// Associer la personne de contact au nouvel utilisateur
 	        PersonneContact persC = existingPersc.get();
-	        boolean existingUser = userSrv.existsByUsername(persC.getUser().getUsername());
+	        boolean existingUser = userSrv.existsByUsername(userDto.getUsername());
 	        
 	        if (!existingUser) {
 				// Créer un nouvel utilisateur dans le cas général
 				User newUser = userSrv.insert(userDto.toUser(encodeur));
 				persC.setUser(newUser);
+				personService.updatePersonneContact(idPersc, persC);
 				// Renvoyer une réponse 200 si la création de l'utilisateur est réussie
 				return ResponseEntity.ok(new MessageResponseDto(newUser.getId().toString())); 
 		    } 

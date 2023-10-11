@@ -76,7 +76,6 @@ public class Resident {
     @Column(nullable = true) 
     private Date dateSortie;
 
-    @Size(min = 5, max = 400) 
     @Column(nullable = true) 
     private String motifSortie;
 

@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import org.rina.enums.Sexe;
 import org.rina.enums.StatutM;
 import org.rina.enums.TypePersonne;
 import org.springframework.format.annotation.NumberFormat;
@@ -58,6 +59,9 @@ public class PersonneContact {
     private String adresse;
 
     @Column(nullable = true) 
+    private Sexe sexe;
+    
+    @Column(nullable = true) 
     private StatutM statut;
 
     @Column(nullable = false) 
@@ -89,12 +93,13 @@ public class PersonneContact {
      * @param tel1 		Le premier numéro de téléphone de la personne de contact
      * @param tel2 		Le second numéro de téléphone de la personne de contact
      * @param adresse 	L'adresse de la personne de contact
+     * @param sexe 		Le sexe de la personne de contact
      * @param statut 	Le statut de la personne de contact
      * @param choix 	Le type de personne (choix)
      * @param user 		L'utilisateur associé à la personne de contact
      */
     public PersonneContact(Long id, String nom, String prenom, Date dateNaissance, String email, String tel1,
-                           String tel2, String adresse, StatutM statut, TypePersonne choix, User user) {
+                           String tel2, String adresse, Sexe sexe, StatutM statut, TypePersonne choix, User user) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
@@ -103,6 +108,7 @@ public class PersonneContact {
         this.tel1 = tel1;
         this.tel2 = tel2;
         this.adresse = adresse;
+        this.sexe = sexe;
         this.statut = statut;
         this.choix = choix;
         this.user = user;

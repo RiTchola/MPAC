@@ -16,8 +16,8 @@ public interface ICommuniqueJpaDao extends JpaRepository<Communique, Long> {
     List<Communique> findCommuniqueByDate(Date date);
 
     // Requête personnalisée pour rechercher tous les communiqués triés par date décroissante
-    @Query(value = "SELECT * FROM tcommunique c JOIN communique_fileurl f on c.ID = f.communique_id ORDER BY c.DATE DESC", nativeQuery = true)
-    List<Communique> findAllCommuniqueOrderByDateDesc();
+
+    List<Communique> findAllByOrderByDateDesc();
 
     // Requête personnalisée pour mettre à jour un communiqué en fonction de son ID
     @Modifying

@@ -10,6 +10,7 @@ import jakarta.validation.constraints.NotNull;
 
 import org.rina.model.PersonneContact;
 import org.rina.model.User;
+import org.rina.enums.Sexe;
 import org.rina.enums.StatutM;
 import org.rina.enums.TypePersonne;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -43,6 +44,8 @@ public class PersonneContactDto {
 
 	@NotBlank
 	private String adresse;
+	
+	private Sexe sexe;
 
 	private StatutM statut;
 
@@ -66,11 +69,12 @@ public class PersonneContactDto {
 	 * @param tel1          Le premier numéro de téléphone de la personne de contact
 	 * @param tel2          Le deuxième numéro de téléphone de la personne de contact
 	 * @param adresse       L'adresse de la personne de contact
+	 * @param sexe 		 	Le sexe de la personne de contact
 	 * @param statut        Le statut de la personne de contact
 	 * @param choix         Le type de personne (choix) de la personne de contact
 	 */
 	public PersonneContactDto(Long id, String nom, String prenom, Date dateNaissance, String email, 
-			String tel1, String tel2, String adresse, StatutM statut, TypePersonne choix, Long idUser) {
+			String tel1, String tel2, String adresse, Sexe sexe, StatutM statut, TypePersonne choix, Long idUser) {
 
 		this.id = id;
 		this.nom = nom;
@@ -80,6 +84,7 @@ public class PersonneContactDto {
 		this.tel1 = tel1;
 		this.tel2 = tel2;
 		this.adresse = adresse;
+		this.sexe = sexe;
 		this.statut = statut;
 		this.choix = choix;
 		this.idUser = idUser;
@@ -93,7 +98,7 @@ public class PersonneContactDto {
 	 */
 	public PersonneContact toPersonneContact(User user) {
 		return new PersonneContact(id, nom, prenom, dateNaissance, email, tel1,
-				tel2, adresse, statut, choix, user);
+				tel2, adresse, sexe, statut, choix, user);
 	}
 	
 	/**
@@ -103,6 +108,6 @@ public class PersonneContactDto {
 	 */
 	public PersonneContact toPersonneContact() {
 		return new PersonneContact(id, nom, prenom, dateNaissance, email, tel1,
-				tel2, adresse, statut, choix, null);
+				tel2, adresse, sexe, statut, choix, null);
 	}
 }

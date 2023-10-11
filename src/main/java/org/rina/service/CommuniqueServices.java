@@ -74,7 +74,7 @@ public class CommuniqueServices {
 	 * @return  Une liste contenant tous les communiqués triés par date décroissante.
 	 */
 	public List<Communique> findAllCommuniqueOrderByDateDesc() {
-		return communiquedao.findAllCommuniqueOrderByDateDesc();
+		return communiquedao.findAllByOrderByDateDesc();
 	}
 
 	/**
