@@ -117,7 +117,7 @@ public class Resident {
     private Etablissement etablissement;
 
     @ManyToMany(cascade = CascadeType.PERSIST) 
-    @JoinTable(name = "TLIAISON", joinColumns = @JoinColumn(name = "FKRESIDENT"), inverseJoinColumns = @JoinColumn(name = "FKPERSONNECONTACT"))
+    @JoinTable(name = "tliaison", joinColumns = @JoinColumn(name = "FKRESIDENT"), inverseJoinColumns = @JoinColumn(name = "FKPERSONNECONTACT"))
     @Builder.Default
     protected Set<PersonneContact> personneContacts = new HashSet<PersonneContact>();
 

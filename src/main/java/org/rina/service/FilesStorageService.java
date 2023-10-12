@@ -1,10 +1,12 @@
 package org.rina.service;
 
 import lombok.RequiredArgsConstructor;
+import org.rina.controller.FichierController;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -50,9 +52,11 @@ public class FilesStorageService {
     public String saveFile(MultipartFile file){
         try {
             String filename = fileNameFormatter("file", getExtension(file.getOriginalFilename()));
-            String path = "fichier/files/"+filename;
             Files.copy(file.getInputStream(), this.root.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
-            return path;
+            String url = MvcUriComponentsBuilder.fromMethodName
+                    (FichierController.class, "downloadFile", filename).build().toString();
+
+            return url;
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
@@ -68,11 +72,10 @@ public class FilesStorageService {
         }
     }
 
-    public Resource loadFile(String url) {
+    public Resource loadFile(String filename) {
         try {
-            Path filePath = Paths.get(url);
-            Resource resource = new UrlResource(filePath.toUri());
-
+            Path file = root.resolve(filename);
+            Resource resource = new UrlResource(file.toUri());
             if (resource.exists() || resource.isReadable()) {
                 return resource;
             } else {
