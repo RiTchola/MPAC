@@ -87,7 +87,7 @@ public class FichierController {
 		Optional<User> existingUser = userService.findByUsername(username);
 		if (existingUser.isPresent()) {
 			User user = existingUser.get();
-			if (user.getRole() == Roles.ADMIN) {
+			if (user.getRole() == Roles.PERSONNECONTACT) {
 				PersonneContact persC = persCService.findByUsername(username)
 						.orElseThrow(() -> new NotExistException(username));
 
@@ -120,14 +120,15 @@ public class FichierController {
 	/**
 	 * Télécharger un fichier.
 	 */
-	@GetMapping("/download/{fileURL}")
+	@GetMapping("/download/fichier/files/{fileURL}")
 	public ResponseEntity<Resource> downloadFile(@PathVariable String fileURL) {
 		if (fileURL.isEmpty()) {
 			// Renvoyer une réponse d'erreur interne du serveur si le nom de fichier est vide
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 		}
 		try {
-			Resource resource = filesStorageService.loadFile(fileURL);
+			String fileUrl = "/file/download/fichier/files/"+ fileURL; 
+			Resource resource = filesStorageService.loadFile(fileUrl);
 
 			if (resource.exists() && resource.isReadable()) {
 				// Renvoyer le fichier en tant que téléchargement

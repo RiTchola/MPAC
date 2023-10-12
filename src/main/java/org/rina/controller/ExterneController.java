@@ -23,10 +23,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.zxing.BarcodeFormat;
@@ -59,8 +59,8 @@ public class ExterneController {
 	 * Créer un nouveau rapport de visite.
 	 */
 	@SuppressWarnings("unused")
-	@PostMapping("/rapport-visite")
-    public ResponseEntity<MessageResponseDto> createRapportVisite(@RequestParam("code") int code,
+	@PostMapping("/rapport-visite/{code}/")
+    public ResponseEntity<MessageResponseDto> createRapportVisite(@PathVariable int code,
             @Valid @RequestBody RapportVisiteDto rapVisiteDto) {
         // Vérifier si ce codeUnique existe déjà
         Long existingCode = codeService.findByCodeUnique(Long.valueOf(code));

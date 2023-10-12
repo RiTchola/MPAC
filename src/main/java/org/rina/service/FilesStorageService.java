@@ -18,7 +18,7 @@ import java.util.Locale;
 @Service
 @RequiredArgsConstructor
 public class FilesStorageService {
-    private final Path rootBlog = Paths.get("MPAC/src/main/resources/static/TFEFrontEnd/src/assets/files");
+    private final Path rootBlog = Paths.get("C:\\Users\\yseuk\\git\\MPAC\\TFEFrontEnd\\src\\assets\\files");
     private final Path root= Paths.get("fichier/files");
 
     public String fileNameFormatter(String name,String extension) {
