@@ -97,7 +97,7 @@ public class CommuniqueController {
 					.etablissement(etab).build();
 			List<String> fileURL = new ArrayList<>();
 			for (MultipartFile file : files) {
-				String url = filesStorageService.saveFile(file);
+				String url = filesStorageService.saveFileForBlog(file);
 				fileURL.add(url);
 			}
 			communique.setFileURL(fileURL);
