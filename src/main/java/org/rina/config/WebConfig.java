@@ -34,6 +34,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins(clientURL)
                 .allowedMethods("*")
                 .allowedHeaders("*")
+                .allowedHeaders("Content-Type")
                 .allowCredentials(true);
     }
     

@@ -76,7 +76,7 @@ public class SecurityConfiguration {
             // Nettoyer le contexte de sécurité après la déconnexion réussie.
             .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext())
     ;
-
+    http.cors();
     // Construire et renvoyer la configuration de sécurité.
     return http.build();
   }

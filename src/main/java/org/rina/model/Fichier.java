@@ -30,6 +30,9 @@ public class Fichier {
     private Long id;
 
     @Column(nullable = false) 
+    private String destinataire;
+    
+    @Column(nullable = false) 
     private TypeFichier typeF;
 
     @Column(nullable = false) 
@@ -38,8 +41,6 @@ public class Fichier {
     // Chemin vers le fichier sur le serveur
     @Column(nullable = false) 
     private String fileURL;
-
-
 
     /**
      * jointure à d'autres classes

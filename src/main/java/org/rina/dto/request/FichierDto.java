@@ -9,6 +9,7 @@ import org.rina.model.PersonneContact;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -22,6 +23,9 @@ public class FichierDto {
 	
 	@NotBlank
     private TypeFichier typeF;
+	
+	 @NotNull
+	 private String destinataire;
 	
 	@NotNull
 	@DateTimeFormat
@@ -43,8 +47,9 @@ public class FichierDto {
 	 * @param fileUrl  L'URL du fichier
 	 * @param fichierIn Le fichier téléchargé
 	 */
-	public FichierDto(Long id, TypeFichier typeF, Date date, String fileUrl, MultipartFile fichierIn) {
+	public FichierDto(Long id, String destinataire, TypeFichier typeF, Date date, String fileUrl, MultipartFile fichierIn) {
 		this.id = id;
+		this.destinataire = destinataire;
 		this.typeF = typeF;
 		this.date = date;
 		this.fileUrl = fileUrl;
@@ -59,7 +64,7 @@ public class FichierDto {
 	 * @throws IOException En cas d'erreur d'entrée/sortie lors de la lecture du fichier
 	 */
 	public Fichier toFichier(PersonneContact persC) throws IOException {
-		return new Fichier(id, typeF, date, fileUrl, persC);
+		return new Fichier(id, destinataire, typeF, date, fileUrl, persC);
 	}
 	
 }

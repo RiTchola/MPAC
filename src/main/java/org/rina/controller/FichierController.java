@@ -80,7 +80,7 @@ public class FichierController {
     }
 
     @PostMapping
-    public ResponseEntity<MessageResponseDto> addFile(@RequestParam("date") String date,
+    public ResponseEntity<MessageResponseDto> addFile(@RequestParam("date") String date, @RequestParam("destinataire") String destinataire,
                                                       @RequestParam("typeF") TypeFichier typeF, @RequestParam("username") String username,
                                                       @RequestParam("file") MultipartFile file) {
 
@@ -94,7 +94,7 @@ public class FichierController {
                 try {
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
-                    Fichier fichier = Fichier.builder().date(formatter.parse(date))
+                    Fichier fichier = Fichier.builder().date(formatter.parse(date)).destinataire(destinataire)
                             .fileURL(filesStorageService.saveFile(file)).personneContact(persC).typeF(typeF).build();
                     fichierService.insert(fichier);
                 } catch (Exception e) {
