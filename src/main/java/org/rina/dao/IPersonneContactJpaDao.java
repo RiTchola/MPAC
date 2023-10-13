@@ -19,7 +19,7 @@ public interface IPersonneContactJpaDao extends JpaRepository<PersonneContact, L
     void updatePersonneContact(Long id, PersonneContact personC);
 
     // Requête pour obtenir la liste des personnes de contact d'un résident
-    @Query(value = "SELECT p.*  FROM tpersonnecontact p JOIN TLIAISON l ON p.id=l.fkpersonnecontact JOIN tresident r ON l.fkresident=r.id WHERE r.id=?1 ORDER BY r.DATE_ENTREE DESC", nativeQuery = true)
+    @Query(value = "SELECT p.*  FROM tpersonnecontact p JOIN tliaison l ON p.id=l.fkpersonnecontact JOIN tresident r ON l.fkresident=r.id WHERE r.id=?1 ORDER BY r.DATE_ENTREE DESC", nativeQuery = true)
     List<PersonneContact> findAllPersonContactToResid(Long idResid);
 
     // Requête personnalisée pour obtenir une personne de contact par son email
